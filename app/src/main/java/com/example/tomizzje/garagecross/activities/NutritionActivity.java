@@ -46,7 +46,7 @@ public class NutritionActivity extends MenuBaseActivity {
         tvExerciseListTitle.setText(title);
 
         List<FoodGroups> foodGroups = new ArrayList<>(Arrays.asList(FoodGroups.values()));
-        Log.d("hello", "hello");
+
         initAdapter(foodGroups);
     }
 
