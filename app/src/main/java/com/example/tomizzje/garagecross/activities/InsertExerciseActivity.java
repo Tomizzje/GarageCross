@@ -91,9 +91,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
 
         } else {
             if(exercise.getPicturesUrl() != null) {
-                /*for(String url : exercise.getPicturesUrl().values()) {
-                    imagesUrlList.add(url);
-                }*/
+
                 for(Map.Entry<String,String> entry : exercise.getPicturesUrl().entrySet()) {
                     imagesIdList.add(entry.getKey());
                     imagesUrlList.add(entry.getValue());

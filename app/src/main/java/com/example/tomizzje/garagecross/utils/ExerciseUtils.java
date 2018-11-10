@@ -5,6 +5,8 @@ import com.example.tomizzje.garagecross.models.Exercise;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Random;
 
 public class ExerciseUtils {
 
@@ -22,6 +24,11 @@ public class ExerciseUtils {
             rate+= value;
         }
         return rate / numberOfRates;
+    }
+
+    public static Exercise getRandomExercise(List<Exercise> exercises ) {
+        Random random = new Random();
+        return exercises.get(random.nextInt(exercises.size()));
     }
 
 

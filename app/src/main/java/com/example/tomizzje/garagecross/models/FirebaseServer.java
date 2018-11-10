@@ -23,6 +23,11 @@ public class FirebaseServer {
         query.addValueEventListener(valueEventListener);
     }
 
+    public void findAllUser(ValueEventListener valueEventListener, String reference, String user_id) {
+        Query query = databaseReference.child(reference).orderByChild("user_id").equalTo(user_id);
+        query.addValueEventListener(valueEventListener);
+    }
+
     public void updateFavoriteExercise(String ref, String id, String value ) {
       databaseReference.child(ref).child(id).child("favoritedUsers").child(value).setValue(value);
     }
@@ -85,5 +90,21 @@ public class FirebaseServer {
 
     public void updateRecord(Record saveRecord, String ref) {
         databaseReference.child(ref).child(saveRecord.getPushId()).setValue(saveRecord);
+    }
+
+    public void insertFood(Food food, String ref) {
+        String key = databaseReference.child(ref).push().getKey();
+        if(key != null) {
+            food.setPushId(key);
+            databaseReference.child(ref).child(key).setValue(food);
+        }
+    }
+
+    public void modifyFood(Food food, String ref) {
+        databaseReference.child(ref).child(food.getPushId()).setValue(food);
+    }
+
+    public void deleteFood(Food food, String ref) {
+        databaseReference.child(ref).child(food.getPushId()).removeValue();
     }
 }

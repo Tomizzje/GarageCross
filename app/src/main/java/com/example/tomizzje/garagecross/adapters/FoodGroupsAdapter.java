@@ -59,7 +59,7 @@ public class FoodGroupsAdapter extends RecyclerView.Adapter<FoodGroupsAdapter.Fo
 
         public void bind(final FoodGroups temp) {
             if(temp !=null) {
-                tvFood.setText(temp.getString());
+                tvFood.setText(temp.getUserFriendlyString());
             }
 
             tvFood.setOnClickListener(new View.OnClickListener() {

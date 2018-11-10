@@ -58,6 +58,7 @@ public class InsertRecordActivity extends BaseActivity {
         if(getRecord != null){
             tvDate.setText(getRecord.getDate());
             etDescription.setText(getRecord.getDescription());
+            // a fókusz hova kerüljön
             etDescription.setSelection(getRecord.getDescription().length());
             Log.d("getRecord", getRecord.getDescription());
 

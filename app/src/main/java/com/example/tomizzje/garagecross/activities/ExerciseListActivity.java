@@ -20,7 +20,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ExerciseListActivity extends MenuBaseActivity implements ValueEventListener {
+public class ExerciseListActivity extends MenuBaseActivity {
 
     @BindView(R.id.rvExercises) RecyclerView rvExercises;
 
@@ -39,7 +39,32 @@ public class ExerciseListActivity extends MenuBaseActivity implements ValueEvent
     @Override
     protected void onResume() {
         super.onResume();
-        firebaseServer.findAllOrderBy(this, "exercises");
+        initExerciseList();
+
+    }
+
+    private void initExerciseList() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+
+                    List<Exercise> exercises = new ArrayList<>();
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        exercises.add(snapshot.getValue(Exercise.class));
+
+                    }
+                    Collections.reverse(exercises);
+                    initAdapter(exercises);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        firebaseServer.findAllOrderBy(valueEventListener, "exercises");
     }
 
     private void initAdapter(List<Exercise> exercises) {
@@ -49,23 +74,4 @@ public class ExerciseListActivity extends MenuBaseActivity implements ValueEvent
         rvExercises.setLayoutManager(exercisesLayoutManager);
     }
 
-
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        if(dataSnapshot.exists()) {
-
-            List<Exercise> exercises = new ArrayList<>();
-            for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                exercises.add(snapshot.getValue(Exercise.class));
-
-            }
-            Collections.reverse(exercises);
-            initAdapter(exercises);
-        }
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-    }
 }
