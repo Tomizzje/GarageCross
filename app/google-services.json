@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "684235085607",
+    "firebase_url": "https://garagecross-70550.firebaseio.com",
+    "project_id": "garagecross-70550",
+    "storage_bucket": "garagecross-70550.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684235085607:android:ddb64f9a5b9ff47f",
+        "android_client_info": {
+          "package_name": "com.example.tomizzje.garagecross"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "684235085607-3q7vtmhtkrfhdk72s31khcdjfc8veqaa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tomizzje.garagecross",
+            "certificate_hash": "dfa60b482bfa58c84aa62e54a88dbc5a1bb2866a"
+          }
+        },
+        {
+          "client_id": "684235085607-5857t88v13j7gok5r4s7a1vrl22lcnvl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5L-zDDOLW9eGP3Nfk-LolJ0Tcp5-Tkrs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "684235085607-5857t88v13j7gok5r4s7a1vrl22lcnvl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

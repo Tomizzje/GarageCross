@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/welcome_menu"
+        android:title="Kezdőlap"
+        app:showAsAction="never" />
+    <item android:id="@+id/exercise_menu"
+        android:title="Összes feladat"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/nutrition_menu"
+        android:title="Táplálkozás"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/doneExercise_menu"
+        android:title="Elvégzett feladataim"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/personalExercise_menu"
+        android:title="Saját feladataim"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/diary_menu"
+        android:title="Naplóm"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/users_menu"
+        android:title="Felhasználók"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/insert_menu"
+        android:title="Feladat létrehozása"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/favoriteExercise_menu"
+        android:title="Kedvenc Feladataim"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/recommendedExercise_menu"
+        android:title="Ajánlott Feladataim"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/logout_menu"
+        android:title="Kijelentkezés"
+        app:showAsAction="never"/>
+</menu>

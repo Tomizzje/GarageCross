@@ -1,0 +1,10 @@
+<resources>
+
+    <string name="app_name">GarageCross</string>
+    <string name="title_hint">Feladat neve</string>
+    <string name="desc_hint">Feladat leírása</string>
+    <string name="save_menu">save</string>
+    <string name="delete_menu">Delete Exercise</string>
+
+
+</resources>
