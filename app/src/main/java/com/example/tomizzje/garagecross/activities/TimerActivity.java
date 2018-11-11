@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
@@ -16,25 +14,18 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tomizzje.garagecross.adapters.ImagesAdapter;
-import com.example.tomizzje.garagecross.application.BaseApplication;
-import com.example.tomizzje.garagecross.models.DoneExercise;
+import com.example.tomizzje.garagecross.adapters.ImageAdapter;
+import com.example.tomizzje.garagecross.enums.Difficulty;
 import com.example.tomizzje.garagecross.models.Exercise;
-import com.example.tomizzje.garagecross.models.FirebaseLogin;
-import com.example.tomizzje.garagecross.models.FirebaseServer;
+import com.example.tomizzje.garagecross.models.DoneExercise;
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.models.User;
 import com.example.tomizzje.garagecross.utils.ExerciseUtils;
-import com.example.tomizzje.garagecross.utils.UserUtils;
-import com.example.tomizzje.garagecross.utils.VibrationUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -83,20 +74,14 @@ public class TimerActivity extends BaseActivity {
             }
             initadapter(imagesList);
         }
-
         initUser();
-
         initButtonClickListeners();
-
-
-
-
     }
 
 
 
     private void initadapter(ArrayList<String> imagesList) {
-        final ImagesAdapter adapter = new ImagesAdapter(imagesList);
+        final ImageAdapter adapter = new ImageAdapter(imagesList);
         rvImages.setAdapter(adapter);
         LinearLayoutManager exercisesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvImages.setLayoutManager(exercisesLayoutManager);
@@ -120,7 +105,6 @@ public class TimerActivity extends BaseActivity {
 
             }
         };
-
         firebaseServer.findAll(valueEventListener,"users");
     }
 
@@ -177,12 +161,11 @@ public class TimerActivity extends BaseActivity {
         String currentTime = ExerciseUtils.getCurrentTime();
         String elapsedTime = String.valueOf(simpleChronometer.getText());
         String title = String.valueOf(txtTitle.getText());
-        String description = String.valueOf(txtDesc.getText());
         String currentUser = firebaseLogin.getCurrentUser();
 
 
 
-        String id = exercise.getUid();
+        String id = exercise.getPushId();
 
         // TODO
         if(exercise.getRatedUsers() == null && ratingBar.getRating() != 0 ) {
@@ -198,11 +181,12 @@ public class TimerActivity extends BaseActivity {
 
         // TODO
 
-        doneExercise = new DoneExercise(title, description, elapsedTime, currentTime, currentUser);
-        firebaseServer.insertDoneExercise(doneExercise, "doneExercises");
+        //doneExercise = new DoneExercise(title, description, elapsedTime, currentTime, currentUser);
+        doneExercise = new DoneExercise("default", title, elapsedTime, currentTime, user);
+        firebaseServer.insertEntity(doneExercise, "doneExercises");
 
         // TODO
-        int value =user.getExperience() +  ExerciseUtils.getDifficultyNumber(exercise.getDifficulty());
+        int value =user.getExperience() +  Difficulty.getDifficultyPoints(exercise.getDifficulty());
         firebaseServer.updateExperience("users", user.getPushId(),value);
 
     }

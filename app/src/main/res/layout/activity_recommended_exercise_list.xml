@@ -11,7 +11,7 @@
     tools:context=".activities.ExerciseListActivity">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvExercises"
+        android:id="@+id/rvItems"
         android:layout_width="match_parent"
         android:layout_height="442dp"
         android:layout_marginStart="8dp"
@@ -23,11 +23,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvExerciseListTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvListTitle"
         app:layout_constraintVertical_bias="0.8" />
 
     <TextView
-        android:id="@+id/tvExerciseListTitle"
+        android:id="@+id/tvListTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -47,10 +47,10 @@
         android:text=""
         android:gravity="center"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/rvExercises"
+        app:layout_constraintBottom_toTopOf="@+id/rvItems"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvExerciseListTitle"
+        app:layout_constraintTop_toBottomOf="@+id/tvListTitle"
         app:layout_constraintVertical_bias="0.208" />
 
 

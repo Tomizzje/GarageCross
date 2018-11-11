@@ -1,6 +1,8 @@
 package com.example.tomizzje.garagecross.models;
 
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +10,7 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements Serializable, IBaseEntity {
 
 
     @Setter

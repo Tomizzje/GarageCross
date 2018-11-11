@@ -31,7 +31,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         BaseApplication.getInstance().getBaseComponent().inject(this);
-
         //CSAK PORTRAIT MODE
         setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }

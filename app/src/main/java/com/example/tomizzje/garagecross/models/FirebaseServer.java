@@ -23,11 +23,6 @@ public class FirebaseServer {
         query.addValueEventListener(valueEventListener);
     }
 
-    public void findAllUser(ValueEventListener valueEventListener, String reference, String user_id) {
-        Query query = databaseReference.child(reference).orderByChild("user_id").equalTo(user_id);
-        query.addValueEventListener(valueEventListener);
-    }
-
     public void updateFavoriteExercise(String ref, String id, String value ) {
       databaseReference.child(ref).child(id).child("favoritedUsers").child(value).setValue(value);
     }
@@ -56,33 +51,9 @@ public class FirebaseServer {
         databaseReference.child(ref).child(id).removeValue();
     }
 
-   public void insertDoneExercise(IExercise exercise, String ref) {
-        databaseReference.child(ref).push().setValue(exercise);
-    }
 
-    public void insertExercise(Exercise exercise, String ref) {
-        String key = databaseReference.child(ref).push().getKey();
-        if(key !=null) {
-            exercise.setUid(key);
-            databaseReference.child(ref).child(key).setValue(exercise);
-        }
-    }
 
-    public void insertRecord(Record record, String ref) {
-        String key = databaseReference.child(ref).push().getKey();
-        if(key !=null) {
-            record.setPushId(key);
-            databaseReference.child(ref).child(key).setValue(record);
-        }
-    }
 
-    public void insertUser(User user, String ref) {
-        String key = databaseReference.child(ref).push().getKey();
-        if(key != null) {
-            user.setPushId(key);
-            databaseReference.child(ref).child(key).setValue(user);
-        }
-    }
 
     public void deleteRecord(Record record, String ref) {
         databaseReference.child(ref).child(record.getPushId()).removeValue();
@@ -92,13 +63,7 @@ public class FirebaseServer {
         databaseReference.child(ref).child(saveRecord.getPushId()).setValue(saveRecord);
     }
 
-    public void insertFood(Food food, String ref) {
-        String key = databaseReference.child(ref).push().getKey();
-        if(key != null) {
-            food.setPushId(key);
-            databaseReference.child(ref).child(key).setValue(food);
-        }
-    }
+
 
     public void modifyFood(Food food, String ref) {
         databaseReference.child(ref).child(food.getPushId()).setValue(food);
@@ -107,4 +72,13 @@ public class FirebaseServer {
     public void deleteFood(Food food, String ref) {
         databaseReference.child(ref).child(food.getPushId()).removeValue();
     }
+
+    public void insertEntity(IBaseEntity entity, String ref){
+        String key = databaseReference.child(ref).push().getKey();
+        if(key != null) {
+            entity.setPushId(key);
+            databaseReference.child(ref).child(key).setValue(entity);
+        }
+    }
+
 }

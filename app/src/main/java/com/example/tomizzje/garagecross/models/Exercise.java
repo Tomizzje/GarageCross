@@ -11,11 +11,11 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class Exercise implements Serializable,IExercise {
+public class Exercise implements Serializable, IBaseEntity {
 
     @Getter
     @Setter
-    private String uid;
+    private String pushId;
 
     @Getter
     @Setter
@@ -50,7 +50,7 @@ public class Exercise implements Serializable,IExercise {
     private Map<String,String> picturesUrl;
 
     public Exercise(String title, String description) {
-        this.uid = "1";
+        this.pushId = "1";
         this.title = title;
         this.description = description;
         this.creatorUser_id = "1";
@@ -62,7 +62,7 @@ public class Exercise implements Serializable,IExercise {
     }
 
     public Exercise(String title, String description, String usersId, String difficulty, HashMap<String,String> picturesUrl) {
-        this.uid = "1";
+        this.pushId = "1";
         this.title = title;
         this.description = description;
         this.creatorUser_id = usersId;

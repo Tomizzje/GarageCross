@@ -3,6 +3,7 @@ package com.example.tomizzje.garagecross.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,7 +11,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.R;
-import com.example.tomizzje.garagecross.enums.FoodGroups;
+import com.example.tomizzje.garagecross.enums.FoodGroup;
 import com.example.tomizzje.garagecross.models.Food;
 
 import butterknife.BindView;
@@ -61,7 +62,7 @@ public class InsertFoodActivity extends BaseActivity {
         } else {
             txtFood.setText(food.getName());
             txtFood.setSelection(food.getName().length());
-            numberPicker.setValue(FoodGroups.getFoodGroupsCode(food.getFoodGroups()));
+            numberPicker.setValue(FoodGroup.getFoodGroupsCode(food.getFoodGroups()));
             btnDelete.setText("Törlés");
             toModify = true;
         }
@@ -74,7 +75,7 @@ public class InsertFoodActivity extends BaseActivity {
             public void onClick(View view) {
                 if(txtFood.getText() !=null && txtFood.length() > 0) {
                     food.setName(txtFood.getText().toString());
-                    String result = FoodGroups.getFoodGroups(numberPicker.getValue()).toString();
+                    String result = FoodGroup.getFoodGroups(numberPicker.getValue()).toString();
                     if(result != null){
                         food.setFoodGroups(result);
                     }
@@ -82,7 +83,8 @@ public class InsertFoodActivity extends BaseActivity {
                     if(toModify){
                         firebaseServer.modifyFood(food, "food");
                     }else{
-                        firebaseServer.insertFood(food, "food");
+                        firebaseServer.insertEntity(food, "food");
+                        Log.d("HEYHO", food.toString());
                     }
                     backToList();
                 }
@@ -111,7 +113,7 @@ public class InsertFoodActivity extends BaseActivity {
 
 
     private void setNumberPicker() {
-        FoodGroups[] foodGroups = FoodGroups.values();
+        FoodGroup[] foodGroups = FoodGroup.values();
         String[] groups = new String[foodGroups.length];
         for(int i=0;i<foodGroups.length;++i){
             groups[i] = foodGroups[i].toString();

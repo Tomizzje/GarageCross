@@ -14,9 +14,9 @@ import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
-import com.example.tomizzje.garagecross.adapters.ImagesAdapter;
+import com.example.tomizzje.garagecross.adapters.ImageAdapter;
+import com.example.tomizzje.garagecross.enums.Difficulty;
 import com.example.tomizzje.garagecross.models.Exercise;
-import com.example.tomizzje.garagecross.utils.ExerciseUtils;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -46,7 +46,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
 
     @BindView(R.id.rvImages) RecyclerView rvImages;
 
-    private  Exercise exercise;
+    private Exercise exercise;
 
     private ArrayList<String> imagesUrlList;
     private ArrayList<String> imagesIdList;
@@ -98,7 +98,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
                 }
                 initAdapter(imagesUrlList);
             }
-            numberPicker.setValue(ExerciseUtils.getDifficultyNumber(exercise.getDifficulty()));
+            numberPicker.setValue(Difficulty.getDifficultyCode(exercise.getDifficulty()));
 
             toModify = true;
         }
@@ -158,7 +158,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             public void onClick(View view) {
                 //TODO
                 if(toModify) {
-                    firebaseServer.deleteExercise("exercises", exercise.getUid());
+                    firebaseServer.deleteExercise("exercises", exercise.getPushId());
                     Toast.makeText(view.getContext(), "Exercise DELETED!",
                             Toast.LENGTH_LONG).show();
                     backToList();
@@ -193,18 +193,18 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         exercise.setTitle(txtTitle.getText().toString());
         exercise.setDescription(txtDesc.getText().toString());
 
-        String difficulty = ExerciseUtils.getDifficultyResult(numberPicker.getValue());
+        String difficulty =Difficulty.getDifficulty(numberPicker.getValue()).toString();
         // TODO
         HashMap<String,String> imagesUrl = getMapFromList(imagesUrlList, imagesIdList);
 
         Exercise saveExercise = new Exercise(exercise.getTitle(), exercise.getDescription(), firebaseLogin.getCurrentUser(), difficulty, imagesUrl);
         if(toModify){
-            saveExercise.setUid(exercise.getUid());
+            saveExercise.setPushId(exercise.getPushId().toString());
             saveExercise.setPopularity(exercise.getPopularity());
             saveExercise.setFavoritedUsers(exercise.getFavoritedUsers());
-            firebaseServer.updateExercise("exercises", exercise.getUid(), saveExercise);
+            firebaseServer.updateExercise("exercises", exercise.getPushId(), saveExercise);
         }else {
-            firebaseServer.insertExercise(saveExercise, "exercises");
+            firebaseServer.insertEntity(saveExercise, "exercises");
         }
 
 
@@ -225,12 +225,18 @@ public class InsertExerciseActivity extends MenuBaseActivity {
     }
 
     private void setNumberPicker() {
-        String [ ] levels = {"könnyű","középhaladó","haladó","profi"};
+
+        Difficulty[] difficulties = Difficulty.values();
+        String[] levels = new String[difficulties.length];
+        for(int i=0;i<difficulties.length;++i){
+            levels[i] = difficulties[i].getUserFriendlyString();
+        }
+
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
         numberPicker.setDisplayedValues(levels);
-        numberPicker.setMaxValue(3);
+        numberPicker.setMaxValue(levels.length-1);
         numberPicker.setMinValue(0);
-        numberPicker.setWrapSelectorWheel(true);
+        numberPicker.setWrapSelectorWheel(false);
     }
 
     private void uploadImage(Uri imageUri) {
@@ -266,7 +272,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
     }
 
     private void initAdapter(ArrayList<String> list) {
-        final ImagesAdapter adapter = new ImagesAdapter(list);
+        final ImageAdapter adapter = new ImageAdapter(list);
         rvImages.setAdapter(adapter);
         LinearLayoutManager exercisesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvImages.setLayoutManager(exercisesLayoutManager);

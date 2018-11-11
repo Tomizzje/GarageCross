@@ -1,28 +1,34 @@
 package com.example.tomizzje.garagecross.models;
 
+import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-public class DoneExercise extends Exercise implements IExercise {
+@AllArgsConstructor
+public class DoneExercise implements Serializable,IBaseEntity {
 
     @Setter
     @Getter
-    String timeElapsed;
+    private String pushId;
+
+    @Getter
+    @Setter
+    private String title;
 
     @Setter
     @Getter
-    String dateTime;
+    private String timeElapsed;
 
     @Setter
     @Getter
-    String user_id;
+    private String dateTime;
 
-    public DoneExercise(String title, String description, String timeElapsed, String dateTime, String user_id) {
-        super(title, description);
-        this.timeElapsed = timeElapsed;
-        this.dateTime = dateTime;
-        this.user_id = user_id;
-    }
+    @Setter
+    @Getter
+    private User user;
+
 }

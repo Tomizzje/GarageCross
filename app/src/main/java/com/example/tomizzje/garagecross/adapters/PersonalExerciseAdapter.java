@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.activities.InsertExerciseActivity;
+import com.example.tomizzje.garagecross.enums.Difficulty;
 import com.example.tomizzje.garagecross.models.Exercise;
 import com.example.tomizzje.garagecross.R;
 
@@ -66,7 +67,7 @@ public class PersonalExerciseAdapter extends RecyclerView.Adapter<PersonalExerci
             tvTitle.setText(personalExercise.getTitle());
             tvDescription.setText(personalExercise.getDescription());
             tvRate.setText(String.valueOf(personalExercise.getPopularity()));
-            tvDifficulty.setText(personalExercise.getDifficulty());
+            tvDifficulty.setText(Difficulty.getDifficultyString(personalExercise.getDifficulty()));
         }
 
         @Override

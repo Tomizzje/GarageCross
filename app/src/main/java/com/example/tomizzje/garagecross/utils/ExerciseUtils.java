@@ -32,7 +32,7 @@ public class ExerciseUtils {
     }
 
 
-    public static String getDifficultyResult(int number) {
+    /*public static String getDifficultyResult(int number) {
         switch(number){
             case 0:
                 return "könnyű";
@@ -56,5 +56,5 @@ public class ExerciseUtils {
             default:
                 return 10;
         }
-    }
+    }*/
 }

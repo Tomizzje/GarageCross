@@ -5,6 +5,10 @@
     <string name="desc_hint">Feladat leírása</string>
     <string name="save_menu">save</string>
     <string name="delete_menu">Delete Exercise</string>
+    <string name="exercise_list_title">Feladatsorok</string>
+    <string name="done_exercise_list_title">Elvégzett Feladatsorok</string>
+    <string name="user_list_title">Felhasználók</string>
+    <string name="add_button_title">Új hozzáadása</string>
 
 
 </resources>

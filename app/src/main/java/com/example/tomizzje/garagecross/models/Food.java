@@ -1,7 +1,5 @@
 package com.example.tomizzje.garagecross.models;
 
-import com.example.tomizzje.garagecross.enums.FoodGroups;
-
 import java.io.Serializable;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +9,7 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class Food implements Serializable {
+public class Food implements Serializable, IBaseEntity {
 
     @Getter
     @Setter

@@ -12,12 +12,11 @@ import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.FoodAdapter;
-import com.example.tomizzje.garagecross.enums.FoodGroups;
+import com.example.tomizzje.garagecross.enums.FoodGroup;
 import com.example.tomizzje.garagecross.models.Food;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.database.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,7 @@ public class FoodListActivity extends MenuBaseActivity {
     Button btnAdd;
 
 
-    private FoodGroups foodGroups;
+    private FoodGroup foodGroup;
 
     private boolean isAdmin = false;
 
@@ -61,10 +60,10 @@ public class FoodListActivity extends MenuBaseActivity {
 
 
         Intent intent = getIntent();
-        FoodGroups foodGroups = (FoodGroups) intent.getSerializableExtra("FoodGroup");
-        if(foodGroups != null){
-            this.foodGroups = foodGroups;
-            tvTitle.setText(foodGroups.getUserFriendlyString());
+        FoodGroup foodGroup = (FoodGroup) intent.getSerializableExtra("FoodGroup");
+        if(foodGroup != null){
+            this.foodGroup = foodGroup;
+            tvTitle.setText(foodGroup.getUserFriendlyString());
             initAdministrator();
 
 
@@ -91,7 +90,7 @@ public class FoodListActivity extends MenuBaseActivity {
                 if(dataSnapshot.exists()){
                     List<Food> food = new ArrayList<>();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        if(foodGroups != null && foodGroups.toString().equals(snapshot.getValue(Food.class).getFoodGroups()))
+                        if(foodGroup != null && foodGroup.toString().equals(snapshot.getValue(Food.class).getFoodGroups()))
                         food.add(snapshot.getValue(Food.class));
                     }
                     initAdapter(food, isAdmin);

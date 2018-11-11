@@ -85,7 +85,7 @@ public class WelcomeActivity extends MenuBaseActivity{
                         }
                     }
                     if(!gotIt) {
-                        firebaseServer.insertUser(user, "users");
+                        firebaseServer.insertEntity(user, "users");
                     }
 
                     String level = UserUtils.getLevelByExperience(user.getExperience());

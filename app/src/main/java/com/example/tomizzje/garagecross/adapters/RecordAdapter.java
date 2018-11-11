@@ -3,7 +3,6 @@ package com.example.tomizzje.garagecross.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,11 +11,8 @@ import android.widget.TextView;
 
 
 import com.example.tomizzje.garagecross.activities.InsertRecordActivity;
-import com.example.tomizzje.garagecross.activities.TimerActivity;
-import com.example.tomizzje.garagecross.models.Exercise;
 import com.example.tomizzje.garagecross.models.Record;
 import com.example.tomizzje.garagecross.R;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;

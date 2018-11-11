@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class Record  implements Serializable {
+public class Record implements Serializable, IBaseEntity {
 
     @Setter
     @Getter

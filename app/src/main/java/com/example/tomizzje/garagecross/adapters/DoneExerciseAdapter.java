@@ -1,14 +1,20 @@
 package com.example.tomizzje.garagecross.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.tomizzje.garagecross.activities.DoneExerciseListActivity;
+import com.example.tomizzje.garagecross.activities.ExerciseListActivity;
+import com.example.tomizzje.garagecross.activities.ShareActivity;
 import com.example.tomizzje.garagecross.models.DoneExercise;
 import com.example.tomizzje.garagecross.R;
 import com.google.firebase.database.ChildEventListener;
@@ -49,15 +55,22 @@ public class DoneExerciseAdapter extends RecyclerView.Adapter<DoneExerciseAdapte
         return doneExercises.size();
     }
 
-    public class DoneExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    public class DoneExerciseViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tvTitle) TextView tvTitle;
-        @BindView(R.id.tvDateTime) TextView tvDateTime;
-        @BindView(R.id.tvElapsedTime) TextView tvElapsedTime;
+        @BindView(R.id.tvTitle)
+        TextView tvTitle;
+
+        @BindView(R.id.tvDateTime)
+        TextView tvDateTime;
+
+        @BindView(R.id.tvElapsedTime)
+        TextView tvElapsedTime;
+
+        @BindView(R.id.imgShare)
+        ImageView imgShare;
 
         public DoneExerciseViewHolder(View itemView) {
             super(itemView);
-            itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
 
@@ -65,13 +78,16 @@ public class DoneExerciseAdapter extends RecyclerView.Adapter<DoneExerciseAdapte
             tvTitle.setText(doneExercise.getTitle());
             tvDateTime.setText(doneExercise.getDateTime());
             tvElapsedTime.setText(doneExercise.getTimeElapsed());
+
+            imgShare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), ShareActivity.class);
+                    view.getContext().startActivity(intent);
+                }
+            });
         }
 
-        @Override
-        public void onClick(View view) {
-            int position = getAdapterPosition();
-            Log.d("CLICK",String.valueOf(position));
-        }
     }
 
 }

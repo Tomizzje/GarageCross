@@ -132,12 +132,12 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
 
                         imageButton.setImageResource(android.R.drawable.btn_star_big_on);
                         ;
-                        firebaseServer.updateFavoriteExercise("exercises", exercise.getUid(), firebaseLogin.getCurrentUser());
+                        firebaseServer.updateFavoriteExercise("exercises", exercise.getPushId(), firebaseLogin.getCurrentUser());
                         Toast.makeText(view.getContext(), "Added to favourites!",
                                 Toast.LENGTH_LONG).show();
                     } else {
                         imageButton.setImageResource(android.R.drawable.btn_star_big_off);
-                        firebaseServer.deleteFavoriteFromExercise("exercises", exercise.getUid(), firebaseLogin.getCurrentUser());
+                        firebaseServer.deleteFavoriteFromExercise("exercises", exercise.getPushId(), firebaseLogin.getCurrentUser());
                         Toast.makeText(view.getContext(), "Removed from favourites",
                                 Toast.LENGTH_LONG).show();
                     }

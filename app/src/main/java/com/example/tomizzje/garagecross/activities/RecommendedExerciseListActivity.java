@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.R;
@@ -25,9 +24,9 @@ import butterknife.ButterKnife;
 
 public class RecommendedExerciseListActivity extends MenuBaseActivity  {
 
-    @BindView(R.id.rvExercises) RecyclerView rvExercises;
+    @BindView(R.id.rvItems) RecyclerView rvExercises;
 
-    @BindView(R.id.tvExerciseListTitle) TextView tvExerciseListTitle;
+    @BindView(R.id.tvListTitle) TextView tvExerciseListTitle;
 
     @BindView(R.id.tvLevel) TextView tvLevel;
 

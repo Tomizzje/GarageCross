@@ -12,8 +12,6 @@ import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.activities.InsertFoodActivity;
-import com.example.tomizzje.garagecross.activities.TimerActivity;
-import com.example.tomizzje.garagecross.enums.FoodGroups;
 import com.example.tomizzje.garagecross.models.Food;
 
 import java.util.ArrayList;

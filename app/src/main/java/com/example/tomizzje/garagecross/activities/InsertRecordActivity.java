@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +13,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.tomizzje.garagecross.models.Exercise;
 import com.example.tomizzje.garagecross.models.Record;
 import com.example.tomizzje.garagecross.R;
 
@@ -105,7 +103,7 @@ public class InsertRecordActivity extends BaseActivity {
                         saveRecord.setPushId(record.getPushId());
                         firebaseServer.updateRecord(saveRecord, "records");
                     }else {
-                        firebaseServer.insertRecord(saveRecord, "records");
+                        firebaseServer.insertEntity(saveRecord, "records");
                     }
                     backToList();
                 }
