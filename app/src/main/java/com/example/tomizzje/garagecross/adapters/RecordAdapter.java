@@ -23,7 +23,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordViewHolder> implements ValueEventListener {
+public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordViewHolder> {
 
     final ArrayList<Record> records;
 
@@ -50,16 +50,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
     @Override
     public int getItemCount() {
         return records.size();
-    }
-
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
-
     }
 
     public class RecordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
