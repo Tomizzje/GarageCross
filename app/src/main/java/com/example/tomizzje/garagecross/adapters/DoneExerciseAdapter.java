@@ -15,8 +15,10 @@ import android.widget.TextView;
 import com.example.tomizzje.garagecross.activities.DoneExerciseListActivity;
 import com.example.tomizzje.garagecross.activities.ExerciseListActivity;
 import com.example.tomizzje.garagecross.activities.ShareActivity;
+import com.example.tomizzje.garagecross.activities.TimerActivity;
 import com.example.tomizzje.garagecross.models.DoneExercise;
 import com.example.tomizzje.garagecross.R;
+import com.example.tomizzje.garagecross.models.Exercise;
 import com.google.firebase.database.ChildEventListener;
 
 import java.util.ArrayList;
@@ -28,8 +30,6 @@ import butterknife.ButterKnife;
 public class DoneExerciseAdapter extends RecyclerView.Adapter<DoneExerciseAdapter.DoneExerciseViewHolder> {
 
     final ArrayList<DoneExercise> doneExercises;
-
-    private ChildEventListener childEventListener;
 
     public DoneExerciseAdapter(final List<DoneExercise> doneExercises) {
 
@@ -82,7 +82,11 @@ public class DoneExerciseAdapter extends RecyclerView.Adapter<DoneExerciseAdapte
             imgShare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    int position = getAdapterPosition();
+                    DoneExercise selectedExercise = doneExercises.get(position);
                     Intent intent = new Intent(view.getContext(), ShareActivity.class);
+                    intent.putExtra("DoneExercise", selectedExercise);
                     view.getContext().startActivity(intent);
                 }
             });

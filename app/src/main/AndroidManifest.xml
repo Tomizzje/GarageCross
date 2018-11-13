@@ -73,6 +73,10 @@
         <activity android:name=".activities.ShareActivity">
         </activity>
 
+        <activity android:name=".activities.ShareListActivity">
+        </activity>
+
+
 
 
 

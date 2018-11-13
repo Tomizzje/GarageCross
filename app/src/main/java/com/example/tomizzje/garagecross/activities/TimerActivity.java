@@ -25,7 +25,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,11 +44,10 @@ public class TimerActivity extends BaseActivity {
     @BindView(R.id.rvImages) RecyclerView rvImages;
 
     private boolean isPaused = true;
-    private DoneExercise doneExercise;
+
     private Exercise exercise;
     private long lastPause = 0;
     private User user;
-    private ArrayList<String> imagesList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,13 +68,21 @@ public class TimerActivity extends BaseActivity {
         this.exercise = exercise;
         txtTitle.setText(exercise.getTitle());
         txtDesc.setText(exercise.getDescription());
-        imagesList = new ArrayList<>();
+
         if(exercise.getPicturesUrl() != null) {
+            ArrayList<String> imagesList = new ArrayList<>(exercise.getPicturesUrl().values());
+            initadapter(imagesList);
+        }
+
+        /*
+                if(exercise.getPicturesUrl() != null) {
             for(String s : exercise.getPicturesUrl().values()) {
                 imagesList.add(s);
             }
             initadapter(imagesList);
         }
+
+         */
         initUser();
         initButtonClickListeners();
     }
@@ -182,7 +191,7 @@ public class TimerActivity extends BaseActivity {
         // TODO
 
         //doneExercise = new DoneExercise(title, description, elapsedTime, currentTime, currentUser);
-        doneExercise = new DoneExercise("default", title, elapsedTime, currentTime, user);
+        DoneExercise doneExercise = new DoneExercise("default", title, elapsedTime, currentTime, user);
         firebaseServer.insertEntity(doneExercise, "doneExercises");
 
         // TODO

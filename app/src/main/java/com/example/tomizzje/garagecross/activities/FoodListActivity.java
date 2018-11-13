@@ -136,7 +136,7 @@ public class FoodListActivity extends MenuBaseActivity {
 
 
 
-
+    //todo
     private void initAdapter(List<Food> food, boolean isAdmin) {
         Log.d("HEYHO3", String.valueOf(isAdmin));
         final FoodAdapter adapter = new FoodAdapter(food, isAdmin);

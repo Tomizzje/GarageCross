@@ -131,7 +131,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
                     if (!(exercise.getFavoritedUsers().containsKey(firebaseLogin.getCurrentUser()))) {
 
                         imageButton.setImageResource(android.R.drawable.btn_star_big_on);
-                        ;
+
                         firebaseServer.updateFavoriteExercise("exercises", exercise.getPushId(), firebaseLogin.getCurrentUser());
                         Toast.makeText(view.getContext(), "Added to favourites!",
                                 Toast.LENGTH_LONG).show();

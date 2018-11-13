@@ -9,6 +9,8 @@
     <string name="done_exercise_list_title">Elvégzett Feladatsorok</string>
     <string name="user_list_title">Felhasználók</string>
     <string name="add_button_title">Új hozzáadása</string>
+    <string name="buttonShare">Share</string>
+    <string name="share_list_title">Megosztások</string>
 
 
 </resources>

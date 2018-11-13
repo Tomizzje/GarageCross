@@ -7,14 +7,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.UserListAdapter;
 import com.example.tomizzje.garagecross.application.BaseApplication;
 import com.example.tomizzje.garagecross.events.MessageEvent;
+import com.example.tomizzje.garagecross.models.DoneExercise;
+import com.example.tomizzje.garagecross.models.Share;
 import com.example.tomizzje.garagecross.models.User;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,7 +41,18 @@ public class ShareActivity extends BaseActivity {
     @BindView(R.id.tvDialog)
     TextView tvDialog;
 
+    @BindView(R.id.etComment)
+    EditText etComment;
+
+    @BindView(R.id.btnShare)
+    Button btnShare;
+
+    @BindView(R.id.tvDoneExercise)
+    TextView tvDoneExercise;
+
     private User user;
+
+    private DoneExercise doneExercise;
 
     Dialog dialog;
 
@@ -54,11 +68,39 @@ public class ShareActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initButton();
+
+        Intent intent = getIntent();
+        DoneExercise doneExercise = (DoneExercise) intent.getSerializableExtra("DoneExercise");
+        if (doneExercise == null) {
+            doneExercise = new DoneExercise();
+        }
+        this.doneExercise = doneExercise;
+        String msgDoneExercise = doneExercise.getTitle() + " " + doneExercise.getTimeElapsed();
+        tvDoneExercise.setText(msgDoneExercise);
+        initDialog();
+
+        initShareButton();
+    }
+
+    private void initShareButton() {
+        btnShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String comment = etComment.getText().toString();
+                Share share = new Share("defaultId", doneExercise, user.getUser_id(), comment);
+                firebaseServer.insertEntity(share, "shares");
+                backToList();
+            }
+        });
+    }
+
+    private void backToList() {
+        Intent intent = new Intent(this, DoneExerciseListActivity.class);
+        startActivity(intent);
     }
 
 
-    private void initButton() {
+    private void initDialog() {
         tvDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

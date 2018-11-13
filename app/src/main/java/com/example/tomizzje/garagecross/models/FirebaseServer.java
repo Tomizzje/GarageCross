@@ -1,5 +1,7 @@
 package com.example.tomizzje.garagecross.models;
 
+import android.util.Log;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -72,6 +74,16 @@ public class FirebaseServer {
     public void deleteFood(Food food, String ref) {
         databaseReference.child(ref).child(food.getPushId()).removeValue();
     }
+
+    public void deleteEntity(IBaseEntity entity, String ref){
+        databaseReference.child(ref).child(entity.getPushId()).removeValue();
+    }
+
+    public void deleteShare(Share share,String ref){
+        Log.d("TAMAS", share.getPushId() +  " " + share.getRecipient());
+        databaseReference.child(ref).child(share.getPushId()).removeValue();
+    }
+
 
     public void insertEntity(IBaseEntity entity, String ref){
         String key = databaseReference.child(ref).push().getKey();

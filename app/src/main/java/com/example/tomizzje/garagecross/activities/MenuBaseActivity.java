@@ -82,6 +82,10 @@ public abstract class MenuBaseActivity extends BaseActivity {
                 Intent intentToNutrition = new Intent(this, NutritionActivity.class);
                 startActivity(intentToNutrition);
                 return true;
+            case R.id.share_list_menu:
+                Intent intentToShareList = new Intent(this, ShareListActivity.class);
+                startActivity(intentToShareList);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

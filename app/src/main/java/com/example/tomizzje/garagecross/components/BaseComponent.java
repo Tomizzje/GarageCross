@@ -3,6 +3,7 @@ package com.example.tomizzje.garagecross.components;
 import com.example.tomizzje.garagecross.activities.BaseActivity;
 import com.example.tomizzje.garagecross.activities.ShareActivity;
 import com.example.tomizzje.garagecross.adapters.ExerciseAdapter;
+import com.example.tomizzje.garagecross.adapters.ShareAdapter;
 import com.example.tomizzje.garagecross.modules.ApplicationModule;
 import com.example.tomizzje.garagecross.modules.FirebaseDepotModule;
 import com.example.tomizzje.garagecross.modules.FirebaseLoginModule;
@@ -20,5 +21,5 @@ public interface BaseComponent {
 
     void inject(BaseActivity baseActivity);
     void inject(ExerciseAdapter.ExerciseViewHolder exerciseViewHolder);
-    void inject(ShareActivity shareActivity) ;
+    void inject(ShareAdapter.ShareViewHolder shareViewHolder);
 }

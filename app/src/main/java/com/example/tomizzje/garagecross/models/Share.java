@@ -26,4 +26,15 @@ public class Share implements Serializable, IBaseEntity {
     @Getter
     @Setter
     private String comment;
+
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(pushId);
+        sb.append(",");
+        sb.append(recipient);
+        sb.append(",");
+        sb.append(comment);
+        return sb.toString();
+    }
 }
