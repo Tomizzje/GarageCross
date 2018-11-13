@@ -67,7 +67,9 @@ public class PersonalExerciseAdapter extends RecyclerView.Adapter<PersonalExerci
             tvTitle.setText(personalExercise.getTitle());
             tvDescription.setText(personalExercise.getDescription());
             tvRate.setText(String.valueOf(personalExercise.getPopularity()));
-            tvDifficulty.setText(Difficulty.getDifficultyString(personalExercise.getDifficulty()));
+
+            //tvDifficulty.setText(Difficulty.getDifficultyString(personalExercise.getDifficulty()));
+            tvDifficulty.setText("kezdő");
         }
 
         @Override

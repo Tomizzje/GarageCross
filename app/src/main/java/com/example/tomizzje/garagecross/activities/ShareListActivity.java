@@ -30,10 +30,10 @@ import butterknife.ButterKnife;
 
 public class ShareListActivity extends MenuBaseActivity {
     @BindView(R.id.tvListTitle)
-    TextView tvExerciseListTitle;
+    TextView tvListTitle;
 
     @BindView(R.id.rvItems)
-    RecyclerView rvExercises;
+    RecyclerView rvItems;
 
     @BindString(R.string.share_list_title) String title;
 
@@ -52,28 +52,28 @@ public class ShareListActivity extends MenuBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        tvExerciseListTitle.setText(title);
+        tvListTitle.setText(title);
         initDoneExerciseList();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
+        //EventBus.getDefault().register(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+        //EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+/*    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         //TODO
         Log.d("EVENTBUS2", "heyho");
-        initDoneExerciseList();
-    }
+        //initDoneExerciseList();
+    }*/
 
     private void initDoneExerciseList() {
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -102,9 +102,9 @@ public class ShareListActivity extends MenuBaseActivity {
     private void initAdapter(ArrayList<Share> shares) {
 
         final ShareAdapter adapter = new ShareAdapter(shares);
-        rvExercises.setAdapter(adapter);
+        rvItems.setAdapter(adapter);
         LinearLayoutManager shareLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvExercises.setLayoutManager(shareLayoutManager);
+        rvItems.setLayoutManager(shareLayoutManager);
     }
 
 }

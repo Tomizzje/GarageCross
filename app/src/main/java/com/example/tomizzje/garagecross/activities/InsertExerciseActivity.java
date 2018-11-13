@@ -8,9 +8,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
@@ -37,7 +40,9 @@ public class InsertExerciseActivity extends MenuBaseActivity {
     @BindView(R.id.txtTitle) EditText txtTitle;
     @BindView(R.id.txtDesc) EditText txtDesc;
 
-    @BindView(R.id.numberPicker) NumberPicker numberPicker;
+    //@BindView(R.id.numberPicker) NumberPicker numberPicker;
+    @BindView(R.id.spnDifficulty)
+    Spinner spnDifficulty;
 
     @BindView(R.id.btnUpload) Button btnUpload;
     @BindView(R.id.btnDeletePicture) Button btnDeletePicture;
@@ -63,7 +68,30 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         ButterKnife.bind(this);
 
         //TODO
+        setSpinner();
         initExercise();
+
+    }
+
+    private void setSpinner() {
+        final String[] difficulties = Difficulty.getDifficultyValuesString();
+        AdapterView.OnItemSelectedListener itemClickListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(), difficulties[i], Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //Toast.makeText(getApplicationContext(), difficulties[0], Toast.LENGTH_LONG).show();
+            }
+        };
+        spnDifficulty.setOnItemSelectedListener(itemClickListener);
+
+
+        ArrayAdapter aa = new ArrayAdapter(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item, difficulties);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnDifficulty.setAdapter(aa);
     }
 
 
@@ -81,7 +109,6 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         imagesUrlList = new ArrayList<>();
         imagesIdList = new ArrayList<>();
 
-        setNumberPicker();
         Intent intent = getIntent();
         Exercise exercise = (Exercise) intent.getSerializableExtra("ModifyExercise");
         if (exercise == null) {
@@ -98,7 +125,10 @@ public class InsertExerciseActivity extends MenuBaseActivity {
                 }
                 initAdapter(imagesUrlList);
             }
-            numberPicker.setValue(Difficulty.getDifficultyCode(exercise.getDifficulty()));
+
+            String text = Difficulty.getDifficultyByName(exercise.getDifficulty()).toString();
+            int position = getSpinTextPosition(text);
+            spnDifficulty.setSelection(position);
 
             toModify = true;
         }
@@ -113,6 +143,15 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             txtDesc.setText(exercise.getDescription());
         }
 
+    }
+
+    private int getSpinTextPosition(String text) {
+        for(int i=0;i<spnDifficulty.getAdapter().getCount();++i){
+            if(spnDifficulty.getAdapter().getItem(i).toString().equals(text)){
+                return i;
+            }
+        }
+        return 0;
     }
 
 
@@ -193,13 +232,14 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         exercise.setTitle(txtTitle.getText().toString());
         exercise.setDescription(txtDesc.getText().toString());
 
-        String difficulty =Difficulty.getDifficulty(numberPicker.getValue()).toString();
+
+        String difficulty= Difficulty.getDifficultyByString(spnDifficulty.getSelectedItem().toString()).name();
         // TODO
         HashMap<String,String> imagesUrl = getMapFromList(imagesUrlList, imagesIdList);
 
         Exercise saveExercise = new Exercise(exercise.getTitle(), exercise.getDescription(), firebaseLogin.getCurrentUser(), difficulty, imagesUrl);
         if(toModify){
-            saveExercise.setPushId(exercise.getPushId().toString());
+            saveExercise.setPushId(exercise.getPushId());
             saveExercise.setPopularity(exercise.getPopularity());
             saveExercise.setFavoritedUsers(exercise.getFavoritedUsers());
             firebaseServer.updateExercise("exercises", exercise.getPushId(), saveExercise);
@@ -222,21 +262,6 @@ public class InsertExerciseActivity extends MenuBaseActivity {
     private void backToList() {
         Intent intent = new Intent(this, PersonalExerciseListActivty.class);
         startActivity(intent);
-    }
-
-    private void setNumberPicker() {
-
-        Difficulty[] difficulties = Difficulty.values();
-        String[] levels = new String[difficulties.length];
-        for(int i=0;i<difficulties.length;++i){
-            levels[i] = difficulties[i].getUserFriendlyString();
-        }
-
-        numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        numberPicker.setDisplayedValues(levels);
-        numberPicker.setMaxValue(levels.length-1);
-        numberPicker.setMinValue(0);
-        numberPicker.setWrapSelectorWheel(false);
     }
 
     private void uploadImage(Uri imageUri) {

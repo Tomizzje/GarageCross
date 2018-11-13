@@ -194,12 +194,12 @@ public class TimerActivity extends BaseActivity {
         DoneExercise doneExercise = new DoneExercise("default", title, elapsedTime, currentTime, user);
         firebaseServer.insertEntity(doneExercise, "doneExercises");
 
-        // TODO
-        int value =user.getExperience() +  Difficulty.getDifficultyPoints(exercise.getDifficulty());
+
+        int point = Difficulty.getDifficultyPoints(Difficulty.getDifficultyByName(exercise.getDifficulty()));
+
+        int value =user.getExperience() +  point;
         firebaseServer.updateExperience("users", user.getPushId(),value);
 
     }
-
-
 
 }

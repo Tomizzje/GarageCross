@@ -1,84 +1,60 @@
 package com.example.tomizzje.garagecross.enums;
 
 public enum Difficulty {
-    BEGINNER(0){
-        @Override
-        public String getUserFriendlyString(){
-            return "kezdő";
-        }
-    },INTERMEDIATE(1) {
-        @Override
-        public String getUserFriendlyString() {
-            return "középhaladó";
-        }
+    BEGINNER("kezdő"),
+    INTERMEDIATE("középhaladó"),
+    ADVANCED("haladó"),
+    PROFESSIONAL("profi");
 
-    },ADVANCED(2){
-        @Override
-        public String getUserFriendlyString() {
-            return "haladó";
-        }
-    },PROFESSIONAL(3){
-        @Override
-        public String getUserFriendlyString(){
-            return "profi";
-        }
-    };
+    private final String userFriendlyText;
 
-    private final int difficultyCode;
-
-    private Difficulty(int difficultyCode){
-        this.difficultyCode = difficultyCode;
+    Difficulty(String userFriendlyText){
+        this.userFriendlyText = userFriendlyText;
     }
 
-    public int getDifficultyCode(){
-        return this.difficultyCode;
+    @Override public String toString(){
+        return userFriendlyText;
     }
 
-    public static Difficulty getDifficulty(int difficultyCode){
+    public static Difficulty getDifficultyByString(String userFriendlyText){
         for(Difficulty d : Difficulty.values()){
-            if(d.difficultyCode == difficultyCode){
+            if(d.userFriendlyText.equals(userFriendlyText)){
                 return d;
             }
         }
-        return null;
+        return BEGINNER;
     }
 
-    public static int getDifficultyCode(String name){
-        Difficulty[] temp = Difficulty.values();
-        for(int i=0;i<temp.length;++i){
-            if(temp[i].toString().equals(name)){
-                return i;
+    public static Difficulty getDifficultyByName(String text){
+        for(Difficulty d : Difficulty.values()){
+            if(d.name().equals(text)){
+                return d;
             }
         }
-        return -1;
+        return BEGINNER;
     }
 
-    public static int getDifficultyPoints(String difficulty){
+    public static int getDifficultyPoints(Difficulty difficulty){
         switch(difficulty){
-            case "BEGINNER":
+            case BEGINNER:
                 return 1;
-            case "INTERMEDIATE":
+            case INTERMEDIATE:
                 return 2;
-            case "ADVANCED":
+            case ADVANCED:
                 return 5;
-            default:
+            case PROFESSIONAL:
                 return 10;
-        }
-    }
-
-    public static String getDifficultyString(String difficulty){
-        switch(difficulty){
-            case "BEGINNER":
-                return "kezdő";
-            case "INTERMEDIATE":
-                return "középhaladó";
-            case "ADVANCED":
-                return "haladó";
             default:
-                return "profi";
+                return 1;
         }
     }
 
-
-    public abstract String getUserFriendlyString();
+    public static String[] getDifficultyValuesString(){
+        Difficulty[] temp = Difficulty.values();
+        String[] result = new String[temp.length];
+        for(int i=0;i<temp.length;++i){
+            result[i] = temp[i].toString();
+        }
+        return result;
+    }
 }

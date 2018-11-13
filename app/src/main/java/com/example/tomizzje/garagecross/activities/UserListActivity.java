@@ -21,6 +21,7 @@ import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class UserListActivity extends MenuBaseActivity{
 
@@ -34,6 +35,7 @@ public class UserListActivity extends MenuBaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+        ButterKnife.bind(this);
     }
 
     @Override
