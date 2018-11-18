@@ -1,7 +1,6 @@
 package com.example.tomizzje.garagecross.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,9 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.tomizzje.garagecross.activities.ShareActivity;
 import com.example.tomizzje.garagecross.events.MessageEvent;
-import com.example.tomizzje.garagecross.models.User;
+import com.example.tomizzje.garagecross.entities.User;
 import com.example.tomizzje.garagecross.R;
 
 import org.greenrobot.eventbus.EventBus;

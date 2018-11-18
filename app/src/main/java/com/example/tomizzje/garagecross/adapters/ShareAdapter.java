@@ -1,34 +1,26 @@
 package com.example.tomizzje.garagecross.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.example.tomizzje.garagecross.activities.DoneExerciseListActivity;
-import com.example.tomizzje.garagecross.activities.ExerciseListActivity;
-import com.example.tomizzje.garagecross.activities.ShareActivity;
-import com.example.tomizzje.garagecross.activities.TimerActivity;
 import com.example.tomizzje.garagecross.application.BaseApplication;
 import com.example.tomizzje.garagecross.events.MessageEvent;
-import com.example.tomizzje.garagecross.models.DoneExercise;
 import com.example.tomizzje.garagecross.R;
-import com.example.tomizzje.garagecross.models.Exercise;
+import com.example.tomizzje.garagecross.models.FirebaseLogin;
 import com.example.tomizzje.garagecross.models.FirebaseServer;
-import com.example.tomizzje.garagecross.models.Share;
-import com.google.firebase.database.ChildEventListener;
+import com.example.tomizzje.garagecross.entities.Share;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -65,8 +57,6 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
 
     public class ShareViewHolder extends RecyclerView.ViewHolder {
 
-
-
         @BindView(R.id.imgShare)
         ImageView imgShare;
 
@@ -88,6 +78,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         @Inject
         FirebaseServer firebaseServer;
 
+
         public ShareViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -95,7 +86,8 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         }
 
         public void bind(final Share share) {
-            tvUser.setText(share.getDoneExercise().getUser().getName());
+            String nameText = share.getDoneExercise().getUser().getName() + " -";
+            tvUser.setText(nameText);
             tvDoneExerciseTitle.setText(share.getDoneExercise().getTitle());
             tvElapsedTime.setText(share.getDoneExercise().getTimeElapsed());
             tvComment.setText(share.getComment());
@@ -103,8 +95,11 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Toast.makeText(view.getContext(), "Megosztás törölve",
+                            Toast.LENGTH_LONG).show();
                     firebaseServer.deleteShare(share, "shares");
-                    EventBus.getDefault().post(new MessageEvent());
+
+                    Log.d("SHARES", "HEYHOKA");
 
                 }
             });

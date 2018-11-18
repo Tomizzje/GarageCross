@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_standard"
         android:layout_marginTop="@dimen/margin_standard"
-        android:hint="@string/title_hint"
+        android:hint="@string/insert_exercise_title_hint"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +24,9 @@
         android:layout_marginEnd="@dimen/margin_standard"
         android:layout_marginStart="@dimen/margin_standard"
         android:layout_marginTop="92dp"
-        android:hint="@string/desc_hint"
+        android:inputType="text"
+        android:maxLines="6"
+        android:hint="@string/insert_exercise_description_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

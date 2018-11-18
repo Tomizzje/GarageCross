@@ -27,7 +27,6 @@ public class FirebaseLogin {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 if(firebaseAuth.getCurrentUser() == null) {
-                    Log.d("HEYHOLOG", "2");
                     signIn(caller);
                 }
             }
@@ -43,11 +42,9 @@ public class FirebaseLogin {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
-                        //.setIsSmartLockEnabled(false)
+                        .setIsSmartLockEnabled(false)
                         .build(),
                 RC_SIGN_IN);
-        Log.d("HEYHOLOGIN", "heyho");
-
     }
 
 

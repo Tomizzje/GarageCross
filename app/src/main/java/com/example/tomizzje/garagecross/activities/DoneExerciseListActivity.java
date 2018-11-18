@@ -4,11 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.adapters.DoneExerciseAdapter;
-import com.example.tomizzje.garagecross.models.DoneExercise;
+import com.example.tomizzje.garagecross.entities.DoneExercise;
 import com.example.tomizzje.garagecross.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,11 +23,17 @@ import butterknife.ButterKnife;
 
 public class DoneExerciseListActivity extends MenuBaseActivity{
 
-    @BindView(R.id.tvListTitle) TextView tvExerciseListTitle;
+    @BindView(R.id.tvListTitle)
+    TextView tvExerciseListTitle;
 
-    @BindView(R.id.rvItems) RecyclerView rvExercises;
+    @BindView(R.id.rvItems)
+    RecyclerView rvExercises;
 
-    @BindString(R.string.done_exercise_list_title) String title;
+    @BindView(R.id.tvInfo)
+    TextView tvInfo;
+
+    @BindString(R.string.done_exercise_list_title)
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +52,6 @@ public class DoneExerciseListActivity extends MenuBaseActivity{
         super.onResume();
         tvExerciseListTitle.setText(title);
         initDoneExerciseList();
-
-
     }
 
     private void initDoneExerciseList() {
@@ -61,6 +65,11 @@ public class DoneExerciseListActivity extends MenuBaseActivity{
                         if(currentUser.equals(snapshot.getValue(DoneExercise.class).getUser().getUser_id())) {
                             doneExercises.add(snapshot.getValue(DoneExercise.class));
                         }
+                    }
+
+                    tvInfo.setVisibility(View.GONE);
+                    if(doneExercises.isEmpty()){
+                        tvInfo.setVisibility(View.VISIBLE);
                     }
                     initAdapter(doneExercises);
                 }

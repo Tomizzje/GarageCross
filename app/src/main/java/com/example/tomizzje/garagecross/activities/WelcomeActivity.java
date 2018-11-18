@@ -8,12 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
-import com.example.tomizzje.garagecross.models.Exercise;
-import com.example.tomizzje.garagecross.models.User;
+import com.example.tomizzje.garagecross.enums.Difficulty;
+import com.example.tomizzje.garagecross.entities.Exercise;
+import com.example.tomizzje.garagecross.entities.User;
 import com.example.tomizzje.garagecross.utils.ExerciseUtils;
-import com.example.tomizzje.garagecross.utils.UserUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -48,23 +49,27 @@ public class WelcomeActivity extends MenuBaseActivity{
     protected void onResume() {
         super.onResume();
 
-        firebaseLogin.detachListener();
-        firebaseLogin.checkLogin(this);
-        firebaseLogin.attachListener();
+        /*if(isConnectingToInternet()){
+            firebaseLogin.detachListener();
+            firebaseLogin.checkLogin(this);
+            firebaseLogin.attachListener();
+        }*/
+
 
         if(firebaseLogin.isSignedIn()) {
             initProgressBar();
             String email = firebaseLogin.getEmail();
             String name = firebaseLogin.getName();
-            String id = firebaseLogin.getCurrentUser();
+            String userId = firebaseLogin.getCurrentUser();
 
-            String welcome = "Üdvözöllek " + name + "!";
-            tvWelcome.setText(welcome);
 
-            this.user = new User(id, email, name, 0, "defaultId");
+
+
+            this.user = new User(userId, email, name);
             initFindUser();
             initButtonGoodDay();
         }
+
     }
 
     private void initFindUser() {
@@ -88,9 +93,12 @@ public class WelcomeActivity extends MenuBaseActivity{
                         firebaseServer.insertEntity(user, "users");
                     }
 
-                    String level = UserUtils.getLevelByExperience(user.getExperience());
-                    String msg = "A jelenlegi szinted:" + level + " " + user.getExperience() +  " pont";
-                    tvLevel.setText(msg);
+                    String welcomeMsg = "Üdvözöllek \n " + user.getName();
+                    tvWelcome.setText(welcomeMsg);
+
+                    String levelMsg = "A jelenlegi szinted : \n" +  Difficulty.getDifficultyLevelByExperience(user.getExperience()) + ", " + user.getExperience() + " ponttal";
+
+                    tvLevel.setText(levelMsg);
                     pgsBar.setProgress(user.getExperience());
                 }
             }

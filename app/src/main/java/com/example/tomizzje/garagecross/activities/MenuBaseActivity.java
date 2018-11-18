@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
 import com.firebase.ui.auth.AuthUI;
@@ -18,13 +19,14 @@ public abstract class MenuBaseActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_activity_menu, menu);
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.exercise_menu:
+            case R.id.all_exercise_menu:
                 Intent intentToExerciseList = new Intent(this, ExerciseListActivity.class);
                 startActivity(intentToExerciseList);
                 return true;
@@ -33,21 +35,24 @@ public abstract class MenuBaseActivity extends BaseActivity {
                 startActivity(intentToWelcome);
                 return true;
             case R.id.logout_menu:
-                AuthUI.getInstance()
-                        .signOut(this)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            public void onComplete(@NonNull Task<Void> task) {
-                                getBackToWelcome();
-                                Log.d("HEYHOKA", "User logged out");
-                                //firebaseLogin.attachListener();
-                                //Log.d("HEYHOKA", "User attachedlistener out");
-                            }
-                        });
-                firebaseLogin.detachListener();
-                Log.d("HEYHOKA", "User detachedlistener out");
+                if(isConnectingToInternet()){
+                    AuthUI.getInstance()
+                            .signOut(this)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    getBackToIndex();
+                                    Log.d("HEYHOKA", "User logged out");
+                                    //firebaseLogin.attachListener();
 
+                                }
+                            });
+                    firebaseLogin.detachListener();
 
-
+                    Log.d("HEYHOKA", "ide belép?");
+                }else {
+                    Toast.makeText(this, "nem tudsz kijelentkezni internet, az adatok nem frissültek", Toast.LENGTH_LONG).show();
+                    Log.d("HEYHOKA", "User detachedlistener out");
+                }
                 return true;
             case R.id.doneExercise_menu:
                 Intent intentToDoneExercise = new Intent(this, DoneExerciseListActivity.class);
@@ -58,14 +63,14 @@ public abstract class MenuBaseActivity extends BaseActivity {
                 Intent intentToDiary = new Intent(this, WeightLiftingDiaryActivity.class);
                 startActivity(intentToDiary);
                 return true;
-            case R.id.users_menu:
+            /*case R.id.users_menu:
                 Intent intentToUsers = new Intent(this, UserListActivity.class);
                 startActivity(intentToUsers);
-                return true;
-            case R.id.insert_menu:
+                return true;*/
+           /* case R.id.insert_menu:
                 Intent intentToInsertExercise = new Intent(this, InsertExerciseActivity.class);
                 startActivity(intentToInsertExercise);
-                return true;
+                return true;*/
             case R.id.personalExercise_menu:
                 Intent intentToPersonalExercise = new Intent(this, PersonalExerciseListActivty.class);
                 startActivity(intentToPersonalExercise);
@@ -90,7 +95,7 @@ public abstract class MenuBaseActivity extends BaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void getBackToWelcome(){
+    private void getBackToIndex(){
         Intent intentToWelcomeBack = new Intent(this, WelcomeActivity.class);
         startActivity(intentToWelcomeBack);
     }

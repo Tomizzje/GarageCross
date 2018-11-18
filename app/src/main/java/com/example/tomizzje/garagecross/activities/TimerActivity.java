@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.RatingBar;
@@ -16,18 +17,16 @@ import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.adapters.ImageAdapter;
 import com.example.tomizzje.garagecross.enums.Difficulty;
-import com.example.tomizzje.garagecross.models.Exercise;
-import com.example.tomizzje.garagecross.models.DoneExercise;
+import com.example.tomizzje.garagecross.entities.Exercise;
+import com.example.tomizzje.garagecross.entities.DoneExercise;
 import com.example.tomizzje.garagecross.R;
-import com.example.tomizzje.garagecross.models.User;
+import com.example.tomizzje.garagecross.entities.User;
 import com.example.tomizzje.garagecross.utils.ExerciseUtils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,6 +53,7 @@ public class TimerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
         ButterKnife.bind(this);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
@@ -191,7 +191,7 @@ public class TimerActivity extends BaseActivity {
         // TODO
 
         //doneExercise = new DoneExercise(title, description, elapsedTime, currentTime, currentUser);
-        DoneExercise doneExercise = new DoneExercise("default", title, elapsedTime, currentTime, user);
+        DoneExercise doneExercise = new DoneExercise(title, elapsedTime, currentTime, user);
         firebaseServer.insertEntity(doneExercise, "doneExercises");
 
 

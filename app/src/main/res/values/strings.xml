@@ -1,16 +1,37 @@
 <resources>
 
     <string name="app_name">GarageCross</string>
-    <string name="title_hint">Feladat neve</string>
-    <string name="desc_hint">Feladat leírása</string>
-    <string name="save_menu">save</string>
-    <string name="delete_menu">Delete Exercise</string>
+
+
+    <string name="insert_exercise_title_hint">Feladat neve</string>
+    <string name="insert_exercise_description_hint">Feladat leírása</string>
+    <string name="hint_food_name">Étel megadása</string>
+
+
     <string name="exercise_list_title">Feladatsorok</string>
     <string name="done_exercise_list_title">Elvégzett Feladatsorok</string>
     <string name="user_list_title">Felhasználók</string>
-    <string name="add_button_title">Új hozzáadása</string>
-    <string name="buttonShare">Share</string>
     <string name="share_list_title">Megosztások</string>
+    <string name="food_list_title">Táplálkozás</string>
+    <string name="personal_exercise_list_title">Saját feladatsorok</string>
+
+
+    <string name="personal_exercise_no_data">Még nem hoztál létre saját feladatsort</string>
+    <string name="share_list_no_data">Veled még nem osztottak meg eredményt</string>
+
+
+
+    <string name="btnShare">Share</string>
+    <string name="btnGoodDay">Jó napom van!</string>
+    <string name="btnDelete">Törlés</string>
+    <string name="btnSave">Mentés</string>
+
+
+    <string name="add_button_title">Új hozzáadása</string>
+
+
+    <string name="welcome_menu">Kezdőlap</string>
+    <string name="all_exercise_menu">Összes feladat</string>
 
 
 </resources>

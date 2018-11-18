@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.activities.InsertExerciseActivity;
-import com.example.tomizzje.garagecross.enums.Difficulty;
-import com.example.tomizzje.garagecross.models.Exercise;
+import com.example.tomizzje.garagecross.entities.Exercise;
 import com.example.tomizzje.garagecross.R;
+import com.example.tomizzje.garagecross.enums.Difficulty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,10 +51,14 @@ public class PersonalExerciseAdapter extends RecyclerView.Adapter<PersonalExerci
     public class PersonalExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         //TODO
-        @BindView(R.id.tvTitle) TextView tvTitle;
-        @BindView(R.id.tvDescription) TextView tvDescription;
-        @BindView(R.id.tvRate) TextView tvRate;
-        @BindView(R.id.tvDifficulty) TextView tvDifficulty;
+        @BindView(R.id.tvTitle)
+        TextView tvTitle;
+
+        @BindView(R.id.tvRate)
+        TextView tvRate;
+
+        @BindView(R.id.tvDifficulty)
+        TextView tvDifficulty;
 
         public PersonalExerciseViewHolder(View itemView) {
             super(itemView);
@@ -65,11 +69,9 @@ public class PersonalExerciseAdapter extends RecyclerView.Adapter<PersonalExerci
         public void bind(Exercise personalExercise) {
             //todo
             tvTitle.setText(personalExercise.getTitle());
-            tvDescription.setText(personalExercise.getDescription());
-            tvRate.setText(String.valueOf(personalExercise.getPopularity()));
-
-            //tvDifficulty.setText(Difficulty.getDifficultyString(personalExercise.getDifficulty()));
-            tvDifficulty.setText("kezdő");
+            String rateText = String.valueOf(personalExercise.getPopularity()) + "/5";
+            tvRate.setText(rateText);
+            tvDifficulty.setText(Difficulty.getDifficultyByName(personalExercise.getDifficulty()).toString());
         }
 
         @Override

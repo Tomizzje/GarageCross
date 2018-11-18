@@ -5,10 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.adapters.ExerciseAdapter;
-import com.example.tomizzje.garagecross.models.Exercise;
+import com.example.tomizzje.garagecross.entities.Exercise;
 import com.example.tomizzje.garagecross.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +26,9 @@ public class FavoriteExerciseListActivity extends MenuBaseActivity implements Va
     @BindView(R.id.rvItems) RecyclerView rvExercises;
 
     @BindView(R.id.tvListTitle) TextView tvExerciseListTitle;
+
+    @BindView(R.id.tvInfo)
+    TextView tvInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +61,8 @@ public class FavoriteExerciseListActivity extends MenuBaseActivity implements Va
 
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        if(dataSnapshot.exists()) {
 
+        if(dataSnapshot.exists()) {
             List<Exercise> exercises = new ArrayList<>();
             for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                 if(snapshot.getValue(Exercise.class).getFavoritedUsers() != null && snapshot.getValue(Exercise.class).getFavoritedUsers().containsKey(firebaseLogin.getCurrentUser())){
@@ -66,9 +70,11 @@ public class FavoriteExerciseListActivity extends MenuBaseActivity implements Va
                 }
             }
 
-            for(Exercise e: exercises) {
-                Log.d("Exercises:", e.toString());
+            tvInfo.setVisibility(View.GONE);
+            if(exercises.isEmpty()){
+                tvInfo.setVisibility(View.VISIBLE);
             }
+
             initAdapter(exercises);
         }
     }

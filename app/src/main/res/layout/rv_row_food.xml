@@ -7,7 +7,6 @@
     android:focusableInTouchMode="true"
     android:focusable="true"
     android:descendantFocusability="blocksDescendants"
-
     >
 
 
@@ -16,11 +15,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_small"
         android:layout_marginEnd="8dp"
         android:gravity="center"
-        android:text="FOOD"
-        android:textSize="32sp"
+        tools:text="FOOD"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

@@ -5,24 +5,17 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.R;
-import com.example.tomizzje.garagecross.adapters.DoneExerciseAdapter;
 import com.example.tomizzje.garagecross.adapters.ShareAdapter;
-import com.example.tomizzje.garagecross.events.MessageEvent;
-import com.example.tomizzje.garagecross.models.DoneExercise;
-import com.example.tomizzje.garagecross.models.Share;
+import com.example.tomizzje.garagecross.entities.Share;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -35,7 +28,14 @@ public class ShareListActivity extends MenuBaseActivity {
     @BindView(R.id.rvItems)
     RecyclerView rvItems;
 
-    @BindString(R.string.share_list_title) String title;
+    @BindView(R.id.tvInfo)
+    TextView tvInfo;
+
+    @BindString(R.string.share_list_title)
+    String title;
+
+    @BindString(R.string.share_list_no_data)
+    String tvInfoLabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,27 +53,10 @@ public class ShareListActivity extends MenuBaseActivity {
     protected void onResume() {
         super.onResume();
         tvListTitle.setText(title);
+        tvInfo.setText(tvInfoLabel);
         initDoneExerciseList();
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        //EventBus.getDefault().register(this);
     }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        //EventBus.getDefault().unregister(this);
-    }
-
-/*    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(MessageEvent event) {
-        //TODO
-        Log.d("EVENTBUS2", "heyho");
-        //initDoneExerciseList();
-    }*/
 
     private void initDoneExerciseList() {
         ValueEventListener valueEventListener = new ValueEventListener() {
@@ -87,6 +70,10 @@ public class ShareListActivity extends MenuBaseActivity {
                             shares.add(snapshot.getValue(Share.class));
                         }
                     }
+                    tvInfo.setVisibility(View.GONE);
+                    if(shares.isEmpty()){
+                        tvInfo.setVisibility(View.VISIBLE);
+                    }
                     initAdapter(shares);
                 }
             }
@@ -97,6 +84,7 @@ public class ShareListActivity extends MenuBaseActivity {
             }
         };
         firebaseServer.findAll(valueEventListener, "shares");
+
     }
 
     private void initAdapter(ArrayList<Share> shares) {
@@ -106,5 +94,4 @@ public class ShareListActivity extends MenuBaseActivity {
         LinearLayoutManager shareLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvItems.setLayoutManager(shareLayoutManager);
     }
-
 }

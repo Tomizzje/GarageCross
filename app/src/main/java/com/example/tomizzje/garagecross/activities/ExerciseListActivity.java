@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.ExerciseAdapter;
-import com.example.tomizzje.garagecross.models.Exercise;
+import com.example.tomizzje.garagecross.entities.Exercise;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -28,6 +30,7 @@ public class ExerciseListActivity extends MenuBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
+
     }
 
     @Override
@@ -38,7 +41,9 @@ public class ExerciseListActivity extends MenuBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
         initExerciseList();
+
 
     }
 
@@ -54,8 +59,15 @@ public class ExerciseListActivity extends MenuBaseActivity {
 
                     }
                     Collections.reverse(exercises);
+
+                    for(Exercise e : exercises){
+                        Log.d("PROBALISTENER", e.toString());
+                    }
+
                     initAdapter(exercises);
                 }
+
+
             }
 
             @Override

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -23,6 +24,9 @@ public class NutritionActivity extends MenuBaseActivity {
 
     @BindView(R.id.rvFood)
     RecyclerView rvFood;
+
+    @BindString(R.string.food_list_title)
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +43,7 @@ public class NutritionActivity extends MenuBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        String title = "Táplálkozás";
         tvTitle.setText(title);
-
         List<FoodGroup> foodGroups = new ArrayList<>(Arrays.asList(FoodGroup.values()));
         initAdapter(foodGroups);
     }

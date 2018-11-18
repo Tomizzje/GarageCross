@@ -14,7 +14,8 @@ import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.activities.TimerActivity;
 import com.example.tomizzje.garagecross.application.BaseApplication;
-import com.example.tomizzje.garagecross.models.Exercise;
+import com.example.tomizzje.garagecross.entities.Exercise;
+import com.example.tomizzje.garagecross.enums.Difficulty;
 import com.example.tomizzje.garagecross.models.FirebaseLogin;
 import com.example.tomizzje.garagecross.models.FirebaseServer;
 import com.example.tomizzje.garagecross.R;
@@ -55,8 +56,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     public void onBindViewHolder(@NonNull ExerciseViewHolder exerciseViewHolder, int i) {
         Exercise exercise = exercises.get(i);
         exerciseViewHolder.bind(exercise);
-        //notifyDataSetChanged(); // itt elszáll ha ezt berakom
-
     }
 
     @Override
@@ -76,10 +75,17 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
 
     public class ExerciseViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tvTitle) TextView tvTitle;
-        //@BindView(R.id.tvDescription) TextView tvDescription;
-        @BindView(R.id.imgButton) ImageButton imageButton;
-        @BindView(R.id.tvRate) TextView tvRate;
+        @BindView(R.id.tvTitle)
+        TextView tvTitle;
+
+        @BindView(R.id.imgBtnStar)
+        ImageButton imageButton;
+
+        @BindView(R.id.tvRate)
+        TextView tvRate;
+
+        @BindView(R.id.tvDifficulty)
+        TextView tvDifficulty;
 
         @Inject
         FirebaseServer firebaseServer;
@@ -96,12 +102,14 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
 
         public void bind(final Exercise exercise) {
             tvTitle.setText(exercise.getTitle());
-            //tvDescription.setText(exercise.getDescription());
+            tvDifficulty.setText(Difficulty.getDifficultyByName(exercise.getDifficulty()).toString());
+
 
             if(exercise.getRatedUsers() == null) {
                 tvRate.setText("N/A");
             } else {
-                tvRate.setText(String.valueOf(ExerciseUtils.getRate(exercise))+ "/5.0");
+                String rate = String.valueOf(ExerciseUtils.getRate(exercise))+ "/5";
+                tvRate.setText(rate);
             }
 
             if(exercise.getFavoritedUsers() == null || !exercise.getFavoritedUsers().containsKey(firebaseLogin.getCurrentUser())){

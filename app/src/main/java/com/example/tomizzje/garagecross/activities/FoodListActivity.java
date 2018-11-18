@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.FoodAdapter;
 import com.example.tomizzje.garagecross.enums.FoodGroup;
-import com.example.tomizzje.garagecross.models.Food;
+import com.example.tomizzje.garagecross.entities.Food;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -45,6 +45,8 @@ public class FoodListActivity extends MenuBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_list);
         ButterKnife.bind(this);
+
+        btnAdd.setVisibility(View.GONE);
     }
 
     @Override
@@ -55,7 +57,6 @@ public class FoodListActivity extends MenuBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        btnAdd.setVisibility(View.GONE);
 
 
 
@@ -63,10 +64,13 @@ public class FoodListActivity extends MenuBaseActivity {
         FoodGroup foodGroup = (FoodGroup) intent.getSerializableExtra("FoodGroup");
         if(foodGroup != null){
             this.foodGroup = foodGroup;
-            tvTitle.setText(foodGroup.getUserFriendlyString());
+            tvTitle.setText(foodGroup.toString());
             initAdministrator();
-
-
+            initFood();
+        }
+       if(isAdmin){
+           initAddButton();
+           btnAdd.setVisibility(View.VISIBLE);
         }
 
     }
@@ -76,7 +80,9 @@ public class FoodListActivity extends MenuBaseActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String foodGroupType = tvTitle.getText().toString();
                 Intent intent = new Intent(FoodListActivity.this, InsertFoodActivity.class);
+                intent.putExtra("FoodGroup", foodGroupType);
                 startActivity(intent);
             }
         });
@@ -90,8 +96,11 @@ public class FoodListActivity extends MenuBaseActivity {
                 if(dataSnapshot.exists()){
                     List<Food> food = new ArrayList<>();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        if(foodGroup != null && foodGroup.toString().equals(snapshot.getValue(Food.class).getFoodGroups()))
-                        food.add(snapshot.getValue(Food.class));
+                        //todo
+
+                        if(foodGroup != null && foodGroup.name().equals(snapshot.getValue(Food.class).getFoodGroups())){
+                            food.add(snapshot.getValue(Food.class));
+                        }
                     }
                     initAdapter(food, isAdmin);
                 }
@@ -102,7 +111,6 @@ public class FoodListActivity extends MenuBaseActivity {
 
             }
         };
-
         firebaseServer.findAll(valueEventListener, "food");
 
     }
@@ -114,14 +122,15 @@ public class FoodListActivity extends MenuBaseActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        Log.d("DATABASESNAPSHOT",  snapshot.getKey());
                         if(snapshot.getKey().equals(firebaseLogin.getCurrentUser())){
-
-                            initAddButton();
                             btnAdd.setVisibility(View.VISIBLE);
                             isAdmin = true;
+                            initAddButton();
                         }
                     }
                 }
+
 
             }
 
@@ -131,14 +140,13 @@ public class FoodListActivity extends MenuBaseActivity {
             }
         };
         firebaseServer.findAll(valueEventListener,"administrators");
-        initFood();
+
     }
 
 
 
     //todo
     private void initAdapter(List<Food> food, boolean isAdmin) {
-        Log.d("HEYHO3", String.valueOf(isAdmin));
         final FoodAdapter adapter = new FoodAdapter(food, isAdmin);
         rvFood.setAdapter(adapter);
         LinearLayoutManager doneExercisesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

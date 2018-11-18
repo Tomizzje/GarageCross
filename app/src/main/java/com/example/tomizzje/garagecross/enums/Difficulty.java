@@ -57,4 +57,16 @@ public enum Difficulty {
         }
         return result;
     }
+
+    public static String getDifficultyLevelByExperience(int experience) {
+       if(experience < 50){
+           return Difficulty.BEGINNER.toString();
+       } else if( experience < 100) {
+           return Difficulty.INTERMEDIATE.toString();
+       } else if(experience < 200){
+           return Difficulty.ADVANCED.toString();
+       } else {
+           return Difficulty.PROFESSIONAL.toString();
+       }
+    }
 }

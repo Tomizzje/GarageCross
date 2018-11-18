@@ -1,6 +1,6 @@
 package com.example.tomizzje.garagecross.utils;
 
-import com.example.tomizzje.garagecross.models.Exercise;
+import com.example.tomizzje.garagecross.entities.Exercise;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -31,30 +31,4 @@ public class ExerciseUtils {
         return exercises.get(random.nextInt(exercises.size()));
     }
 
-
-    /*public static String getDifficultyResult(int number) {
-        switch(number){
-            case 0:
-                return "könnyű";
-            case 1:
-                return "középhaladó";
-            case 2:
-                return "haladó";
-            default:
-                return "profi";
-        }
-    }
-
-    public static int getDifficultyNumber(String difficulty) {
-        switch(difficulty) {
-            case "könnyű":
-                return 1;
-            case "középhaladó":
-                return 2;
-            case "haladó":
-                return 4;
-            default:
-                return 10;
-        }
-    }*/
 }

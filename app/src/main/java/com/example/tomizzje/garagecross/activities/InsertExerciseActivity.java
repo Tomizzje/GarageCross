@@ -12,14 +12,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.ImageAdapter;
 import com.example.tomizzje.garagecross.enums.Difficulty;
-import com.example.tomizzje.garagecross.models.Exercise;
+import com.example.tomizzje.garagecross.entities.Exercise;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -89,7 +88,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         spnDifficulty.setOnItemSelectedListener(itemClickListener);
 
 
-        ArrayAdapter aa = new ArrayAdapter(getApplicationContext(),R.layout.support_simple_spinner_dropdown_item, difficulties);
+        ArrayAdapter aa = new ArrayAdapter(getApplicationContext(),R.layout.spinner_item, difficulties);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnDifficulty.setAdapter(aa);
     }
@@ -161,9 +160,6 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             public void onClick(View view) {
                 title = txtTitle.getText().toString();
                 description = txtDesc.getText().toString();
-
-
-
                 Intent intent = new Intent();
                 intent.setType("image/jpeg");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -197,7 +193,8 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             public void onClick(View view) {
                 //TODO
                 if(toModify) {
-                    firebaseServer.deleteExercise("exercises", exercise.getPushId());
+                    Log.d("TAMAS", exercise.getPushId());
+                    firebaseServer.deleteEntity(exercise, "exercises");
                     Toast.makeText(view.getContext(), "Exercise DELETED!",
                             Toast.LENGTH_LONG).show();
                     backToList();

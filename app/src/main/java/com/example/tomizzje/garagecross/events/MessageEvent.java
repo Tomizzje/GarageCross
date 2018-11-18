@@ -1,6 +1,6 @@
 package com.example.tomizzje.garagecross.events;
 
-import com.example.tomizzje.garagecross.models.User;
+import com.example.tomizzje.garagecross.entities.User;
 
 public class MessageEvent {
 

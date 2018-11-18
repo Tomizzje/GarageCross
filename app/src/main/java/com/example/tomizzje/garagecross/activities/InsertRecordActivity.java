@@ -13,7 +13,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.tomizzje.garagecross.models.Record;
+import com.example.tomizzje.garagecross.entities.Record;
 import com.example.tomizzje.garagecross.R;
 
 import java.util.Calendar;
@@ -98,7 +98,7 @@ public class InsertRecordActivity extends BaseActivity {
                     String currentUser = firebaseLogin.getCurrentUser();
                     String date = tvDate.getText().toString();
                     String description = etDescription.getText().toString();
-                    Record saveRecord = new Record(currentUser,date,description, "defaultId");
+                    Record saveRecord = new Record(currentUser,date,description);
                     if(toModify){
                         saveRecord.setPushId(record.getPushId());
                         firebaseServer.updateRecord(saveRecord, "records");

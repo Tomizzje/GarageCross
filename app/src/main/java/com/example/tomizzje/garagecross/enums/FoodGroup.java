@@ -3,81 +3,52 @@ package com.example.tomizzje.garagecross.enums;
 import android.util.Log;
 
 public enum FoodGroup {
-    HÚSOK_VEGETÁRIÁNUSOK(0){
-        @Override
-        public String getUserFriendlyString(){
-            return "Húsok és vegetáriánusok";
-        }
-    }, LEVÉLZÖLDSÉGEK(1){
-        @Override
-        public String getUserFriendlyString(){
-            return "Levélzöldségek";
-        }
-    }, KEMÉNYÍTŐ_TARTALMÚ_ZÖLDSÉGEK(2){
-        @Override
-        public String getUserFriendlyString(){
-            return "Keményítő tartalmú zöldségek";
-        }
-    },GABONAFÉLÉK(3){
-        @Override
-        public String getUserFriendlyString(){
-            return "Gabonafélék";
-        }
-    },GYÜMÖLCSÖK(4){
-        @Override
-        public String getUserFriendlyString(){
-            return "Gyümölcsök";
-        }
-    },OLAJOK(5){
-        @Override
-        public String getUserFriendlyString(){
-            return "Olajok";
-        }
-    },TEJTERMÉKEK(6){
-        @Override
-        public String getUserFriendlyString(){
-            return "Tejtermékek";
-        }
-    },MAGVAK_ÉS_DIÓFÉLÉK(7){
-        @Override
-        public String getUserFriendlyString(){
-            return "Magvak és diófélék";
-        }
-    },HÜVELYESEK(8){
-        @Override
-        public String getUserFriendlyString(){
-            return "Hüvelyesek";
-        }
-    };
+    MEATS_AND_VEGETARIANS("Húsok és vegetáriánusok"),
+    GREEN_VEGGIES("Levélzöldségek"),
+    STARCHY_VEGGIES("Keményítő tartalmú zöldségek"),
+    GRAINS("Gabonafélék"),
+    FRUITS("Gyümölcsök"),
+    OILS("Olajok"),
+    DAIRY("Tejtermékek"),
+    NUTS_SEEDS("Magvak és diófélék"),
+    LEGUMES("Hüvelyesek");
 
-    private final int code;
+    private final String userFriendlyString;
 
-    private FoodGroup(int code) {
-        this.code = code;
+    FoodGroup(String userFriendlyString) {
+        this.userFriendlyString = userFriendlyString;
     }
 
-    public int getCode() {
-        return this.code;
+    @Override
+    public String toString(){
+        return userFriendlyString;
     }
 
-    public static FoodGroup getFoodGroups(int code){
+
+    public static FoodGroup getFoodGroupByString(String userFriendlyString){
         for(FoodGroup f : FoodGroup.values()){
-            if(f.code == code){
+            if(f.userFriendlyString.equals(userFriendlyString)){
                 return f;
             }
         }
-        return null;
+        return MEATS_AND_VEGETARIANS;
     }
 
-    public static int getFoodGroupsCode(String name){
-        FoodGroup[] temp = FoodGroup.values();
-        for(int i=0;i<temp.length;++i){
-            if(temp[i].toString().equals(name)){
-                return i;
+    public static FoodGroup getFoodGroupByName(String name){
+        for(FoodGroup f : FoodGroup.values()){
+            if(f.name().equals(name)){
+                return f;
             }
         }
-        return -1;
+        return MEATS_AND_VEGETARIANS;
     }
 
-    public abstract String getUserFriendlyString();
+    public static String[] getFoodGroupValuesString(){
+        FoodGroup[] temp = FoodGroup.values();
+        String[] result = new String[temp.length];
+        for(int i=0;i<temp.length;++i){
+            result[i] = temp[i].toString();
+        }
+        return result;
+    }
 }

@@ -70,18 +70,11 @@
 
         </activity>
 
-        <activity android:name=".activities.ShareActivity">
+        <activity android:name=".activities.InsertShareActivity">
         </activity>
 
         <activity android:name=".activities.ShareListActivity">
         </activity>
-
-
-
-
-
-
-
 
     </application>
 

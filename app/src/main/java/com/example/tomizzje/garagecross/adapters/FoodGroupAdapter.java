@@ -59,14 +59,13 @@ public class FoodGroupAdapter extends RecyclerView.Adapter<FoodGroupAdapter.Food
 
         public void bind(final FoodGroup temp) {
             if(temp !=null) {
-                tvFood.setText(temp.getUserFriendlyString());
+                tvFood.setText(temp.toString());
             }
 
             tvFood.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     int position = getAdapterPosition();
-                    Log.d("HEYHO", String.valueOf(position) + " " + temp.toString());
                     FoodGroup selectedFoodGroup = list.get(position);
                     Intent intent = new Intent(view.getContext(), FoodListActivity.class);
                     intent.putExtra("FoodGroup", selectedFoodGroup);

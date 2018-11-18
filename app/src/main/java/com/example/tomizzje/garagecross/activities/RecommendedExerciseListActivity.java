@@ -8,9 +8,9 @@ import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.ExerciseAdapter;
-import com.example.tomizzje.garagecross.models.Exercise;
-import com.example.tomizzje.garagecross.models.User;
-import com.example.tomizzje.garagecross.utils.UserUtils;
+import com.example.tomizzje.garagecross.entities.Exercise;
+import com.example.tomizzje.garagecross.entities.User;
+import com.example.tomizzje.garagecross.enums.Difficulty;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -63,7 +63,7 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if(snapshot.getValue(User.class).getUser_id().equals(firebaseLogin.getCurrentUser())){
                             user = snapshot.getValue(User.class);
-                            String message = "A te szinted jelenleg: " + UserUtils.getLevelByExperience(user.getExperience());
+                            String message = "A te szinted jelenleg: " + Difficulty.getDifficultyLevelByExperience(user.getExperience());
                             tvLevel.setText(message);
                             initExercises();
                         }
@@ -97,7 +97,7 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
 
                     List<Exercise> exercises = new ArrayList<>();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        if(snapshot.getValue(Exercise.class).getDifficulty().equals(UserUtils.getLevelByExperience(user.getExperience()))){
+                        if(snapshot.getValue(Exercise.class).getDifficulty().equals(Difficulty.getDifficultyLevelByExperience(user.getExperience()))){
                         exercises.add(snapshot.getValue(Exercise.class));
                         }
                     }

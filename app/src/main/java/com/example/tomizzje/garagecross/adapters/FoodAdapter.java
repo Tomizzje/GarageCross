@@ -12,15 +12,22 @@ import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.activities.InsertFoodActivity;
-import com.example.tomizzje.garagecross.models.Food;
+import com.example.tomizzje.garagecross.application.BaseApplication;
+import com.example.tomizzje.garagecross.entities.Food;
+import com.example.tomizzje.garagecross.models.FirebaseServer;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> {
+public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> implements ValueEventListener {
 
     final ArrayList<Food> list;
 
@@ -51,13 +58,27 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         return list.size();
     }
 
+    @Override
+    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+    }
+
+    @Override
+    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+    }
+
     public class FoodViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tvFood) TextView tvFood;
 
+        @Inject
+        FirebaseServer firebaseServer;
+
         public FoodViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            BaseApplication.getInstance().getBaseComponent().inject(this);
         }
 
         public void bind(final Food temp) {

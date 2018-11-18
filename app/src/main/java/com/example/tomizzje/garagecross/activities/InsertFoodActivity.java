@@ -3,16 +3,18 @@ package com.example.tomizzje.garagecross.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.enums.FoodGroup;
-import com.example.tomizzje.garagecross.models.Food;
+import com.example.tomizzje.garagecross.entities.Food;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +23,8 @@ public class InsertFoodActivity extends BaseActivity {
 
     @BindView(R.id.tvTitle) TextView tvTitle;
 
-    @BindView(R.id.numberPicker) NumberPicker numberPicker;
+    @BindView(R.id.spnFoodGroup)
+    Spinner spnFoodGroup;
 
     @BindView(R.id.txtFood) EditText txtFood;
 
@@ -43,6 +46,7 @@ public class InsertFoodActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        initSpinner();
         initFood();
         initSave();
         initDelete();
@@ -51,9 +55,15 @@ public class InsertFoodActivity extends BaseActivity {
 
     private void initFood() {
 
-        setNumberPicker();
+
         Intent intent = getIntent();
         Food food = (Food) intent.getSerializableExtra("ModifyFood");
+        String foodGroupType = intent.getStringExtra("FoodGroup");
+        if(foodGroupType != null){
+            int position = getSpinTextPosition(foodGroupType);
+            spnFoodGroup.setSelection(position);
+        }
+
         if (food == null) {
             food = new Food();
             toModify = false;
@@ -62,8 +72,13 @@ public class InsertFoodActivity extends BaseActivity {
         } else {
             txtFood.setText(food.getName());
             txtFood.setSelection(food.getName().length());
-            numberPicker.setValue(FoodGroup.getFoodGroupsCode(food.getFoodGroups()));
+
             btnDelete.setText("Törlés");
+
+            String text = FoodGroup.getFoodGroupByName(food.getFoodGroups()).toString();
+            int position = getSpinTextPosition(text);
+            spnFoodGroup.setSelection(position);
+
             toModify = true;
         }
         this.food = food;
@@ -75,22 +90,53 @@ public class InsertFoodActivity extends BaseActivity {
             public void onClick(View view) {
                 if(txtFood.getText() !=null && txtFood.length() > 0) {
                     food.setName(txtFood.getText().toString());
-                    String result = FoodGroup.getFoodGroups(numberPicker.getValue()).toString();
-                    if(result != null){
-                        food.setFoodGroups(result);
+                    String foodGroup= FoodGroup.getFoodGroupByString(spnFoodGroup.getSelectedItem().toString()).name();
+                    if(foodGroup != null){
+                        food.setFoodGroups(foodGroup);
                     }
                     //TODO SAVE
                     if(toModify){
                         firebaseServer.modifyFood(food, "food");
                     }else{
                         firebaseServer.insertEntity(food, "food");
-                        Log.d("HEYHO", food.toString());
                     }
                     backToList();
                 }
             }
         });
     }
+
+
+    private void initSpinner() {
+        final String[] foodGroups = FoodGroup.getFoodGroupValuesString();
+        AdapterView.OnItemSelectedListener itemClickListener = new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(getApplicationContext(), foodGroups[i], Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //Toast.makeText(getApplicationContext(), difficulties[0], Toast.LENGTH_LONG).show();
+            }
+        };
+        spnFoodGroup.setOnItemSelectedListener(itemClickListener);
+
+
+        ArrayAdapter aa = new ArrayAdapter(getApplicationContext(),R.layout.spinner_item, foodGroups);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnFoodGroup.setAdapter(aa);
+    }
+
+    private int getSpinTextPosition(String text) {
+        for(int i=0;i<spnFoodGroup.getAdapter().getCount();++i){
+            if(spnFoodGroup.getAdapter().getItem(i).toString().equals(text)){
+                return i;
+            }
+        }
+        return 0;
+    }
+
 
     private void initDelete(){
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -112,16 +158,5 @@ public class InsertFoodActivity extends BaseActivity {
     }
 
 
-    private void setNumberPicker() {
-        FoodGroup[] foodGroups = FoodGroup.values();
-        String[] groups = new String[foodGroups.length];
-        for(int i=0;i<foodGroups.length;++i){
-            groups[i] = foodGroups[i].toString();
-        }
-        numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-        numberPicker.setDisplayedValues(groups);
-        numberPicker.setMaxValue(groups.length-1);
-        numberPicker.setMinValue(0);
-        numberPicker.setWrapSelectorWheel(false);
-    }
+
 }

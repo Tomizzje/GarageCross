@@ -14,10 +14,11 @@
         android:id="@+id/tvListTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_large"
+        android:layout_marginBottom="@dimen/margin_small"
         android:gravity="center"
         android:text="@string/exercise_list_title"
-        android:textSize="24dp"
+        android:textSize="@dimen/text_size_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -27,14 +28,30 @@
         android:id="@+id/rvItems"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:layout_marginStart="8dp"
-
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small"
         android:descendantFocusability="blocksDescendants"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent
+"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvListTitle" />
+
+    <TextView
+        android:id="@+id/tvInfo"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_small"
+        tools:text="Nincs elem a listában DATA"
+        android:textSize="@dimen/text_size_normal"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/margin_standard" />
+
+
+
 
 </android.support.constraint.ConstraintLayout>

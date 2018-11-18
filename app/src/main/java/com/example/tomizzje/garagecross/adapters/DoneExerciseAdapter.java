@@ -4,22 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.tomizzje.garagecross.activities.DoneExerciseListActivity;
-import com.example.tomizzje.garagecross.activities.ExerciseListActivity;
-import com.example.tomizzje.garagecross.activities.ShareActivity;
-import com.example.tomizzje.garagecross.activities.TimerActivity;
-import com.example.tomizzje.garagecross.models.DoneExercise;
+import com.example.tomizzje.garagecross.activities.InsertShareActivity;
+import com.example.tomizzje.garagecross.entities.DoneExercise;
 import com.example.tomizzje.garagecross.R;
-import com.example.tomizzje.garagecross.models.Exercise;
-import com.google.firebase.database.ChildEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,7 +78,7 @@ public class DoneExerciseAdapter extends RecyclerView.Adapter<DoneExerciseAdapte
 
                     int position = getAdapterPosition();
                     DoneExercise selectedExercise = doneExercises.get(position);
-                    Intent intent = new Intent(view.getContext(), ShareActivity.class);
+                    Intent intent = new Intent(view.getContext(), InsertShareActivity.class);
                     intent.putExtra("DoneExercise", selectedExercise);
                     view.getContext().startActivity(intent);
                 }

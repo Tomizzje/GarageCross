@@ -11,11 +11,8 @@ import android.widget.TextView;
 
 
 import com.example.tomizzje.garagecross.activities.InsertRecordActivity;
-import com.example.tomizzje.garagecross.models.Record;
+import com.example.tomizzje.garagecross.entities.Record;
 import com.example.tomizzje.garagecross.R;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;

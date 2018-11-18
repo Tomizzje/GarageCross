@@ -1,15 +1,25 @@
 package com.example.tomizzje.garagecross.models;
 
-import android.util.Log;
-
+import com.example.tomizzje.garagecross.entities.BaseEntity;
+import com.example.tomizzje.garagecross.entities.Exercise;
+import com.example.tomizzje.garagecross.entities.Food;
+import com.example.tomizzje.garagecross.entities.Record;
+import com.example.tomizzje.garagecross.entities.Share;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class FirebaseServer {
 
     private DatabaseReference databaseReference;
+
+    @Setter
+    @Getter
+    private boolean isAdmin = false;
 
     public FirebaseServer() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -17,7 +27,7 @@ public class FirebaseServer {
 
 
     public void findAll(ValueEventListener valueEventListener, String reference) {
-        databaseReference.child(reference).addListenerForSingleValueEvent(valueEventListener);
+        databaseReference.child(reference).addValueEventListener(valueEventListener);
    }
 
     public void findAllOrderBy(ValueEventListener valueEventListener, String reference) {
@@ -53,10 +63,6 @@ public class FirebaseServer {
         databaseReference.child(ref).child(id).removeValue();
     }
 
-
-
-
-
     public void deleteRecord(Record record, String ref) {
         databaseReference.child(ref).child(record.getPushId()).removeValue();
     }
@@ -75,22 +81,19 @@ public class FirebaseServer {
         databaseReference.child(ref).child(food.getPushId()).removeValue();
     }
 
-    public void deleteEntity(IBaseEntity entity, String ref){
+    public void deleteEntity(BaseEntity entity, String ref){
         databaseReference.child(ref).child(entity.getPushId()).removeValue();
     }
 
-    public void deleteShare(Share share,String ref){
-        Log.d("TAMAS", share.getPushId() +  " " + share.getRecipient());
+    public void deleteShare(Share share, String ref){
         databaseReference.child(ref).child(share.getPushId()).removeValue();
     }
 
-
-    public void insertEntity(IBaseEntity entity, String ref){
+    public void insertEntity(BaseEntity entity, String ref){
         String key = databaseReference.child(ref).push().getKey();
         if(key != null) {
             entity.setPushId(key);
             databaseReference.child(ref).child(key).setValue(entity);
         }
     }
-
 }
