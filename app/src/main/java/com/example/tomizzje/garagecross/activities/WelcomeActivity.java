@@ -22,19 +22,33 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
 public class WelcomeActivity extends MenuBaseActivity{
 
-    @BindView(R.id.tvWelcome) TextView tvWelcome;
+    @BindView(R.id.tvWelcome)
+    TextView tvWelcome;
 
-    @BindView(R.id.btnGoodDay) Button btnGoodDay;
+    @BindView(R.id.btnGoodDay)
+    Button btnGoodDay;
 
-    @BindView(R.id.tvLevel) TextView tvLevel;
+    @BindView(R.id.tvLevel)
+    TextView tvLevel;
 
-    @BindView(R.id.pgsBar) ProgressBar pgsBar;
+    @BindView(R.id.pgsBar)
+    ProgressBar pgsBar;
+
+    @BindString(R.string.database_reference_users)
+    String usersReference;
+
+    @BindString(R.string.database_reference_exercises)
+    String exercisesReference;
+
+    @BindString(R.string.intent_bundle_key_select_exercise)
+    String intentExerciseString;
 
     private User user;
 
@@ -49,21 +63,11 @@ public class WelcomeActivity extends MenuBaseActivity{
     protected void onResume() {
         super.onResume();
 
-        /*if(isConnectingToInternet()){
-            firebaseLogin.detachListener();
-            firebaseLogin.checkLogin(this);
-            firebaseLogin.attachListener();
-        }*/
-
-
         if(firebaseLogin.isSignedIn()) {
             initProgressBar();
             String email = firebaseLogin.getEmail();
             String name = firebaseLogin.getName();
             String userId = firebaseLogin.getCurrentUser();
-
-
-
 
             this.user = new User(userId, email, name);
             initFindUser();
@@ -90,7 +94,7 @@ public class WelcomeActivity extends MenuBaseActivity{
                         }
                     }
                     if(!gotIt) {
-                        firebaseServer.insertEntity(user, "users");
+                        firebaseServer.insertEntity(user, usersReference);
                     }
 
                     String welcomeMsg = "Üdvözöllek \n " + user.getName();
@@ -107,7 +111,7 @@ public class WelcomeActivity extends MenuBaseActivity{
 
             }
         };
-        firebaseServer.findAll(valueEventListener, "users");
+        firebaseServer.findAll(valueEventListener, usersReference);
     }
 
     @Override
@@ -136,7 +140,7 @@ public class WelcomeActivity extends MenuBaseActivity{
                             }
                             Exercise selectedExercise = ExerciseUtils.getRandomExercise(exercises);
                             Intent intent = new Intent(view.getContext(), TimerActivity.class);
-                            intent.putExtra("Exercise", selectedExercise);
+                            intent.putExtra(intentExerciseString, selectedExercise);
                             view.getContext().startActivity(intent);
                         }
                     }
@@ -146,7 +150,7 @@ public class WelcomeActivity extends MenuBaseActivity{
 
                     }
                 };
-                firebaseServer.findAll(valueEventListener, "exercises");
+                firebaseServer.findAll(valueEventListener, exercisesReference);
             }
         });
 

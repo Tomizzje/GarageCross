@@ -10,8 +10,8 @@
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_large"
-        android:textSize="32sp"
+        android:layout_marginTop="@dimen/margin_extra_large"
+        android:textSize="@dimen/text_size_title"
         android:gravity="center"
         android:text="Megosztás"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,12 +23,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_extra_large"
-        android:text="Choose a user..."
+        android:text="@string/insert_share_select_user_text"
         android:gravity="center"
-        android:textSize="24sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+    <TextView
+        android:id="@+id/tvDoneExerciseInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/insert_share_doneExercise_label"
+        android:textSize="@dimen/text_size_normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/margin_extra_large"
+        app:layout_constraintTop_toBottomOf="@+id/tvDialog" />
+
 
     <TextView
         android:id="@+id/tvDoneExercise"
@@ -36,20 +49,26 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         tools:text="Proba"
-        android:textSize="24sp"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="@dimen/margin_extra_large"
-        app:layout_constraintTop_toBottomOf="@+id/tvDialog" />
+        android:layout_marginTop="@dimen/margin_small"
+        app:layout_constraintTop_toBottomOf="@+id/tvDoneExerciseInfo" />
 
 
     <EditText
         android:id="@+id/etComment"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:lines="5"
+        android:padding="@dimen/margin_extra_small"
+        android:layout_marginStart="@dimen/margin_extra_large"
+        android:layout_marginEnd="@dimen/margin_extra_large"
+        android:lines="3"
+        android:background="@drawable/edit_text_border"
         android:inputType="textMultiLine"
+        tools:text="this is a comment"
+        android:gravity="center"
+        android:hint="@string/insert_share_comment_hint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvDoneExercise"

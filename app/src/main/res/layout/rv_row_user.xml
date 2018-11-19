@@ -9,38 +9,40 @@
 
     <ImageView
         android:id="@+id/imageUser"
-        android:layout_width="56dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="@dimen/margin_standard"
+        android:layout_marginTop="@dimen/margin_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher" />
+        app:srcCompat="@drawable/ic_baseline_person_24px" />
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="28dp"
-        android:textSize="10sp"
+        android:layout_marginEnd="@dimen/margin_standard"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:textSize="@dimen/text_size_small"
+        tools:text="Android User"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/imageExercise"
+        app:layout_constraintStart_toEndOf="@+id/imageUser"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvEmail"
-        android:layout_width="195dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:textSize="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:textSize="@dimen/text_size_extra_small"
+        android:gravity="center"
+        tools:text="test_of_android@gmail.com"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.205"
         app:layout_constraintStart_toEndOf="@+id/imageUser"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/tvName" />
 
 
 

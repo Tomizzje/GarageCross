@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -87,14 +88,18 @@ public class InsertShareActivity extends BaseActivity {
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String comment = etComment.getText().toString();
-                Share share = new Share(doneExercise, user.getUser_id(), comment);
-                firebaseServer.insertEntity(share, "shares");
-                EventBus.getDefault().post(new MessageEvent());
+                if(user == null){
+                    Toast.makeText(view.getContext(), "Válassz egy felhasználót !",
+                            Toast.LENGTH_LONG).show();
+                }else {
+                    String comment = etComment.getText().toString();
+                    Share share = new Share(doneExercise, user.getUser_id(), comment);
+                    firebaseServer.insertEntity(share, "shares");
 
-                Toast.makeText(view.getContext(), "Megosztva !",
-                        Toast.LENGTH_LONG).show();
-                backToList();
+                    Toast.makeText(view.getContext(), "Megosztva !",
+                            Toast.LENGTH_LONG).show();
+                    backToList();
+                }
             }
         });
     }
@@ -159,7 +164,7 @@ public class InsertShareActivity extends BaseActivity {
     private void initAdapter(List<User> list) {
         dialog = new Dialog(InsertShareActivity.this);
         dialog.setContentView(R.layout.dialog_user);
-        dialog.setTitle("Choose a user");
+        dialog.setTitle("Válassz egy felhasználót");
         RecyclerView rvUsers = dialog.findViewById(R.id.rvUsers);
         final UserListAdapter adapter = new UserListAdapter(list);
         rvUsers.setAdapter(adapter);

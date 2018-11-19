@@ -18,12 +18,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ExerciseListActivity extends MenuBaseActivity {
 
-    @BindView(R.id.rvItems) RecyclerView rvExercises;
+    @BindView(R.id.rvItems)
+    RecyclerView rvExercises;
+
+    @BindString(R.string.database_reference_exercises)
+    String exercisesReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +69,7 @@ public class ExerciseListActivity extends MenuBaseActivity {
 
             }
         };
-        firebaseServer.findAllOrderBy(valueEventListener, "exercises");
+        firebaseServer.findAllOrderBy(valueEventListener, exercisesReference);
     }
 
     private void initAdapter(ArrayList<Exercise> exercises) {

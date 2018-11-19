@@ -6,7 +6,9 @@
     <!--Hint strings-->
     <string name="insert_exercise_title_hint">Feladat neve</string>
     <string name="insert_exercise_description_hint">Feladat leírása</string>
-    <string name="hint_food_name">Étel megadása</string>
+    <string name="insert_food_hint">Étel megadása</string>
+    <string name="insert_record_hint">A bejegyzés részletei</string>
+    <string name="insert_share_comment_hint">Megjegyzés hozzáfűzése</string>
 
 
     <!-- Title strings-->
@@ -21,6 +23,8 @@
     <string name="weightlifting_diary_title">Súlyemelő napló</string>
     <string name="insert_food_title">Étel hozzáadása</string>
     <string name="insert_exercise_title">Új feladat létrehozása</string>
+    <string name="insert_record_title">Adatok rögzítése</string>
+
 
     <!-- TextView no data strings-->
     <string name="personal_exercise_no_data">Még nem hoztál létre saját feladatsort</string>
@@ -52,6 +56,32 @@
     <!--ImageButton description Strings-->
     <string name="imageButton_reset_description">Újrakezdés gomb</string>
 
+    <!-- Toast text strings-->
+
+    <string name="insert_record_no_date_toast">Nem választottál dátumot</string>
+    <string name="insert_record_no_description_toast">Nem adtál meg leírást</string>
+    <string name="insert_share_no_user_toast">Nem választottál felhasználót</string>
+
+    <!--  Database References strings-->
+    <string name="database_reference_administrators">administrators</string>
+    <string name="database_reference_doneExercises">doneExercises</string>
+    <string name="database_reference_exercises">exercises</string>
+    <string name="database_reference_food">food</string>
+    <string name="database_reference_records">records</string>
+    <string name="database_reference_shares">shares</string>
+    <string name="database_reference_users">users</string>
+
+    <!-- Intent Bundle strings-->
+    <string name="intent_bundle_key_modify_record">ModifyRecord</string>
+    <string name="intent_bundle_key_select_exercise">Exercise</string>
+
+
+    <!-- Select Text strings-->
+    <string name="insert_record_select_date_text">Válassz dátumot</string>
+    <string name="insert_share_select_user_text">Válassz egy felhasználót</string>
+
+    <!-- TextView strings-->
+    <string name="insert_share_doneExercise_label">A feladat, amit megosztasz:</string>
 
 
 </resources>

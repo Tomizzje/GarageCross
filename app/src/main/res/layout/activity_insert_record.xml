@@ -8,43 +8,49 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_large"
-        android:text="@string/insert_food_title"
+        android:layout_marginTop="@dimen/margin_extra_large"
+        android:layout_marginStart="@dimen/margin_standard"
+        android:layout_marginEnd="@dimen/margin_standard"
+        android:text="@string/insert_record_title"
         android:textSize="@dimen/text_size_title"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/spnFoodGroup"
+    <TextView
+        android:id="@+id/tvDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_extra_large"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:text="@string/insert_record_select_date_text"
+        android:gravity="center"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-        android:layout_marginTop="@dimen/margin_xxl"
-        android:layout_marginLeft="@dimen/margin_large"
-        android:layout_marginRight="@dimen/margin_large"
-        android:textAlignment="center"
-        />
-
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     <EditText
-        android:id="@+id/txtFood"
+        android:id="@+id/etDescription"
+        android:background="@drawable/edit_text_border"
+        android:inputType="textMultiLine"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_small"
-        android:layout_marginEnd="@dimen/margin_small"
-        android:layout_marginBottom="@dimen/margin_standard"
-        android:layout_marginTop="@dimen/margin_xxl"
-        android:inputType="text"
-        android:hint="@string/insert_food_hint"
-        app:layout_constraintTop_toBottomOf="@id/spnFoodGroup"
+        android:layout_height="250dp"
+        android:maxLines="8"
+        android:padding="@dimen/margin_extra_small"
+        android:hint="@string/insert_record_hint"
+        android:layout_marginTop="@dimen/margin_extra_large"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginEnd="@dimen/margin_large"
+        android:gravity="start"
+        android:textSize="@dimen/text_size_small"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDate" />
 
     <Button
         android:id="@+id/btnSave"
@@ -52,7 +58,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_xxl"
         android:layout_marginBottom="@dimen/margin_extra_large"
-        android:layout_marginEnd="@dimen/margin_extra_small"
         android:text="@string/btnSave"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -61,12 +66,11 @@
         android:id="@+id/btnDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_xxl"
         android:layout_marginBottom="@dimen/margin_extra_large"
-        android:layout_marginStart="@dimen/margin_extra_small"
         android:text="@string/btnDelete"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

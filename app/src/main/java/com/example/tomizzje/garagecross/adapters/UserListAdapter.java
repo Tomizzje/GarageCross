@@ -3,6 +3,7 @@ package com.example.tomizzje.garagecross.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +24,8 @@ import butterknife.ButterKnife;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewHolder> {
 
-    final ArrayList<User> users;
+    private final ArrayList<User> users;
     public UserListAdapter(final List<User> users) {
-
         this.users = (ArrayList) users;
     }
 
@@ -48,31 +48,28 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
         return users.size();
     }
 
-    public class UserListViewHolder extends RecyclerView.ViewHolder {
+    public class UserListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.tvName) TextView tvName;
         @BindView(R.id.tvEmail) TextView tvEmail;
 
-        public UserListViewHolder(View itemView) {
+        UserListViewHolder(View itemView) {
             super(itemView);
-
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(User user) {
            tvEmail.setText(user.getEmail());
            tvName.setText(user.getName());
-
-           tvName.setOnClickListener(new View.OnClickListener() {
-               @Override
-               public void onClick(View view) {
-                   int position = getAdapterPosition();
-                   User selectedUser = users.get(position);
-                   EventBus.getDefault().post(new MessageEvent(selectedUser));
-               }
-           });
         }
 
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            User selectedUser = users.get(position);
+            EventBus.getDefault().post(new MessageEvent(selectedUser));
+        }
     }
 
 }
