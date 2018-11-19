@@ -22,12 +22,10 @@ import butterknife.ButterKnife;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordViewHolder> {
 
-    final ArrayList<Record> records;
+    private final ArrayList<Record> records;
 
     public RecordAdapter(final List<Record> records) {
-
         this.records = (ArrayList) records;
-
     }
 
     @NonNull
@@ -63,7 +61,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         public void bind(Record record) {
             tvDate.setText(record.getDate());
             tvDescription.setText(record.getDescription());
-
         }
 
         @Override

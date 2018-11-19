@@ -16,6 +16,7 @@ import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.enums.FoodGroup;
 import com.example.tomizzje.garagecross.entities.Food;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -31,6 +32,10 @@ public class InsertFoodActivity extends BaseActivity {
     @BindView(R.id.btnSave) Button btnSave;
 
     @BindView(R.id.btnDelete) Button btnDelete;
+
+    @BindString(R.string.btnReset) String btnResetText;
+
+    @BindString(R.string.btnDelete) String btnDeleteText;
 
     private boolean toModify;
 
@@ -50,12 +55,9 @@ public class InsertFoodActivity extends BaseActivity {
         initFood();
         initSave();
         initDelete();
-
     }
 
     private void initFood() {
-
-
         Intent intent = getIntent();
         Food food = (Food) intent.getSerializableExtra("ModifyFood");
         String foodGroupType = intent.getStringExtra("FoodGroup");
@@ -67,13 +69,13 @@ public class InsertFoodActivity extends BaseActivity {
         if (food == null) {
             food = new Food();
             toModify = false;
-            btnDelete.setText("Visszaállít");
+            btnDelete.setText(btnResetText);
 
         } else {
             txtFood.setText(food.getName());
             txtFood.setSelection(food.getName().length());
 
-            btnDelete.setText("Törlés");
+            btnDelete.setText(btnDeleteText);
 
             String text = FoodGroup.getFoodGroupByName(food.getFoodGroups()).toString();
             int position = getSpinTextPosition(text);

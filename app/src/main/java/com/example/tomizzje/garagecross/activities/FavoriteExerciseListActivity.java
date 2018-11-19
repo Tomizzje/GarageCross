@@ -18,10 +18,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class FavoriteExerciseListActivity extends MenuBaseActivity implements ValueEventListener {
+public class FavoriteExerciseListActivity extends MenuBaseActivity {
 
     @BindView(R.id.rvItems) RecyclerView rvExercises;
 
@@ -30,12 +31,15 @@ public class FavoriteExerciseListActivity extends MenuBaseActivity implements Va
     @BindView(R.id.tvInfo)
     TextView tvInfo;
 
+    @BindString(R.string.favorite_exercise_list_title)
+    String title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
         ButterKnife.bind(this);
+        tvExerciseListTitle.setText(title);
     }
 
     @Override
@@ -46,42 +50,42 @@ public class FavoriteExerciseListActivity extends MenuBaseActivity implements Va
     @Override
     protected void onResume() {
         super.onResume();
-        String title = "Kedvenc feladatsorok";
-        tvExerciseListTitle.setText(title);
-        firebaseServer.findAllOrderBy(this, "exercises");
+        initFavoriteExercises();
     }
 
-    private void initAdapter(List<Exercise> exercises) {
+    private void initFavoriteExercises() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    ArrayList<Exercise> exercises = new ArrayList<>();
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if(snapshot.getValue(Exercise.class).getFavoritedUsers() != null && snapshot.getValue(Exercise.class).getFavoritedUsers().containsKey(firebaseLogin.getCurrentUser())){
+                            exercises.add(snapshot.getValue(Exercise.class));
+                        }
+                    }
+                    tvInfo.setVisibility(View.GONE);
+                    if(exercises.isEmpty()){
+                        tvInfo.setVisibility(View.VISIBLE);
+                    }
+                    initAdapter(exercises);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        firebaseServer.findAllOrderBy(valueEventListener, "exercises");
+    }
+
+    private void initAdapter(ArrayList<Exercise> exercises) {
 
         final ExerciseAdapter adapter = new ExerciseAdapter(exercises);
         rvExercises.setAdapter(adapter);
         LinearLayoutManager exercisesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvExercises.setLayoutManager(exercisesLayoutManager);
-    }
-
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-        if(dataSnapshot.exists()) {
-            List<Exercise> exercises = new ArrayList<>();
-            for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                if(snapshot.getValue(Exercise.class).getFavoritedUsers() != null && snapshot.getValue(Exercise.class).getFavoritedUsers().containsKey(firebaseLogin.getCurrentUser())){
-                    exercises.add(snapshot.getValue(Exercise.class));
-                }
-            }
-
-            tvInfo.setVisibility(View.GONE);
-            if(exercises.isEmpty()){
-                tvInfo.setVisibility(View.VISIBLE);
-            }
-
-            initAdapter(exercises);
-        }
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
-
     }
 }
 

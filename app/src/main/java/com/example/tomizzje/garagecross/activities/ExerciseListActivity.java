@@ -30,7 +30,6 @@ public class ExerciseListActivity extends MenuBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
-
     }
 
     @Override
@@ -41,10 +40,7 @@ public class ExerciseListActivity extends MenuBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         initExerciseList();
-
-
     }
 
     private void initExerciseList() {
@@ -53,21 +49,14 @@ public class ExerciseListActivity extends MenuBaseActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
 
-                    List<Exercise> exercises = new ArrayList<>();
+                    ArrayList<Exercise> exercises = new ArrayList<>();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         exercises.add(snapshot.getValue(Exercise.class));
 
                     }
                     Collections.reverse(exercises);
-
-                    for(Exercise e : exercises){
-                        Log.d("PROBALISTENER", e.toString());
-                    }
-
                     initAdapter(exercises);
                 }
-
-
             }
 
             @Override
@@ -78,7 +67,7 @@ public class ExerciseListActivity extends MenuBaseActivity {
         firebaseServer.findAllOrderBy(valueEventListener, "exercises");
     }
 
-    private void initAdapter(List<Exercise> exercises) {
+    private void initAdapter(ArrayList<Exercise> exercises) {
         final ExerciseAdapter adapter = new ExerciseAdapter(exercises);
         rvExercises.setAdapter(adapter);
         LinearLayoutManager exercisesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

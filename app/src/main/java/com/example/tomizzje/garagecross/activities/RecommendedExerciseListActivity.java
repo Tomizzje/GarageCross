@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.R;
@@ -19,16 +22,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RecommendedExerciseListActivity extends MenuBaseActivity  {
 
-    @BindView(R.id.rvItems) RecyclerView rvExercises;
+    @BindView(R.id.rvItems)
+    RecyclerView rvExercises;
 
-    @BindView(R.id.tvListTitle) TextView tvExerciseListTitle;
+    @BindView(R.id.tvListTitle)
+    TextView tvExerciseListTitle;
 
-    @BindView(R.id.tvLevel) TextView tvLevel;
+    @BindView(R.id.tvLevel)
+    TextView tvLevel;
+
+    @BindView(R.id.tvInfo)
+    TextView tvInfo;
+
+    @BindView(R.id.btnStronger)
+    Button btnStronger;
 
     User user;
 
@@ -37,8 +50,6 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommended_exercise_list);
         ButterKnife.bind(this);
-        String msg = "Ajánlott feladatsorok";
-        tvExerciseListTitle.setText(msg);
 
     }
 
@@ -51,6 +62,19 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
     protected void onResume() {
         super.onResume();
         initUser();
+        initButtonStronger();
+    }
+
+    private void initButtonStronger() {
+        btnStronger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(user != null) {
+                    Difficulty difficulty = Difficulty.getStrongerDifficultyLevel(Difficulty.getDifficultyLevelByExperience(user.getExperience()));
+                    initExercises(difficulty);
+                }
+            }
+        });
     }
 
     private void initUser() {
@@ -63,9 +87,12 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if(snapshot.getValue(User.class).getUser_id().equals(firebaseLogin.getCurrentUser())){
                             user = snapshot.getValue(User.class);
-                            String message = "A te szinted jelenleg: " + Difficulty.getDifficultyLevelByExperience(user.getExperience());
-                            tvLevel.setText(message);
-                            initExercises();
+                            if(user !=null){
+                                String message = "A te szinted jelenleg: " + Difficulty.getDifficultyLevelByExperience(user.getExperience()).toString();
+                                Difficulty difficulty = Difficulty.getDifficultyLevelByExperience(user.getExperience());
+                                tvLevel.setText(message);
+                                initExercises(difficulty);
+                            }
                         }
                     }
                 }
@@ -80,7 +107,7 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
 
     }
 
-    private void initAdapter(List<Exercise> exercises) {
+    private void initAdapter(ArrayList<Exercise> exercises) {
         final ExerciseAdapter adapter = new ExerciseAdapter(exercises);
         rvExercises.setAdapter(adapter);
         LinearLayoutManager exercisesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -89,17 +116,25 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
 
 
 
-    private void initExercises() {
+    private void initExercises(final Difficulty difficulty) {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
 
-                    List<Exercise> exercises = new ArrayList<>();
+                    ArrayList<Exercise> exercises = new ArrayList<>();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        if(snapshot.getValue(Exercise.class).getDifficulty().equals(Difficulty.getDifficultyLevelByExperience(user.getExperience()))){
+                        if(snapshot.getValue(Exercise.class).getDifficulty().equals(difficulty.name())){
                         exercises.add(snapshot.getValue(Exercise.class));
                         }
+                    }
+                    for(Exercise e : exercises){
+                        Log.d("RECOMMENDEDACTIVITY3", e.getDifficulty());
+                    }
+
+                    tvInfo.setVisibility(View.GONE);
+                    if(exercises.isEmpty()){
+                        tvInfo.setVisibility(View.VISIBLE);
                     }
 
                     Collections.reverse(exercises);
@@ -112,6 +147,6 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
 
             }
         };
-        firebaseServer.findAll(valueEventListener,"exercises");
+        firebaseServer.findAllOrderBy(valueEventListener,"exercises");
     }
 }

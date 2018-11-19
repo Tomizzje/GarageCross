@@ -33,14 +33,31 @@ import butterknife.ButterKnife;
 
 public class TimerActivity extends BaseActivity {
 
-    @BindView(R.id.txtTitle) TextView txtTitle;
-    @BindView(R.id.txtDesc) TextView txtDesc;
-    @BindView(R.id.btnPlay) ImageButton btnPlay;
-    @BindView(R.id.btnReset) ImageButton btnReset;
-    @BindView(R.id.btnReady) ImageButton btnReady;
-    @BindView(R.id.simpleChronometer) Chronometer simpleChronometer;
-    @BindView(R.id.ratingBar) RatingBar ratingBar;
-    @BindView(R.id.rvImages) RecyclerView rvImages;
+    @BindView(R.id.txtTitle)
+    TextView txtTitle;
+
+    @BindView(R.id.txtDesc)
+    TextView txtDesc;
+
+    @BindView(R.id.btnPlay)
+    ImageButton btnPlay;
+
+    @BindView(R.id.btnReset)
+    ImageButton btnReset;
+
+    @BindView(R.id.btnReady)
+    ImageButton btnReady;
+
+    @BindView(R.id.simpleChronometer)
+    Chronometer simpleChronometer;
+
+    @BindView(R.id.ratingBar)
+    RatingBar ratingBar;
+
+    @BindView(R.id.rvImages)
+    RecyclerView rvImages;
+    @BindView(R.id.tvPictureInfo)
+    TextView tvPictureInfo;
 
     private boolean isPaused = true;
 
@@ -72,17 +89,10 @@ public class TimerActivity extends BaseActivity {
         if(exercise.getPicturesUrl() != null) {
             ArrayList<String> imagesList = new ArrayList<>(exercise.getPicturesUrl().values());
             initadapter(imagesList);
+        }else {
+            tvPictureInfo.setVisibility(View.VISIBLE);
         }
 
-        /*
-                if(exercise.getPicturesUrl() != null) {
-            for(String s : exercise.getPicturesUrl().values()) {
-                imagesList.add(s);
-            }
-            initadapter(imagesList);
-        }
-
-         */
         initUser();
         initButtonClickListeners();
     }
@@ -124,12 +134,13 @@ public class TimerActivity extends BaseActivity {
                 isPaused = !isPaused;
 
                 if(!isPaused) {
-                    btnPlay.setImageResource(android.R.drawable.ic_media_pause);
+                    //pause
+                    btnPlay.setImageResource(R.drawable.ic_baseline_pause_48px);
                     simpleChronometer.setBase(SystemClock.elapsedRealtime() + lastPause);
                     simpleChronometer.start();
                 }
                 else{
-                    btnPlay.setImageResource(android.R.drawable.ic_media_play);
+                    btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_48px);
                     lastPause = simpleChronometer.getBase() - SystemClock.elapsedRealtime();
                     simpleChronometer.stop();
                 }
@@ -143,7 +154,7 @@ public class TimerActivity extends BaseActivity {
                 simpleChronometer.setBase(SystemClock.elapsedRealtime());
                 lastPause = 0;
                 isPaused = true;
-                btnPlay.setImageResource(android.R.drawable.ic_media_play);
+                btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_48px);
                 simpleChronometer.stop();
                 vibrationUtil.vibrate(3000);
 
@@ -190,13 +201,12 @@ public class TimerActivity extends BaseActivity {
 
         // TODO
 
-        //doneExercise = new DoneExercise(title, description, elapsedTime, currentTime, currentUser);
+
         DoneExercise doneExercise = new DoneExercise(title, elapsedTime, currentTime, user);
         firebaseServer.insertEntity(doneExercise, "doneExercises");
 
 
         int point = Difficulty.getDifficultyPoints(Difficulty.getDifficultyByName(exercise.getDifficulty()));
-
         int value =user.getExperience() +  point;
         firebaseServer.updateExperience("users", user.getPushId(),value);
 

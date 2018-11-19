@@ -33,11 +33,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder> implements ValueEventListener {
+public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>{
 
-    final ArrayList<Exercise> exercises;
+    private final ArrayList<Exercise> exercises;
 
-    public ExerciseAdapter(final List<Exercise> exercises) {
+    public ExerciseAdapter(final ArrayList<Exercise> exercises) {
 
         this.exercises = (ArrayList) exercises;
 
@@ -61,16 +61,6 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     @Override
     public int getItemCount() {
         return exercises.size();
-    }
-
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        Log.d("READY2", "megváltozott");
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
-
     }
 
     public class ExerciseViewHolder extends RecyclerView.ViewHolder {

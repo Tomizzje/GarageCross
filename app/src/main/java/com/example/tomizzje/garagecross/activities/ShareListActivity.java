@@ -42,6 +42,8 @@ public class ShareListActivity extends MenuBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
+        tvListTitle.setText(title);
+        tvInfo.setText(tvInfoLabel);
     }
 
     @Override
@@ -52,8 +54,6 @@ public class ShareListActivity extends MenuBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        tvListTitle.setText(title);
-        tvInfo.setText(tvInfoLabel);
         initDoneExerciseList();
 
     }

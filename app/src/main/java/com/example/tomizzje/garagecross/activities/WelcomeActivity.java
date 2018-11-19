@@ -96,7 +96,7 @@ public class WelcomeActivity extends MenuBaseActivity{
                     String welcomeMsg = "Üdvözöllek \n " + user.getName();
                     tvWelcome.setText(welcomeMsg);
 
-                    String levelMsg = "A jelenlegi szinted : \n" +  Difficulty.getDifficultyLevelByExperience(user.getExperience()) + ", " + user.getExperience() + " ponttal";
+                    String levelMsg = "A jelenlegi szinted : \n" +  Difficulty.getDifficultyLevelByExperience(user.getExperience()).toString() + ", " + user.getExperience() + " ponttal";
 
                     tvLevel.setText(levelMsg);
                     pgsBar.setProgress(user.getExperience());

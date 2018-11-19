@@ -58,15 +58,24 @@ public enum Difficulty {
         return result;
     }
 
-    public static String getDifficultyLevelByExperience(int experience) {
+    public static Difficulty getDifficultyLevelByExperience(int experience) {
        if(experience < 50){
-           return Difficulty.BEGINNER.toString();
+           return Difficulty.BEGINNER;
        } else if( experience < 100) {
-           return Difficulty.INTERMEDIATE.toString();
+           return Difficulty.INTERMEDIATE;
        } else if(experience < 200){
-           return Difficulty.ADVANCED.toString();
+           return Difficulty.ADVANCED;
        } else {
-           return Difficulty.PROFESSIONAL.toString();
+           return Difficulty.PROFESSIONAL;
        }
+    }
+
+    public static Difficulty getStrongerDifficultyLevel(Difficulty d) {
+        for(int i=0;i<Difficulty.values().length;++i){
+            if(values()[i].name().equals(d.name()) && i != Difficulty.values().length -1 ){
+                return Difficulty.values()[i+1];
+            }
+        }
+        return Difficulty.values()[Difficulty.values().length];
     }
 }

@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.adapters.RecordAdapter;
 
@@ -23,12 +24,17 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class WeightLiftingDiaryActivity extends MenuBaseActivity implements ValueEventListener {
+public class WeightLiftingDiaryActivity extends MenuBaseActivity{
 
 
-    @BindView(R.id.rvRecords) RecyclerView rvRecords;
+    @BindView(R.id.rvRecords)
+    RecyclerView rvRecords;
 
-    @BindView(R.id.fab_add) FloatingActionButton fab_add;
+    @BindView(R.id.fab_add)
+    FloatingActionButton fab_add;
+
+    @BindView(R.id.tvInfo)
+    TextView tvInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +51,46 @@ public class WeightLiftingDiaryActivity extends MenuBaseActivity implements Valu
     @Override
     protected void onResume() {
         super.onResume();
-        firebaseServer.findAll(this, "records");
+        initRecords();
+        initFloatingActionButton();
+    }
 
+    private void initFloatingActionButton() {
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               IntentToInsert();
+                IntentToInsert();
             }
         });
+    }
 
+    private void initRecords() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String currentUser = firebaseLogin.getCurrentUser();
 
+                if(dataSnapshot.exists()) {
+                    List<Record> records = new ArrayList<>();
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if(currentUser.equals(snapshot.getValue(Record.class).getUser_id())) {
+                            records.add(snapshot.getValue(Record.class));
+                        }
+                    }
+                    tvInfo.setVisibility(View.GONE);
+                    if(records.isEmpty()){
+                        tvInfo.setVisibility(View.VISIBLE);
+                    }
+                    initAdapter(records);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        firebaseServer.findAll(valueEventListener,"records");
     }
 
     private void IntentToInsert() {
@@ -69,26 +104,4 @@ public class WeightLiftingDiaryActivity extends MenuBaseActivity implements Valu
         LinearLayoutManager recordLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvRecords.setLayoutManager(recordLayoutManager);
     }
-
-
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        String currentUser = firebaseLogin.getCurrentUser();
-
-        if(dataSnapshot.exists()) {
-            List<Record> records = new ArrayList<>();
-            for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                if(currentUser.equals(snapshot.getValue(Record.class).getUser_id())) {
-                    records.add(snapshot.getValue(Record.class));
-                }
-            }
-            initAdapter(records);
-        }
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-    }
-
 }

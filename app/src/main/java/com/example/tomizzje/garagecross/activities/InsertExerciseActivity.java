@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -36,19 +38,38 @@ public class InsertExerciseActivity extends MenuBaseActivity {
 
     private static final int PICTURE_RESULT = 42;
 
-    @BindView(R.id.txtTitle) EditText txtTitle;
-    @BindView(R.id.txtDesc) EditText txtDesc;
+    @BindView(R.id.txtTitle)
+    EditText txtTitle;
 
-    //@BindView(R.id.numberPicker) NumberPicker numberPicker;
+    @BindView(R.id.txtDesc)
+    EditText txtDesc;
+
     @BindView(R.id.spnDifficulty)
     Spinner spnDifficulty;
 
-    @BindView(R.id.btnUpload) Button btnUpload;
-    @BindView(R.id.btnDeletePicture) Button btnDeletePicture;
-    @BindView(R.id.btnSaveExercise) Button btnSaveExercise;
-    @BindView(R.id.btnDeleteExercise) Button btnDeleteExercise;
+    @BindView(R.id.btnUpload)
+    Button btnUpload;
 
-    @BindView(R.id.rvImages) RecyclerView rvImages;
+    @BindView(R.id.btnDeletePicture)
+    Button btnDeletePicture;
+
+    @BindView(R.id.btnSaveExercise)
+    Button btnSaveExercise;
+
+    @BindView(R.id.btnDeleteExercise)
+    Button btnDeleteExercise;
+
+    @BindView(R.id.tvPictureInfo)
+    TextView tvPictureInfo;
+
+    @BindView(R.id.rvImages)
+    RecyclerView rvImages;
+
+    @BindString(R.string.btnReset)
+    String btnResetText;
+
+    @BindString(R.string.btnDeleteExercise)
+    String btnDeleteExerciseText;
 
     private Exercise exercise;
 
@@ -77,12 +98,12 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         AdapterView.OnItemSelectedListener itemClickListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), difficulties[i], Toast.LENGTH_LONG).show();
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                //Toast.makeText(getApplicationContext(), difficulties[0], Toast.LENGTH_LONG).show();
+
             }
         };
         spnDifficulty.setOnItemSelectedListener(itemClickListener);
@@ -98,7 +119,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
     protected void onResume() {
         super.onResume();
 
-        String btnCaption = toModify ? "Feladat törlése" : "Reset";
+        String btnCaption = toModify ? btnDeleteExerciseText : btnResetText;
         btnDeleteExercise.setText(btnCaption);
         initOnClickListeners();
     }
@@ -113,7 +134,8 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         if (exercise == null) {
             exercise = new Exercise();
             toModify = false;
-            btnDeleteExercise.setText("Reset");
+            btnDeleteExercise.setText(btnResetText);
+            tvPictureInfo.setVisibility(View.VISIBLE);
 
         } else {
             if(exercise.getPicturesUrl() != null) {
@@ -164,7 +186,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
                 intent.setType("image/jpeg");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(intent.createChooser(intent, "Insert picture"), PICTURE_RESULT);
+                startActivityForResult(intent.createChooser(intent, "Kép kiválasztása"), PICTURE_RESULT);
             }
         });
 
@@ -182,7 +204,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             @Override
             public void onClick(View view) {
                 saveExercise();
-                Toast.makeText(getBaseContext(), "Exercise saved!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Feladat elmentve!", Toast.LENGTH_LONG).show();
                 clean();
                 backToList();
             }
@@ -195,7 +217,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
                 if(toModify) {
                     Log.d("TAMAS", exercise.getPushId());
                     firebaseServer.deleteEntity(exercise, "exercises");
-                    Toast.makeText(view.getContext(), "Exercise DELETED!",
+                    Toast.makeText(view.getContext(), "Feladat törölve!",
                             Toast.LENGTH_LONG).show();
                     backToList();
                 }
@@ -213,8 +235,8 @@ public class InsertExerciseActivity extends MenuBaseActivity {
 
         if(requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
 
+            assert data != null;
             Uri imageUri = data.getData();
-            Log.d("probaUriActivityResult",  data.getData().toString());
             uploadImage(imageUri);
         }
     }
@@ -294,9 +316,19 @@ public class InsertExerciseActivity extends MenuBaseActivity {
     }
 
     private void initAdapter(ArrayList<String> list) {
+        initInfo(list);
         final ImageAdapter adapter = new ImageAdapter(list);
         rvImages.setAdapter(adapter);
         LinearLayoutManager exercisesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         rvImages.setLayoutManager(exercisesLayoutManager);
     }
+
+    private void initInfo(ArrayList<String> list) {
+        tvPictureInfo.setVisibility(View.GONE);
+        if(list.isEmpty()){
+            tvPictureInfo.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 }

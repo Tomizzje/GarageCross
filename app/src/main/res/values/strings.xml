@@ -3,35 +3,55 @@
     <string name="app_name">GarageCross</string>
 
 
+    <!--Hint strings-->
     <string name="insert_exercise_title_hint">Feladat neve</string>
     <string name="insert_exercise_description_hint">Feladat leírása</string>
     <string name="hint_food_name">Étel megadása</string>
 
 
+    <!-- Title strings-->
     <string name="exercise_list_title">Feladatsorok</string>
     <string name="done_exercise_list_title">Elvégzett Feladatsorok</string>
     <string name="user_list_title">Felhasználók</string>
     <string name="share_list_title">Megosztások</string>
     <string name="food_list_title">Táplálkozás</string>
     <string name="personal_exercise_list_title">Saját feladatsorok</string>
+    <string name="recommended_exercise_list_title">Ajánlott feladatsorok</string>
+    <string name="favorite_exercise_list_title">Kedvenc feladatsorok</string>
+    <string name="weightlifting_diary_title">Súlyemelő napló</string>
+    <string name="insert_food_title">Étel hozzáadása</string>
+    <string name="insert_exercise_title">Új feladat létrehozása</string>
 
-
+    <!-- TextView no data strings-->
     <string name="personal_exercise_no_data">Még nem hoztál létre saját feladatsort</string>
     <string name="share_list_no_data">Veled még nem osztottak meg eredményt</string>
+    <string name="recommended_list_no_data">Jelenleg nincsenek ajánlott feladataid</string>
+    <string name="weightlifting_diary_no_data">Még nem hoztál létre bejegzést a naplóhoz</string>
+    <string name="insert_exercise_no_picture">Nincs még kép feltöltve</string>
+    <string name="timer_exercise_no_picture">A feladathoz nincs kép feltöltve</string>
 
 
-
-    <string name="btnShare">Share</string>
+    <!-- Button label strings-->
+    <string name="btnShare">Megosztás</string>
     <string name="btnGoodDay">Jó napom van!</string>
     <string name="btnDelete">Törlés</string>
     <string name="btnSave">Mentés</string>
-
-
+    <string name="btnReset">Visszaállít</string>
     <string name="add_button_title">Új hozzáadása</string>
+    <string name="btnStronger">Ma erős vagyok</string>
+    <string name="btnUpload">Kép feltöltése</string>
+    <string name="btnDeleteExercise">Feladat törlése</string>
+    <string name="btnSaveExercise">Feladat mentése</string>
+    <string name="btnDeletePicture">Képek törlése</string>
 
 
+    <!-- Menu label strings-->
     <string name="welcome_menu">Kezdőlap</string>
     <string name="all_exercise_menu">Összes feladat</string>
+
+    <!--ImageButton description Strings-->
+    <string name="imageButton_reset_description">Újrakezdés gomb</string>
+
 
 
 </resources>

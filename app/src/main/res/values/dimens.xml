@@ -5,13 +5,14 @@
     <dimen name="margin_standard">16dp</dimen>
     <dimen name="margin_large">24dp</dimen>
     <dimen name="margin_extra_large">48dp</dimen>
+    <dimen name="margin_xxl">96dp</dimen>
 
 
     <dimen name="title">12sp</dimen>
     <dimen name="description">10sp</dimen>
 
 
-
+    <dimen name="text_size_extra_large">64sp</dimen>
     <dimen name="text_size_title">32sp</dimen>
     <dimen name="text_size_normal">24sp</dimen>
     <dimen name="text_size_small">16sp</dimen>
