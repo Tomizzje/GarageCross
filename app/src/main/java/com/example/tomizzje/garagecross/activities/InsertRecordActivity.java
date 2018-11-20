@@ -95,7 +95,7 @@ public class InsertRecordActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                if(toModify){
-                   firebaseServer.deleteRecord(record, recordsReference);
+                   firebaseServer.deleteEntity(record, recordsReference);
                    backToList();
                }else {
                    etDescription.setText("");
@@ -115,7 +115,7 @@ public class InsertRecordActivity extends BaseActivity {
                     Record saveRecord = new Record(currentUser,date,description);
                     if(toModify){
                         saveRecord.setPushId(record.getPushId());
-                        firebaseServer.updateRecord(saveRecord, recordsReference);
+                        firebaseServer.modifyEntity(saveRecord, recordsReference);
                     }else {
                         firebaseServer.insertEntity(saveRecord, recordsReference);
                     }

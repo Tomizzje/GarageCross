@@ -56,7 +56,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImagesViewHo
         }
 
         public void bind(final String temp) {
-            if(temp != null && temp.isEmpty() == false){
+            if(temp != null && !temp.isEmpty()){
                 Picasso.get().load(temp).resize(300,300).centerCrop().into(imgExercise);
             }
 

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -33,6 +31,9 @@ public class FavoriteExerciseListActivity extends MenuBaseActivity {
 
     @BindString(R.string.favorite_exercise_list_title)
     String title;
+
+    @BindString(R.string.database_reference_exercises)
+    String exercisesReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +78,7 @@ public class FavoriteExerciseListActivity extends MenuBaseActivity {
 
             }
         };
-        firebaseServer.findAllOrderBy(valueEventListener, "exercises");
+        firebaseServer.findExercisesOrderBy(valueEventListener, exercisesReference);
     }
 
     private void initAdapter(ArrayList<Exercise> exercises) {

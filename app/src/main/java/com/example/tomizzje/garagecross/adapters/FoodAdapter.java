@@ -24,6 +24,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -34,7 +35,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     boolean isAdmin;
 
 
-    public FoodAdapter(final List<Food> list, boolean isAdmin) {
+    public FoodAdapter(final ArrayList<Food> list, boolean isAdmin) {
         this.list = (ArrayList) list;
         this.isAdmin = isAdmin;
     }
@@ -72,6 +73,9 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
         @BindView(R.id.tvFood) TextView tvFood;
 
+        @BindString(R.string.intent_bundle_key_modify_food)
+        String intentModifyFood;
+
         @Inject
         FirebaseServer firebaseServer;
 
@@ -93,7 +97,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                         int position = getAdapterPosition();
                         Food selectedFood = list.get(position);
                         Intent intent = new Intent(view.getContext(), InsertFoodActivity.class);
-                        intent.putExtra("ModifyFood", selectedFood);
+                        intent.putExtra(intentModifyFood, selectedFood);
                         view.getContext().startActivity(intent);
                     }
                 });

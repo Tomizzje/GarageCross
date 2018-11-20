@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import javax.inject.Inject;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -57,6 +58,9 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
 
     public class ShareViewHolder extends RecyclerView.ViewHolder {
 
+        @Inject
+        FirebaseServer firebaseServer;
+
         @BindView(R.id.imgShare)
         ImageView imgShare;
 
@@ -75,8 +79,11 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         @BindView(R.id.imgDelete)
         ImageView imgDelete;
 
-        @Inject
-        FirebaseServer firebaseServer;
+        @BindString(R.string.database_reference_shares)
+        String sharesReference;
+
+        @BindString(R.string.share_adapter_share_removed_toast)
+        String shareRemovedToast;
 
 
         public ShareViewHolder(View itemView) {
@@ -95,12 +102,9 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(view.getContext(), "Megosztás törölve",
+                    Toast.makeText(view.getContext(), shareRemovedToast,
                             Toast.LENGTH_LONG).show();
-                    firebaseServer.deleteShare(share, "shares");
-
-                    Log.d("SHARES", "HEYHOKA");
-
+                    firebaseServer.deleteEntity(share, sharesReference);
                 }
             });
         }

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -42,6 +41,9 @@ public class PersonalExerciseListActivty extends MenuBaseActivity{
 
     @BindString(R.string.personal_exercise_no_data)
     String tvInfoLabel;
+
+    @BindString(R.string.database_reference_exercises)
+    String exercisesReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +102,7 @@ public class PersonalExerciseListActivty extends MenuBaseActivity{
 
             }
         };
-        firebaseServer.findAllOrderBy(valueEventListener, "exercises");
+        firebaseServer.findExercisesOrderBy(valueEventListener, exercisesReference);
     }
 
     private void initAdapter(List<Exercise> exercises) {

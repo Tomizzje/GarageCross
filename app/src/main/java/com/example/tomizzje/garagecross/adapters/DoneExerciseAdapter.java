@@ -17,6 +17,7 @@ import com.example.tomizzje.garagecross.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -62,6 +63,9 @@ public class DoneExerciseAdapter extends RecyclerView.Adapter<DoneExerciseAdapte
         @BindView(R.id.imgShare)
         ImageView imgShare;
 
+        @BindString(R.string.intent_bundle_key_select_doneExercise)
+        String intentDoneExerciseText;
+
         public DoneExerciseViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
@@ -79,7 +83,7 @@ public class DoneExerciseAdapter extends RecyclerView.Adapter<DoneExerciseAdapte
                     int position = getAdapterPosition();
                     DoneExercise selectedExercise = doneExercises.get(position);
                     Intent intent = new Intent(view.getContext(), InsertShareActivity.class);
-                    intent.putExtra("DoneExercise", selectedExercise);
+                    intent.putExtra(intentDoneExerciseText, selectedExercise);
                     view.getContext().startActivity(intent);
                 }
             });

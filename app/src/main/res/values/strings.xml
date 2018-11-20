@@ -61,6 +61,14 @@
     <string name="insert_record_no_date_toast">Nem választottál dátumot</string>
     <string name="insert_record_no_description_toast">Nem adtál meg leírást</string>
     <string name="insert_share_no_user_toast">Nem választottál felhasználót</string>
+    <string name="insert_exercise_save_toast"> Feladat elmentve</string>
+    <string name="insert_exercise_delete_toast"> Feladat törölve</string>
+    <string name="insert_share_share_toast"> Megosztva!</string>
+    <string name="timer_rate_exercise_toast"> Egy feladatot legfeljebb egyszer értékelhetsz</string>
+    <string name="exercise_adapter_added_favorites_toast"> Hozzáadva a kedvencekhez</string>
+    <string name="exercise_adapter_removed_favorites_toast">Törölve a kedvencekből </string>
+    <string name="share_adapter_share_removed_toast">Megosztás törölve</string>
+
 
     <!--  Database References strings-->
     <string name="database_reference_administrators">administrators</string>
@@ -73,15 +81,22 @@
 
     <!-- Intent Bundle strings-->
     <string name="intent_bundle_key_modify_record">ModifyRecord</string>
+    <string name="intent_bundle_key_modify_exercise">ModifyExercise</string>
+    <string name="intent_bundle_key_modify_food">ModifyFood</string>
     <string name="intent_bundle_key_select_exercise">Exercise</string>
+    <string name="intent_bundle_key_select_foodGroup">FoodGroup</string>
+    <string name="intent_bundle_key_select_doneExercise">DoneExercise</string>
 
 
     <!-- Select Text strings-->
     <string name="insert_record_select_date_text">Válassz dátumot</string>
     <string name="insert_share_select_user_text">Válassz egy felhasználót</string>
+    <string name="insert_exercise_select_picture">Kép kiválasztása</string>
 
     <!-- TextView strings-->
     <string name="insert_share_doneExercise_label">A feladat, amit megosztasz:</string>
+    <string name="insert_share_dialog_title"> Válassz egy felhasználót</string>
+    <string name="exercise_rated_no_data_text"> N/A</string>
 
 
 </resources>

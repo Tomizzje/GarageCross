@@ -71,6 +71,21 @@ public class InsertExerciseActivity extends MenuBaseActivity {
     @BindString(R.string.btnDeleteExercise)
     String btnDeleteExerciseText;
 
+    @BindString(R.string.database_reference_exercises)
+    String exercisesReference;
+
+    @BindString(R.string.intent_bundle_key_modify_exercise)
+    String intentModifyExerciseString;
+
+    @BindString(R.string.insert_exercise_save_toast)
+    String exerciseSavedToast;
+
+    @BindString(R.string.insert_exercise_delete_toast)
+    String exerciseDeletedToast;
+
+    @BindString(R.string.insert_exercise_select_picture)
+    String selectPictureText;
+
     private Exercise exercise;
 
     private ArrayList<String> imagesUrlList;
@@ -107,8 +122,6 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             }
         };
         spnDifficulty.setOnItemSelectedListener(itemClickListener);
-
-
         ArrayAdapter aa = new ArrayAdapter(getApplicationContext(),R.layout.spinner_item, difficulties);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnDifficulty.setAdapter(aa);
@@ -130,7 +143,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         imagesIdList = new ArrayList<>();
 
         Intent intent = getIntent();
-        Exercise exercise = (Exercise) intent.getSerializableExtra("ModifyExercise");
+        Exercise exercise = (Exercise) intent.getSerializableExtra(intentModifyExerciseString);
         if (exercise == null) {
             exercise = new Exercise();
             toModify = false;
@@ -159,11 +172,9 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             txtTitle.setText(title);
             txtDesc.setText(description);
         }else {
-
             txtTitle.setText(exercise.getTitle());
             txtDesc.setText(exercise.getDescription());
         }
-
     }
 
     private int getSpinTextPosition(String text) {
@@ -186,7 +197,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
                 intent.setType("image/jpeg");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(intent.createChooser(intent, "Kép kiválasztása"), PICTURE_RESULT);
+                startActivityForResult(intent.createChooser(intent, selectPictureText), PICTURE_RESULT);
             }
         });
 
@@ -204,7 +215,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             @Override
             public void onClick(View view) {
                 saveExercise();
-                Toast.makeText(getBaseContext(), "Feladat elmentve!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), exerciseSavedToast, Toast.LENGTH_LONG).show();
                 clean();
                 backToList();
             }
@@ -215,9 +226,8 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             public void onClick(View view) {
                 //TODO
                 if(toModify) {
-                    Log.d("TAMAS", exercise.getPushId());
-                    firebaseServer.deleteEntity(exercise, "exercises");
-                    Toast.makeText(view.getContext(), "Feladat törölve!",
+                    firebaseServer.deleteEntity(exercise, exercisesReference);
+                    Toast.makeText(view.getContext(), exerciseDeletedToast,
                             Toast.LENGTH_LONG).show();
                     backToList();
                 }
@@ -234,7 +244,6 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(requestCode == PICTURE_RESULT && resultCode == RESULT_OK) {
-
             assert data != null;
             Uri imageUri = data.getData();
             uploadImage(imageUri);
@@ -261,9 +270,9 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             saveExercise.setPushId(exercise.getPushId());
             saveExercise.setPopularity(exercise.getPopularity());
             saveExercise.setFavoritedUsers(exercise.getFavoritedUsers());
-            firebaseServer.updateExercise("exercises", exercise.getPushId(), saveExercise);
+            firebaseServer.updateExercise(exercisesReference, exercise.getPushId(), saveExercise);
         }else {
-            firebaseServer.insertEntity(saveExercise, "exercises");
+            firebaseServer.insertEntity(saveExercise, exercisesReference);
         }
 
 
@@ -329,6 +338,4 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             tvPictureInfo.setVisibility(View.VISIBLE);
         }
     }
-
-
 }

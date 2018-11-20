@@ -27,15 +27,29 @@ public class InsertFoodActivity extends BaseActivity {
     @BindView(R.id.spnFoodGroup)
     Spinner spnFoodGroup;
 
-    @BindView(R.id.txtFood) EditText txtFood;
+    @BindView(R.id.txtFood)
+    EditText txtFood;
 
-    @BindView(R.id.btnSave) Button btnSave;
+    @BindView(R.id.btnSave)
+    Button btnSave;
 
-    @BindView(R.id.btnDelete) Button btnDelete;
+    @BindView(R.id.btnDelete)
+    Button btnDelete;
 
-    @BindString(R.string.btnReset) String btnResetText;
+    @BindString(R.string.btnReset)
+    String btnResetText;
 
-    @BindString(R.string.btnDelete) String btnDeleteText;
+    @BindString(R.string.btnDelete)
+    String btnDeleteText;
+
+    @BindString(R.string.intent_bundle_key_modify_food)
+    String intentModifyFood;
+
+    @BindString(R.string.intent_bundle_key_select_foodGroup)
+    String intentFoodGroupString;
+
+    @BindString(R.string.database_reference_food)
+    String foodReference;
 
     private boolean toModify;
 
@@ -59,8 +73,8 @@ public class InsertFoodActivity extends BaseActivity {
 
     private void initFood() {
         Intent intent = getIntent();
-        Food food = (Food) intent.getSerializableExtra("ModifyFood");
-        String foodGroupType = intent.getStringExtra("FoodGroup");
+        Food food = (Food) intent.getSerializableExtra(intentModifyFood);
+        String foodGroupType = intent.getStringExtra(intentFoodGroupString);
         if(foodGroupType != null){
             int position = getSpinTextPosition(foodGroupType);
             spnFoodGroup.setSelection(position);
@@ -98,9 +112,9 @@ public class InsertFoodActivity extends BaseActivity {
                     }
                     //TODO SAVE
                     if(toModify){
-                        firebaseServer.modifyFood(food, "food");
+                        firebaseServer.modifyEntity(food, foodReference);
                     }else{
-                        firebaseServer.insertEntity(food, "food");
+                        firebaseServer.insertEntity(food, foodReference);
                     }
                     backToList();
                 }
@@ -114,7 +128,7 @@ public class InsertFoodActivity extends BaseActivity {
         AdapterView.OnItemSelectedListener itemClickListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(getApplicationContext(), foodGroups[i], Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), foodGroups[i], Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -145,7 +159,7 @@ public class InsertFoodActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(toModify){
-                    firebaseServer.deleteFood(food, "food");
+                    firebaseServer.deleteEntity(food, foodReference);
                 }else{
                     txtFood.setText("");
                 }

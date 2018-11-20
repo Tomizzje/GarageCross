@@ -17,6 +17,7 @@ import com.example.tomizzje.garagecross.enums.Difficulty;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -32,7 +33,6 @@ public class PersonalExerciseAdapter extends RecyclerView.Adapter<PersonalExerci
     @Override
     public PersonalExerciseViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
-        //TODO
         View itemView = LayoutInflater.from(context).inflate(R.layout.rv_row_personal_exercise, viewGroup,false);
         return new PersonalExerciseViewHolder(itemView);
     }
@@ -50,7 +50,7 @@ public class PersonalExerciseAdapter extends RecyclerView.Adapter<PersonalExerci
 
     public class PersonalExerciseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        //TODO
+
         @BindView(R.id.tvTitle)
         TextView tvTitle;
 
@@ -59,6 +59,9 @@ public class PersonalExerciseAdapter extends RecyclerView.Adapter<PersonalExerci
 
         @BindView(R.id.tvDifficulty)
         TextView tvDifficulty;
+
+        @BindString(R.string.intent_bundle_key_modify_exercise)
+        String intentModifyExercise;
 
         public PersonalExerciseViewHolder(View itemView) {
             super(itemView);
@@ -79,7 +82,7 @@ public class PersonalExerciseAdapter extends RecyclerView.Adapter<PersonalExerci
             int position = getAdapterPosition();
             Exercise selectedExercise = personalExercises.get(position);
             Intent intent = new Intent(view.getContext(), InsertExerciseActivity.class);
-            intent.putExtra("ModifyExercise", selectedExercise);
+            intent.putExtra(intentModifyExercise, selectedExercise);
             view.getContext().startActivity(intent);
         }
     }

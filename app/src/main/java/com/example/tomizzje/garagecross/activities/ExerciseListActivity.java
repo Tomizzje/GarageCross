@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.ExerciseAdapter;
@@ -16,7 +14,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -69,7 +66,7 @@ public class ExerciseListActivity extends MenuBaseActivity {
 
             }
         };
-        firebaseServer.findAllOrderBy(valueEventListener, exercisesReference);
+        firebaseServer.findExercisesOrderBy(valueEventListener, exercisesReference);
     }
 
     private void initAdapter(ArrayList<Exercise> exercises) {

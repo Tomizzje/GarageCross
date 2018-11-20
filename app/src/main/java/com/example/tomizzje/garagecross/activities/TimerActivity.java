@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -56,8 +57,24 @@ public class TimerActivity extends BaseActivity {
 
     @BindView(R.id.rvImages)
     RecyclerView rvImages;
+
     @BindView(R.id.tvPictureInfo)
     TextView tvPictureInfo;
+
+    @BindString(R.string.database_reference_exercises)
+    String exercisesReference;
+
+    @BindString(R.string.database_reference_doneExercises)
+    String doneExercisesReference;
+
+    @BindString(R.string.database_reference_users)
+    String usersReference;
+
+    @BindString(R.string.intent_bundle_key_select_exercise)
+    String intentExerciseText;
+
+    @BindString(R.string.timer_rate_exercise_toast)
+    String rateExerciseToast;
 
     private boolean isPaused = true;
 
@@ -78,7 +95,7 @@ public class TimerActivity extends BaseActivity {
         super.onResume();
 
         Intent intent = getIntent();
-        Exercise exercise = (Exercise) intent.getSerializableExtra("Exercise");
+        Exercise exercise = (Exercise) intent.getSerializableExtra(intentExerciseText);
         if (exercise == null) {
             exercise = new Exercise();
         }
@@ -124,7 +141,7 @@ public class TimerActivity extends BaseActivity {
 
             }
         };
-        firebaseServer.findAll(valueEventListener,"users");
+        firebaseServer.findItemsOfNode(valueEventListener,usersReference);
     }
 
     private void initButtonClickListeners() {
@@ -156,7 +173,7 @@ public class TimerActivity extends BaseActivity {
                 isPaused = true;
                 btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_48px);
                 simpleChronometer.stop();
-                vibrationUtil.vibrate(3000);
+                //vibrationUtil.vibrate(3000);
 
             }
         });
@@ -189,13 +206,13 @@ public class TimerActivity extends BaseActivity {
 
         // TODO
         if(exercise.getRatedUsers() == null && ratingBar.getRating() != 0 ) {
-            firebaseServer.rateExercise("exercises", id, currentUser, ratingBar.getRating());
-            firebaseServer.updatePopularity("exercises", id, ratingBar.getRating());
+            firebaseServer.rateExercise(exercisesReference, id, currentUser, ratingBar.getRating());
+            firebaseServer.updatePopularity(exercisesReference, id, ratingBar.getRating());
         } else if(ratingBar.getRating() != 0 && !exercise.getRatedUsers().containsKey(currentUser)){
-            firebaseServer.rateExercise("exercises", id, currentUser, ratingBar.getRating());
-            firebaseServer.updatePopularity("exercises", id, ExerciseUtils.getRate(exercise));
+            firebaseServer.rateExercise(exercisesReference, id, currentUser, ratingBar.getRating());
+            firebaseServer.updatePopularity(exercisesReference, id, ExerciseUtils.getRate(exercise));
         } else {
-            Toast.makeText(this, "You can rate this exercise only once",
+            Toast.makeText(this, rateExerciseToast,
                     Toast.LENGTH_LONG).show();
         }
 
@@ -203,12 +220,12 @@ public class TimerActivity extends BaseActivity {
 
 
         DoneExercise doneExercise = new DoneExercise(title, elapsedTime, currentTime, user);
-        firebaseServer.insertEntity(doneExercise, "doneExercises");
+        firebaseServer.insertEntity(doneExercise, doneExercisesReference);
 
 
         int point = Difficulty.getDifficultyPoints(Difficulty.getDifficultyByName(exercise.getDifficulty()));
         int value =user.getExperience() +  point;
-        firebaseServer.updateExperience("users", user.getPushId(),value);
+        firebaseServer.updateExperience(usersReference, user.getPushId(),value);
 
     }
 

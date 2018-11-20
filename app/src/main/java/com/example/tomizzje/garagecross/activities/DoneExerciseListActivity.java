@@ -35,6 +35,9 @@ public class DoneExerciseListActivity extends MenuBaseActivity{
     @BindString(R.string.done_exercise_list_title)
     String title;
 
+    @BindString(R.string.database_reference_doneExercises)
+    String doneExercises;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +69,6 @@ public class DoneExerciseListActivity extends MenuBaseActivity{
                             doneExercises.add(snapshot.getValue(DoneExercise.class));
                         }
                     }
-
                     tvInfo.setVisibility(View.GONE);
                     if(doneExercises.isEmpty()){
                         tvInfo.setVisibility(View.VISIBLE);
@@ -80,7 +82,7 @@ public class DoneExerciseListActivity extends MenuBaseActivity{
 
             }
         };
-        firebaseServer.findAll(valueEventListener, "doneExercises");
+        firebaseServer.findItemsOfNode(valueEventListener, doneExercises);
     }
 
     private void initAdapter(List<DoneExercise> doneExercises) {

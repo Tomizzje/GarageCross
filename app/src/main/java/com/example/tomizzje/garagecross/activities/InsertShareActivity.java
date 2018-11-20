@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +31,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -52,6 +52,22 @@ public class InsertShareActivity extends BaseActivity {
     @BindView(R.id.tvDoneExercise)
     TextView tvDoneExercise;
 
+    @BindString(R.string.insert_share_dialog_title)
+    String dialogTitle;
+
+    @BindString(R.string.intent_bundle_key_select_doneExercise)
+    String intentDoneExerciseString;
+
+    @BindString(R.string.database_reference_shares)
+    String sharesReference;
+
+    @BindString(R.string.database_reference_users)
+    String usersReference;
+
+    @BindString(R.string.insert_share_share_toast)
+    String sharedToast;
+
+
     private User user;
 
     private DoneExercise doneExercise;
@@ -64,6 +80,13 @@ public class InsertShareActivity extends BaseActivity {
         setContentView(R.layout.activity_share);
         BaseApplication.getInstance().getBaseComponent().inject(this);
         ButterKnife.bind(this);
+        initCreateDialog();
+    }
+
+    private void initCreateDialog() {
+        dialog = new Dialog(InsertShareActivity.this);
+        dialog.setContentView(R.layout.dialog_user);
+        dialog.setTitle(dialogTitle);
 
     }
 
@@ -72,15 +95,14 @@ public class InsertShareActivity extends BaseActivity {
         super.onResume();
 
         Intent intent = getIntent();
-        DoneExercise doneExercise = (DoneExercise) intent.getSerializableExtra("DoneExercise");
+        DoneExercise doneExercise = (DoneExercise) intent.getSerializableExtra(intentDoneExerciseString);
         if (doneExercise == null) {
             doneExercise = new DoneExercise();
         }
         this.doneExercise = doneExercise;
         String msgDoneExercise = doneExercise.getTitle() + " " + doneExercise.getTimeElapsed();
         tvDoneExercise.setText(msgDoneExercise);
-        initDialog();
-
+        initDialogData();
         initShareButton();
     }
 
@@ -89,14 +111,14 @@ public class InsertShareActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 if(user == null){
-                    Toast.makeText(view.getContext(), "Válassz egy felhasználót !",
+                    Toast.makeText(view.getContext(), dialogTitle,
                             Toast.LENGTH_LONG).show();
                 }else {
                     String comment = etComment.getText().toString();
                     Share share = new Share(doneExercise, user.getUser_id(), comment);
-                    firebaseServer.insertEntity(share, "shares");
+                    firebaseServer.insertEntity(share, sharesReference);
 
-                    Toast.makeText(view.getContext(), "Megosztva !",
+                    Toast.makeText(view.getContext(), sharedToast,
                             Toast.LENGTH_LONG).show();
                     backToList();
                 }
@@ -110,7 +132,7 @@ public class InsertShareActivity extends BaseActivity {
     }
 
 
-    private void initDialog() {
+    private void initDialogData() {
         tvDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,6 +160,14 @@ public class InsertShareActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(dialog !=null){
+            dialog.dismiss();
+        }
+    }
+
     private void initUsers(){
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -158,19 +188,16 @@ public class InsertShareActivity extends BaseActivity {
 
             }
         };
-        firebaseServer.findAll(valueEventListener, "users");
+        firebaseServer.findItemsOfNode(valueEventListener, usersReference);
     }
 
     private void initAdapter(List<User> list) {
-        dialog = new Dialog(InsertShareActivity.this);
-        dialog.setContentView(R.layout.dialog_user);
-        dialog.setTitle("Válassz egy felhasználót");
+
         RecyclerView rvUsers = dialog.findViewById(R.id.rvUsers);
         final UserListAdapter adapter = new UserListAdapter(list);
         rvUsers.setAdapter(adapter);
         LinearLayoutManager usersLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvUsers.setLayoutManager(usersLayoutManager);
         dialog.show();
-
     }
 }

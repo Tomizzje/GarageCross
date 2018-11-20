@@ -17,13 +17,13 @@ import com.example.tomizzje.garagecross.enums.FoodGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FoodGroupAdapter extends RecyclerView.Adapter<FoodGroupAdapter.FoodGroupViewHolder> {
 
     final ArrayList<FoodGroup> list;
-
 
     public FoodGroupAdapter(final List<FoodGroup> list) {
         this.list = (ArrayList) list;
@@ -50,7 +50,11 @@ public class FoodGroupAdapter extends RecyclerView.Adapter<FoodGroupAdapter.Food
 
     public class FoodGroupViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tvFood) TextView tvFood;
+        @BindView(R.id.tvFood)
+        TextView tvFood;
+
+        @BindString(R.string.intent_bundle_key_select_foodGroup)
+        String intentFoodGroupText;
 
         public FoodGroupViewHolder(View itemView) {
             super(itemView);
@@ -68,16 +72,10 @@ public class FoodGroupAdapter extends RecyclerView.Adapter<FoodGroupAdapter.Food
                     int position = getAdapterPosition();
                     FoodGroup selectedFoodGroup = list.get(position);
                     Intent intent = new Intent(view.getContext(), FoodListActivity.class);
-                    intent.putExtra("FoodGroup", selectedFoodGroup);
+                    intent.putExtra(intentFoodGroupText, selectedFoodGroup);
                     view.getContext().startActivity(intent);
                 }
             });
-
         }
-
-
-
     }
-
-
 }

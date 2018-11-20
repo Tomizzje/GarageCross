@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -36,6 +35,9 @@ public class ShareListActivity extends MenuBaseActivity {
 
     @BindString(R.string.share_list_no_data)
     String tvInfoLabel;
+
+    @BindString(R.string.database_reference_shares)
+    String sharesReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +85,7 @@ public class ShareListActivity extends MenuBaseActivity {
 
             }
         };
-        firebaseServer.findAll(valueEventListener, "shares");
+        firebaseServer.findItemsOfNode(valueEventListener, sharesReference);
 
     }
 

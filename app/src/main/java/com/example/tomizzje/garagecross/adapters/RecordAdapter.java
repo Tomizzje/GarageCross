@@ -17,6 +17,7 @@ import com.example.tomizzje.garagecross.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -49,8 +50,14 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
 
     public class RecordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        @BindView(R.id.tvDate) TextView tvDate;
-        @BindView(R.id.tvDescription) TextView tvDescription;
+        @BindView(R.id.tvDate)
+        TextView tvDate;
+
+        @BindView(R.id.tvDescription)
+        TextView tvDescription;
+
+        @BindString(R.string.intent_bundle_key_modify_record)
+        String intentModifyRecord;
 
         public RecordViewHolder(View itemView) {
             super(itemView);
@@ -68,7 +75,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
             int position = getAdapterPosition();
             Record selectedRecord = records.get(position);
             Intent intent = new Intent(view.getContext(), InsertRecordActivity.class);
-            intent.putExtra("ModifyRecord", selectedRecord);
+            intent.putExtra(intentModifyRecord, selectedRecord);
             view.getContext().startActivity(intent);
         }
     }

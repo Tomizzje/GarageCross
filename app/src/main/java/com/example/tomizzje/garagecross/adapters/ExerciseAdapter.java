@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +19,13 @@ import com.example.tomizzje.garagecross.models.FirebaseLogin;
 import com.example.tomizzje.garagecross.models.FirebaseServer;
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.utils.ExerciseUtils;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -83,6 +79,20 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         @Inject
         FirebaseLogin firebaseLogin;
 
+        @BindString(R.string.intent_bundle_key_select_exercise)
+        String intentExerciseText;
+
+        @BindString(R.string.database_reference_exercises)
+        String exercisesReference;
+
+        @BindString(R.string.exercise_adapter_added_favorites_toast)
+        String addedFavoritesToast;
+
+        @BindString(R.string.exercise_adapter_removed_favorites_toast)
+        String removedFavoritesToast;
+
+        @BindString(R.string.exercise_rated_no_data_text)
+        String notRatedText;
 
         public ExerciseViewHolder(View itemView) {
             super(itemView);
@@ -96,7 +106,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
 
 
             if(exercise.getRatedUsers() == null) {
-                tvRate.setText("N/A");
+                tvRate.setText(notRatedText);
             } else {
                 String rate = String.valueOf(ExerciseUtils.getRate(exercise))+ "/5";
                 tvRate.setText(rate);
@@ -115,12 +125,10 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
                     int position = getAdapterPosition();
                     Exercise selectedExercise = exercises.get(position);
                     Intent intent = new Intent(view.getContext(), TimerActivity.class);
-                    intent.putExtra("Exercise", selectedExercise);
+                    intent.putExtra(intentExerciseText, selectedExercise);
                     view.getContext().startActivity(intent);
                 }
             });
-
-
 
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -130,20 +138,18 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
 
                         imageButton.setImageResource(android.R.drawable.btn_star_big_on);
 
-                        firebaseServer.updateFavoriteExercise("exercises", exercise.getPushId(), firebaseLogin.getCurrentUser());
-                        Toast.makeText(view.getContext(), "Added to favourites!",
+                        firebaseServer.updateFavoritesOfExercise(exercisesReference, exercise.getPushId(), firebaseLogin.getCurrentUser());
+                        Toast.makeText(view.getContext(), addedFavoritesToast,
                                 Toast.LENGTH_LONG).show();
                     } else {
                         imageButton.setImageResource(android.R.drawable.btn_star_big_off);
-                        firebaseServer.deleteFavoriteFromExercise("exercises", exercise.getPushId(), firebaseLogin.getCurrentUser());
-                        Toast.makeText(view.getContext(), "Removed from favourites",
+                        firebaseServer.deleteFavoriteFromExercise(exercisesReference, exercise.getPushId(), firebaseLogin.getCurrentUser());
+                        Toast.makeText(view.getContext(), removedFavoritesToast,
                                 Toast.LENGTH_LONG).show();
                     }
                 }
 
             });
         }
-
-
     }
 }

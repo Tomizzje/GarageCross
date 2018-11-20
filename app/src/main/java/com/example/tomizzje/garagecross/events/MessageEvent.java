@@ -9,9 +9,4 @@ public class MessageEvent {
     public MessageEvent(User user) {
         this.user = user;
     }
-
-    //todo
-    public MessageEvent(){
-        this.user = null;
-    }
 }

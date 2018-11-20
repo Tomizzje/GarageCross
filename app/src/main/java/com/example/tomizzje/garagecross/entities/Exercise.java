@@ -49,8 +49,8 @@ public class Exercise extends BaseEntity implements Serializable {
         super();
         this.title = title;
         this.description = description;
-        this.creatorUser_id = "1";
-        this.difficulty = "easy";
+        this.creatorUser_id = "";
+        this.difficulty = "";
         this.popularity = 0;
 
         this.favoritedUsers = new HashMap<>();
@@ -66,7 +66,6 @@ public class Exercise extends BaseEntity implements Serializable {
         this.popularity = 0;
 
         this.favoritedUsers = new HashMap<>();
-        //favoritedUsers.put(usersId, usersId);
 
         this.ratedUsers = new HashMap<>();
         this.picturesUrl = picturesUrl;

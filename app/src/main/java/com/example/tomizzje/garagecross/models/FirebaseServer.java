@@ -17,25 +17,21 @@ public class FirebaseServer {
 
     private DatabaseReference databaseReference;
 
-    @Setter
-    @Getter
-    private boolean isAdmin = false;
-
     public FirebaseServer() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
 
-    public void findAll(ValueEventListener valueEventListener, String reference) {
+    public void findItemsOfNode(ValueEventListener valueEventListener, String reference) {
         databaseReference.child(reference).addValueEventListener(valueEventListener);
    }
 
-    public void findAllOrderBy(ValueEventListener valueEventListener, String reference) {
+    public void findExercisesOrderBy(ValueEventListener valueEventListener, String reference) {
         Query query = databaseReference.child(reference).orderByChild("popularity");
         query.addValueEventListener(valueEventListener);
     }
 
-    public void updateFavoriteExercise(String ref, String id, String value ) {
+    public void updateFavoritesOfExercise(String ref, String id, String value ) {
       databaseReference.child(ref).child(id).child("favoritedUsers").child(value).setValue(value);
     }
 
@@ -59,35 +55,31 @@ public class FirebaseServer {
         databaseReference.child(ref).child(id).child("favoritedUsers").child(value).removeValue();
     }
 
-    public void deleteExercise(String ref, String id) {
-        databaseReference.child(ref).child(id).removeValue();
-    }
 
-    public void deleteRecord(Record record, String ref) {
+
+    /*public void deleteRecord(Record record, String ref) {
         databaseReference.child(ref).child(record.getPushId()).removeValue();
-    }
+    }*/
 
-    public void updateRecord(Record saveRecord, String ref) {
+    /*public void updateRecord(Record saveRecord, String ref) {
         databaseReference.child(ref).child(saveRecord.getPushId()).setValue(saveRecord);
-    }
+    }*/
 
 
 
-    public void modifyFood(Food food, String ref) {
+    /*public void modifyFood(Food food, String ref) {
         databaseReference.child(ref).child(food.getPushId()).setValue(food);
-    }
+    }*/
 
-    public void deleteFood(Food food, String ref) {
+    /*public void deleteFood(Food food, String ref) {
         databaseReference.child(ref).child(food.getPushId()).removeValue();
-    }
+    }*/
 
-    public void deleteEntity(BaseEntity entity, String ref){
-        databaseReference.child(ref).child(entity.getPushId()).removeValue();
-    }
 
-    public void deleteShare(Share share, String ref){
+
+    /*public void deleteShare(Share share, String ref){
         databaseReference.child(ref).child(share.getPushId()).removeValue();
-    }
+    }*/
 
     public void insertEntity(BaseEntity entity, String ref){
         String key = databaseReference.child(ref).push().getKey();
@@ -95,5 +87,13 @@ public class FirebaseServer {
             entity.setPushId(key);
             databaseReference.child(ref).child(key).setValue(entity);
         }
+    }
+
+    public void deleteEntity(BaseEntity entity, String ref){
+        databaseReference.child(ref).child(entity.getPushId()).removeValue();
+    }
+
+    public void modifyEntity(BaseEntity entity, String ref){
+        databaseReference.child(ref).child(entity.getPushId()).setValue(entity);
     }
 }

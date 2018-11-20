@@ -22,11 +22,17 @@ import butterknife.ButterKnife;
 
 public class UserListActivity extends MenuBaseActivity{
 
-    @BindView(R.id.rvItems) RecyclerView rvItems;
+    @BindView(R.id.rvItems)
+    RecyclerView rvItems;
 
-    @BindView(R.id.tvListTitle) TextView tvListTitle;
+    @BindView(R.id.tvListTitle)
+    TextView tvListTitle;
 
-    @BindString(R.string.user_list_title) String title;
+    @BindString(R.string.user_list_title)
+    String title;
+
+    @BindString(R.string.database_reference_users)
+    String usersReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +66,7 @@ public class UserListActivity extends MenuBaseActivity{
 
             }
         };
-        firebaseServer.findAll(valueEventListener, "users");
+        firebaseServer.findItemsOfNode(valueEventListener, usersReference);
     }
 
     private void initAdapter(List<User> users) {

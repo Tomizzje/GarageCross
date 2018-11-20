@@ -24,7 +24,6 @@ public class FirebaseDepot {
     }
 
     public StorageReference getFilePath(Uri imageUri, String uid) {
-        Log.d("probaUriServer", imageUri.getLastPathSegment() + uid );
         return storageReference.child("exercises_pictures").child(uid) ;
 
     }

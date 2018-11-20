@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -35,6 +36,9 @@ public class WeightLiftingDiaryActivity extends MenuBaseActivity{
 
     @BindView(R.id.tvInfo)
     TextView tvInfo;
+
+    @BindString(R.string.database_reference_records)
+    String recordsReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +94,7 @@ public class WeightLiftingDiaryActivity extends MenuBaseActivity{
 
             }
         };
-        firebaseServer.findAll(valueEventListener,"records");
+        firebaseServer.findItemsOfNode(valueEventListener,recordsReference);
     }
 
     private void IntentToInsert() {

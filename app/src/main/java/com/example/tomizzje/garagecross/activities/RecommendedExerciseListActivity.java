@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -20,7 +19,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -42,6 +40,12 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
 
     @BindView(R.id.btnStronger)
     Button btnStronger;
+
+    @BindString(R.string.database_reference_users)
+    String usersReference;
+
+    @BindString(R.string.database_reference_exercises)
+    String exercisesReference;
 
     User user;
 
@@ -103,7 +107,7 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
 
             }
         };
-        firebaseServer.findAll(UserValueEventListener, "users");
+        firebaseServer.findItemsOfNode(UserValueEventListener, usersReference);
 
     }
 
@@ -128,9 +132,6 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
                         exercises.add(snapshot.getValue(Exercise.class));
                         }
                     }
-                    for(Exercise e : exercises){
-                        Log.d("RECOMMENDEDACTIVITY3", e.getDifficulty());
-                    }
 
                     tvInfo.setVisibility(View.GONE);
                     if(exercises.isEmpty()){
@@ -147,6 +148,6 @@ public class RecommendedExerciseListActivity extends MenuBaseActivity  {
 
             }
         };
-        firebaseServer.findAllOrderBy(valueEventListener,"exercises");
+        firebaseServer.findExercisesOrderBy(valueEventListener,exercisesReference);
     }
 }

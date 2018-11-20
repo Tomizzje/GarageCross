@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.enums.Difficulty;
@@ -111,7 +110,7 @@ public class WelcomeActivity extends MenuBaseActivity{
 
             }
         };
-        firebaseServer.findAll(valueEventListener, usersReference);
+        firebaseServer.findItemsOfNode(valueEventListener, usersReference);
     }
 
     @Override
@@ -150,7 +149,7 @@ public class WelcomeActivity extends MenuBaseActivity{
 
                     }
                 };
-                firebaseServer.findAll(valueEventListener, exercisesReference);
+                firebaseServer.findItemsOfNode(valueEventListener, exercisesReference);
             }
         });
 

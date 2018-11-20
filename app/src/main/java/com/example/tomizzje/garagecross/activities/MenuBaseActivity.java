@@ -1,7 +1,9 @@
 package com.example.tomizzje.garagecross.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -13,7 +15,13 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import butterknife.BindString;
+import butterknife.ButterKnife;
+
 public abstract class MenuBaseActivity extends BaseActivity {
+
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -21,6 +29,12 @@ public abstract class MenuBaseActivity extends BaseActivity {
         inflater.inflate(R.menu.list_activity_menu, menu);
 
         return true;
+    }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -41,17 +55,13 @@ public abstract class MenuBaseActivity extends BaseActivity {
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     getBackToIndex();
-                                    Log.d("HEYHOKA", "User logged out");
-                                    //firebaseLogin.attachListener();
+
 
                                 }
                             });
                     firebaseLogin.detachListener();
-
-                    Log.d("HEYHOKA", "ide belép?");
                 }else {
-                    Toast.makeText(this, "nem tudsz kijelentkezni internet, az adatok nem frissültek", Toast.LENGTH_LONG).show();
-                    Log.d("HEYHOKA", "User detachedlistener out");
+                    Toast.makeText(this, "Nincs internet, nem tudsz kijelentkezni", Toast.LENGTH_LONG).show();
                 }
                 return true;
             case R.id.doneExercise_menu:
@@ -63,14 +73,6 @@ public abstract class MenuBaseActivity extends BaseActivity {
                 Intent intentToDiary = new Intent(this, WeightLiftingDiaryActivity.class);
                 startActivity(intentToDiary);
                 return true;
-            /*case R.id.users_menu:
-                Intent intentToUsers = new Intent(this, UserListActivity.class);
-                startActivity(intentToUsers);
-                return true;*/
-           /* case R.id.insert_menu:
-                Intent intentToInsertExercise = new Intent(this, InsertExerciseActivity.class);
-                startActivity(intentToInsertExercise);
-                return true;*/
             case R.id.personalExercise_menu:
                 Intent intentToPersonalExercise = new Intent(this, PersonalExerciseListActivty.class);
                 startActivity(intentToPersonalExercise);
@@ -96,6 +98,7 @@ public abstract class MenuBaseActivity extends BaseActivity {
     }
 
     private void getBackToIndex(){
+        Toast.makeText(this, "Sikeres kijelentkezés", Toast.LENGTH_LONG).show();
         Intent intentToWelcomeBack = new Intent(this, WelcomeActivity.class);
         startActivity(intentToWelcomeBack);
     }
