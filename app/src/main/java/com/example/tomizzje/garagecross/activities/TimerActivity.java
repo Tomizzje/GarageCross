@@ -21,7 +21,7 @@ import com.example.tomizzje.garagecross.entities.Exercise;
 import com.example.tomizzje.garagecross.entities.DoneExercise;
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.entities.User;
-import com.example.tomizzje.garagecross.utils.ExerciseUtils;
+import com.example.tomizzje.garagecross.utils.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -75,6 +75,12 @@ public class TimerActivity extends BaseActivity {
 
     @BindString(R.string.timer_rate_exercise_toast)
     String rateExerciseToast;
+
+    @BindString(R.string.timer_finished_with_rating)
+    String RatedFinishedExerciseToast;
+
+    @BindString(R.string.timer_finished_without_rating)
+    String FinishedExerciseToast;
 
     private boolean isPaused = true;
 
@@ -161,18 +167,13 @@ public class TimerActivity extends BaseActivity {
                     lastPause = simpleChronometer.getBase() - SystemClock.elapsedRealtime();
                     simpleChronometer.stop();
                 }
-
             }
         });
 
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                simpleChronometer.setBase(SystemClock.elapsedRealtime());
-                lastPause = 0;
-                isPaused = true;
-                btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_48px);
-                simpleChronometer.stop();
+                resetTimer();
                 //vibrationUtil.vibrate(3000);
 
             }
@@ -182,51 +183,64 @@ public class TimerActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 saveDoneExercise();
+                resetTimer();
                 backToList();
             }
         });
     }
 
     private void backToList() {
-        Intent intent = new Intent(this, ExerciseListActivity.class);
+        Intent intent = new Intent(this, DoneExerciseListActivity.class);
         startActivity(intent);
     }
 
 
 
     private void saveDoneExercise() {
-        String currentTime = ExerciseUtils.getCurrentTime();
+        String currentTime = Utils.getCurrentTime();
         String elapsedTime = String.valueOf(simpleChronometer.getText());
         String title = String.valueOf(txtTitle.getText());
         String currentUser = firebaseLogin.getCurrentUser();
-
-
-
         String id = exercise.getPushId();
 
-        // TODO
-        if(exercise.getRatedUsers() == null && ratingBar.getRating() != 0 ) {
-            firebaseServer.rateExercise(exercisesReference, id, currentUser, ratingBar.getRating());
-            firebaseServer.updatePopularity(exercisesReference, id, ratingBar.getRating());
-        } else if(ratingBar.getRating() != 0 && !exercise.getRatedUsers().containsKey(currentUser)){
-            firebaseServer.rateExercise(exercisesReference, id, currentUser, ratingBar.getRating());
-            firebaseServer.updatePopularity(exercisesReference, id, ExerciseUtils.getRate(exercise));
-        } else {
-            Toast.makeText(this, rateExerciseToast,
-                    Toast.LENGTH_LONG).show();
-        }
+        checkRatingBar(currentUser, id);
 
-        // TODO
+        saveToDoneExercises(title, elapsedTime, currentTime);
 
+        updateUserExperience();
+    }
 
-        DoneExercise doneExercise = new DoneExercise(title, elapsedTime, currentTime, user);
-        firebaseServer.insertEntity(doneExercise, doneExercisesReference);
-
-
+    private void updateUserExperience() {
         int point = Difficulty.getDifficultyPoints(Difficulty.getDifficultyByName(exercise.getDifficulty()));
         int value =user.getExperience() +  point;
         firebaseServer.updateExperience(usersReference, user.getPushId(),value);
-
     }
 
+    private void saveToDoneExercises(String title, String elapsedTime, String currentTime) {
+        DoneExercise doneExercise = new DoneExercise(title, elapsedTime, currentTime, user);
+        firebaseServer.insertEntity(doneExercise, doneExercisesReference);
+    }
+
+    private void checkRatingBar(String currentUser, String id) {
+        if((exercise.getRatedUsers() == null || !exercise.getRatedUsers().containsKey(currentUser)) && ratingBar.getRating() !=0){
+            firebaseServer.rateExercise(exercisesReference, id, currentUser, ratingBar.getRating());
+            firebaseServer.updatePopularity(exercisesReference, id, ratingBar.getRating());
+            Toast.makeText(this, RatedFinishedExerciseToast,
+                    Toast.LENGTH_LONG).show();
+        }else if(ratingBar.getRating() == 0){
+            Toast.makeText(this, FinishedExerciseToast,
+                    Toast.LENGTH_LONG).show();
+        }else {
+            Toast.makeText(this, rateExerciseToast,
+                    Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void resetTimer(){
+        simpleChronometer.setBase(SystemClock.elapsedRealtime());
+        lastPause = 0;
+        isPaused = true;
+        btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_48px);
+        simpleChronometer.stop();
+    }
 }

@@ -20,6 +20,7 @@ import com.example.tomizzje.garagecross.events.MessageEvent;
 import com.example.tomizzje.garagecross.entities.DoneExercise;
 import com.example.tomizzje.garagecross.entities.Share;
 import com.example.tomizzje.garagecross.entities.User;
+import com.example.tomizzje.garagecross.utils.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -40,8 +41,8 @@ public class InsertShareActivity extends BaseActivity {
     @BindView(R.id.tvTitle)
     TextView tvTitle;
 
-    @BindView(R.id.tvDialog)
-    TextView tvDialog;
+    @BindView(R.id.btnDialog)
+    Button btnDialog;
 
     @BindView(R.id.etComment)
     EditText etComment;
@@ -77,7 +78,7 @@ public class InsertShareActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_share);
+        setContentView(R.layout.activity_insert_share);
         BaseApplication.getInstance().getBaseComponent().inject(this);
         ButterKnife.bind(this);
         initCreateDialog();
@@ -115,7 +116,8 @@ public class InsertShareActivity extends BaseActivity {
                             Toast.LENGTH_LONG).show();
                 }else {
                     String comment = etComment.getText().toString();
-                    Share share = new Share(doneExercise, user.getUser_id(), comment);
+                    String date = Utils.getCurrentTime();
+                    Share share = new Share(doneExercise, user.getUser_id(), comment, date);
                     firebaseServer.insertEntity(share, sharesReference);
 
                     Toast.makeText(view.getContext(), sharedToast,
@@ -133,7 +135,7 @@ public class InsertShareActivity extends BaseActivity {
 
 
     private void initDialogData() {
-        tvDialog.setOnClickListener(new View.OnClickListener() {
+        btnDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                initUsers();
@@ -150,7 +152,7 @@ public class InsertShareActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         user = event.user;
-        tvDialog.setText(user.getName());
+        btnDialog.setText(user.getName());
         dialog.dismiss();
     }
 

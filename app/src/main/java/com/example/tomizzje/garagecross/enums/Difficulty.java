@@ -61,9 +61,9 @@ public enum Difficulty {
     public static Difficulty getDifficultyLevelByExperience(int experience) {
        if(experience < 50){
            return Difficulty.BEGINNER;
-       } else if( experience < 100) {
+       } else if( experience < 150) {
            return Difficulty.INTERMEDIATE;
-       } else if(experience < 200){
+       } else if(experience < 300){
            return Difficulty.ADVANCED;
        } else {
            return Difficulty.PROFESSIONAL;
@@ -76,6 +76,6 @@ public enum Difficulty {
                 return Difficulty.values()[i+1];
             }
         }
-        return Difficulty.values()[Difficulty.values().length];
+        return Difficulty.values()[Difficulty.values().length-1];
     }
 }

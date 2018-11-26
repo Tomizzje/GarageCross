@@ -24,9 +24,9 @@ import butterknife.ButterKnife;
 
 public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserListViewHolder> {
 
-    private final ArrayList<User> users;
+    private final List<User> users;
     public UserListAdapter(final List<User> users) {
-        this.users = (ArrayList) users;
+        this.users =  users;
     }
 
     @NonNull

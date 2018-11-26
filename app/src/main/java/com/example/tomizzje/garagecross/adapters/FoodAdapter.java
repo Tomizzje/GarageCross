@@ -14,6 +14,7 @@ import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.activities.InsertFoodActivity;
 import com.example.tomizzje.garagecross.application.BaseApplication;
 import com.example.tomizzje.garagecross.entities.Food;
+import com.example.tomizzje.garagecross.models.FirebaseLogin;
 import com.example.tomizzje.garagecross.models.FirebaseServer;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,13 +31,12 @@ import butterknife.ButterKnife;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder> implements ValueEventListener {
 
-    final ArrayList<Food> list;
+    private final List<Food> list;
+    private boolean isAdmin;
 
-    boolean isAdmin;
 
-
-    public FoodAdapter(final ArrayList<Food> list, boolean isAdmin) {
-        this.list = (ArrayList) list;
+    public FoodAdapter(final ArrayList<Food> list, final boolean isAdmin) {
+        this.list =  list;
         this.isAdmin = isAdmin;
     }
 
@@ -76,13 +76,21 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         @BindString(R.string.intent_bundle_key_modify_food)
         String intentModifyFood;
 
+        @BindString(R.string.database_reference_administrators)
+        String administratorsReference;
+
         @Inject
         FirebaseServer firebaseServer;
 
+        @Inject
+        FirebaseLogin firebaseLogin;
+
         public FoodViewHolder(View itemView) {
             super(itemView);
+
             ButterKnife.bind(this, itemView);
             BaseApplication.getInstance().getBaseComponent().inject(this);
+
         }
 
         public void bind(final Food temp) {
@@ -102,13 +110,6 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
                     }
                 });
             }
-
-
         }
-
-
-
     }
-
-
 }

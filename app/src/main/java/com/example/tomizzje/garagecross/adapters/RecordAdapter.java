@@ -23,10 +23,10 @@ import butterknife.ButterKnife;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordViewHolder> {
 
-    private final ArrayList<Record> records;
+    private final List<Record> records;
 
     public RecordAdapter(final List<Record> records) {
-        this.records = (ArrayList) records;
+        this.records =  records;
     }
 
     @NonNull
@@ -59,7 +59,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
         @BindString(R.string.intent_bundle_key_modify_record)
         String intentModifyRecord;
 
-        public RecordViewHolder(View itemView) {
+        RecordViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);

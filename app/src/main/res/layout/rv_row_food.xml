@@ -9,18 +9,17 @@
     android:descendantFocusability="blocksDescendants"
     >
 
-
     <TextView
         android:id="@+id/tvFood"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="@dimen/margin_small"
         android:layout_marginEnd="8dp"
-        android:gravity="center"
+        android:gravity="left"
         tools:text="FOOD"
-        android:textSize="@dimen/text_size_normal"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="@dimen/text_size_small"
+
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

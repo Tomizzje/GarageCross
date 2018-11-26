@@ -110,7 +110,7 @@ public class InsertFoodActivity extends BaseActivity {
                     if(foodGroup != null){
                         food.setFoodGroups(foodGroup);
                     }
-                    //TODO SAVE
+
                     if(toModify){
                         firebaseServer.modifyEntity(food, foodReference);
                     }else{

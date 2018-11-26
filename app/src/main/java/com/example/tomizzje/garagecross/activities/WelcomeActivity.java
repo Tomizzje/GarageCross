@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -13,7 +14,7 @@ import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.enums.Difficulty;
 import com.example.tomizzje.garagecross.entities.Exercise;
 import com.example.tomizzje.garagecross.entities.User;
-import com.example.tomizzje.garagecross.utils.ExerciseUtils;
+import com.example.tomizzje.garagecross.utils.Utils;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -40,6 +41,9 @@ public class WelcomeActivity extends MenuBaseActivity{
     @BindView(R.id.pgsBar)
     ProgressBar pgsBar;
 
+    @BindView(R.id.tvProgressInfo)
+    TextView tvProgressInfo;
+
     @BindString(R.string.database_reference_users)
     String usersReference;
 
@@ -50,6 +54,8 @@ public class WelcomeActivity extends MenuBaseActivity{
     String intentExerciseString;
 
     private User user;
+
+    private Exercise exercise;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,10 +75,46 @@ public class WelcomeActivity extends MenuBaseActivity{
             String userId = firebaseLogin.getCurrentUser();
 
             this.user = new User(userId, email, name);
-            initFindUser();
-            initButtonGoodDay();
-        }
 
+            initFindUser();
+            initExercise();
+            initButtonDay();
+
+        }
+    }
+
+    private void initButtonDay() {
+        btnGoodDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(exercise != null){
+                    Intent intent = new Intent(WelcomeActivity.this, TimerActivity.class);
+                    intent.putExtra(intentExerciseString, exercise);
+                    getApplicationContext().startActivity(intent);
+                }
+            }
+        });
+    }
+
+    private void initExercise() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    List<Exercise> exercises = new ArrayList<>();
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        exercises.add(snapshot.getValue(Exercise.class));
+                    }
+                    exercise = Utils.getRandomExercise(exercises);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        firebaseServer.findItemsOfNode(valueEventListener, exercisesReference);
     }
 
     private void initFindUser() {
@@ -99,10 +141,14 @@ public class WelcomeActivity extends MenuBaseActivity{
                     String welcomeMsg = "Üdvözöllek \n " + user.getName();
                     tvWelcome.setText(welcomeMsg);
 
-                    String levelMsg = "A jelenlegi szinted : \n" +  Difficulty.getDifficultyLevelByExperience(user.getExperience()).toString() + ", " + user.getExperience() + " ponttal";
+                    String levelMsg = Difficulty.getDifficultyLevelByExperience(user.getExperience()).toString() + ": " + user.getExperience() + " pont";
 
                     tvLevel.setText(levelMsg);
+
                     pgsBar.setProgress(user.getExperience());
+
+                    String progressInfo = user.getExperience() + "/" + pgsBar.getMax();
+                    tvProgressInfo.setText(progressInfo);
                 }
             }
             @Override
@@ -120,43 +166,7 @@ public class WelcomeActivity extends MenuBaseActivity{
     }
 
     private void initProgressBar() {
-        pgsBar.setMax(400);
+        pgsBar.setMax(300);
         pgsBar.setProgress(0);
     }
-
-    private void initButtonGoodDay() {
-        btnGoodDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-
-                ValueEventListener valueEventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()) {
-                            List<Exercise> exercises = new ArrayList<>();
-                            for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                exercises.add(snapshot.getValue(Exercise.class));
-                            }
-                            Exercise selectedExercise = ExerciseUtils.getRandomExercise(exercises);
-                            Intent intent = new Intent(view.getContext(), TimerActivity.class);
-                            intent.putExtra(intentExerciseString, selectedExercise);
-                            view.getContext().startActivity(intent);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                };
-                firebaseServer.findItemsOfNode(valueEventListener, exercisesReference);
-            }
-        });
-
-    }
-
-
-
-
-
 }

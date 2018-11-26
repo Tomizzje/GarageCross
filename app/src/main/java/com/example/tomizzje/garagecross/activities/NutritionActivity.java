@@ -1,13 +1,21 @@
 package com.example.tomizzje.garagecross.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.FoodGroupAdapter;
 import com.example.tomizzje.garagecross.enums.FoodGroup;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,8 +33,20 @@ public class NutritionActivity extends MenuBaseActivity {
     @BindView(R.id.rvFood)
     RecyclerView rvFood;
 
+    @BindView(R.id.btnAdd)
+    Button btnAdd;
+
     @BindString(R.string.food_list_title)
     String title;
+
+    @BindString(R.string.database_reference_administrators)
+    String administratorsReference;
+
+    @BindString(R.string.intent_bundle_key_select_foodGroup)
+    String intentFoodGroupString;
+
+
+    private boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +66,7 @@ public class NutritionActivity extends MenuBaseActivity {
         tvTitle.setText(title);
         List<FoodGroup> foodGroups = new ArrayList<>(Arrays.asList(FoodGroup.values()));
         initAdapter(foodGroups);
+        initAdministrator();
     }
 
     private void initAdapter(List<FoodGroup> food) {
@@ -54,4 +75,41 @@ public class NutritionActivity extends MenuBaseActivity {
         LinearLayoutManager foodLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvFood.setLayoutManager(foodLayoutManager);
     }
+
+    private void initAdministrator() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        if(snapshot.getKey().equals(firebaseLogin.getCurrentUser())){
+                            btnAdd.setVisibility(View.VISIBLE);
+                            isAdmin = true;
+                            initAddButton();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        firebaseServer.findItemsOfNode(valueEventListener,administratorsReference);
+    }
+
+    private void initAddButton() {
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String foodGroupType = tvTitle.getText().toString();
+                Intent intent = new Intent(NutritionActivity.this, InsertFoodActivity.class);
+                intent.putExtra(intentFoodGroupString, foodGroupType);
+                startActivity(intent);
+            }
+        });
+    }
+
+
 }

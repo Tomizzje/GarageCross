@@ -35,12 +35,16 @@ public class FavoriteExerciseListActivity extends MenuBaseActivity {
     @BindString(R.string.database_reference_exercises)
     String exercisesReference;
 
+    @BindString(R.string.favorite_exercise_no_data)
+    String tvInfoLabel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
         tvExerciseListTitle.setText(title);
+        tvInfo.setText(tvInfoLabel);
     }
 
     @Override

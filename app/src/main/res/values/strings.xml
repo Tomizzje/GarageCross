@@ -24,6 +24,7 @@
     <string name="insert_food_title">Étel hozzáadása</string>
     <string name="insert_exercise_title">Új feladat létrehozása</string>
     <string name="insert_record_title">Adatok rögzítése</string>
+    <string name="insert_share_title">Megosztás</string>
 
 
     <!-- TextView no data strings-->
@@ -33,6 +34,9 @@
     <string name="weightlifting_diary_no_data">Még nem hoztál létre bejegzést a naplóhoz</string>
     <string name="insert_exercise_no_picture">Nincs még kép feltöltve</string>
     <string name="timer_exercise_no_picture">A feladathoz nincs kép feltöltve</string>
+    <string name="exercise_rated_no_data_text"> N/A</string>
+    <string name="done_exercise_no_data"> Még nem teljesítettél feladatsort</string>
+    <string name="favorite_exercise_no_data"> Még nincs kedvenc feladatod</string>
 
 
     <!-- Button label strings-->
@@ -41,12 +45,13 @@
     <string name="btnDelete">Törlés</string>
     <string name="btnSave">Mentés</string>
     <string name="btnReset">Visszaállít</string>
-    <string name="add_button_title">Új hozzáadása</string>
+    <string name="btnAdd">Új hozzáadása</string>
     <string name="btnStronger">Ma erős vagyok</string>
     <string name="btnUpload">Kép feltöltése</string>
     <string name="btnDeleteExercise">Feladat törlése</string>
     <string name="btnSaveExercise">Feladat mentése</string>
     <string name="btnDeletePicture">Képek törlése</string>
+
 
 
     <!-- Menu label strings-->
@@ -68,6 +73,8 @@
     <string name="exercise_adapter_added_favorites_toast"> Hozzáadva a kedvencekhez</string>
     <string name="exercise_adapter_removed_favorites_toast">Törölve a kedvencekből </string>
     <string name="share_adapter_share_removed_toast">Megosztás törölve</string>
+    <string name="timer_finished_with_rating">Feladat teljesítve, gratulálunk az eredményedhez és az értékelésedet köszönjük</string>
+    <string name="timer_finished_without_rating">Feladat teljesítve, gratulálunk az eredményedhez</string>
 
 
     <!--  Database References strings-->
@@ -96,7 +103,8 @@
     <!-- TextView strings-->
     <string name="insert_share_doneExercise_label">A feladat, amit megosztasz:</string>
     <string name="insert_share_dialog_title"> Válassz egy felhasználót</string>
-    <string name="exercise_rated_no_data_text"> N/A</string>
+
+    <string name="welcome_user_level_text">A jelenlegi szinted:</string>
 
 
 </resources>

@@ -23,11 +23,11 @@ import butterknife.ButterKnife;
 
 public class DoneExerciseAdapter extends RecyclerView.Adapter<DoneExerciseAdapter.DoneExerciseViewHolder> {
 
-    final ArrayList<DoneExercise> doneExercises;
+    private final List<DoneExercise> doneExercises;
 
     public DoneExerciseAdapter(final List<DoneExercise> doneExercises) {
 
-        this.doneExercises = (ArrayList) doneExercises;
+        this.doneExercises =  doneExercises;
     }
 
     @NonNull

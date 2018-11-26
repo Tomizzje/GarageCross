@@ -20,11 +20,11 @@ import butterknife.ButterKnife;
 
 public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImagesViewHolder> {
 
-    final ArrayList<String> list;
+    private final List<String> list;
 
 
     public ImageAdapter(final List<String> list) {
-        this.list = (ArrayList) list;
+        this.list = list;
     }
 
     @NonNull
@@ -50,7 +50,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImagesViewHo
 
         @BindView(R.id.imgExercise) ImageView imgExercise;
 
-        public ImagesViewHolder(View itemView) {
+         ImagesViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -38,11 +38,15 @@ public class DoneExerciseListActivity extends MenuBaseActivity{
     @BindString(R.string.database_reference_doneExercises)
     String doneExercises;
 
+    @BindString(R.string.done_exercise_no_data)
+    String tvInfoLabel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         ButterKnife.bind(this);
+        tvInfo.setText(tvInfoLabel);
     }
 
     @Override

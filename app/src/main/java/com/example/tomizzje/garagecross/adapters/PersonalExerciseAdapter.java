@@ -23,10 +23,10 @@ import butterknife.ButterKnife;
 
 public class PersonalExerciseAdapter extends RecyclerView.Adapter<PersonalExerciseAdapter.PersonalExerciseViewHolder> {
 
-    final ArrayList<Exercise> personalExercises;
+    private final List<Exercise> personalExercises;
 
     public PersonalExerciseAdapter(final List<Exercise> personalExercises) {
-        this.personalExercises = (ArrayList) personalExercises;
+        this.personalExercises =  personalExercises;
     }
 
     @NonNull
@@ -63,14 +63,14 @@ public class PersonalExerciseAdapter extends RecyclerView.Adapter<PersonalExerci
         @BindString(R.string.intent_bundle_key_modify_exercise)
         String intentModifyExercise;
 
-        public PersonalExerciseViewHolder(View itemView) {
+        PersonalExerciseViewHolder(View itemView) {
             super(itemView);
             itemView.setOnClickListener(this);
             ButterKnife.bind(this, itemView);
         }
 
         public void bind(Exercise personalExercise) {
-            //todo
+
             tvTitle.setText(personalExercise.getTitle());
             String rateText = String.valueOf(personalExercise.getPopularity()) + "/5";
             tvRate.setText(rateText);

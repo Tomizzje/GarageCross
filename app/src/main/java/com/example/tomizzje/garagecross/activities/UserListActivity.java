@@ -1,4 +1,4 @@
-package com.example.tomizzje.garagecross.activities;
+/*package com.example.tomizzje.garagecross.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -75,4 +75,4 @@ public class UserListActivity extends MenuBaseActivity{
         LinearLayoutManager usersLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvItems.setLayoutManager(usersLayoutManager);
     }
-}
+}*/

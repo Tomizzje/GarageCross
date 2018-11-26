@@ -1,5 +1,7 @@
 package com.example.tomizzje.garagecross.utils;
 
+import android.annotation.SuppressLint;
+
 import com.example.tomizzje.garagecross.entities.Exercise;
 
 import java.text.DateFormat;
@@ -8,10 +10,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
 
-public class ExerciseUtils {
+public class Utils {
 
     public static String getCurrentTime() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, 1);
         return(dateFormat.format(calendar.getTime())); //2018/11/16 12:08:43

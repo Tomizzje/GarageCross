@@ -122,7 +122,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             }
         };
         spnDifficulty.setOnItemSelectedListener(itemClickListener);
-        ArrayAdapter aa = new ArrayAdapter(getApplicationContext(),R.layout.spinner_item, difficulties);
+        ArrayAdapter aa = new ArrayAdapter<>(getApplicationContext(), R.layout.spinner_item, difficulties);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnDifficulty.setAdapter(aa);
     }
@@ -137,6 +137,14 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         initOnClickListeners();
     }
 
+    @Override
+    public void onBackPressed() {
+
+        if(!imagesUrlList.isEmpty()){
+            deleteImages(imagesUrlList);
+        }
+        super.onBackPressed();
+    }
 
     private void initExercise() {
         imagesUrlList = new ArrayList<>();
@@ -194,7 +202,7 @@ public class InsertExerciseActivity extends MenuBaseActivity {
                 title = txtTitle.getText().toString();
                 description = txtDesc.getText().toString();
                 Intent intent = new Intent();
-                intent.setType("image/jpeg");
+                intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
                 startActivityForResult(intent.createChooser(intent, selectPictureText), PICTURE_RESULT);

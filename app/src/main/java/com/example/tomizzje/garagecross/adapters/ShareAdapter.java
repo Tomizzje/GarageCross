@@ -21,6 +21,7 @@ import com.example.tomizzje.garagecross.entities.Share;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,11 +31,10 @@ import butterknife.ButterKnife;
 
 public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHolder> {
 
-    final ArrayList<Share> shares;
+    private final List<Share> shares;
 
-    public ShareAdapter(final ArrayList<Share> shares) {
-
-        this.shares = (ArrayList) shares;
+    public ShareAdapter(final List<Share> shares) {
+        this.shares = shares;
     }
 
     @NonNull
@@ -76,6 +76,9 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         @BindView(R.id.tvComment)
         TextView tvComment;
 
+        @BindView(R.id.tvShareDate)
+        TextView tvShareDate;
+
         @BindView(R.id.imgDelete)
         ImageView imgDelete;
 
@@ -86,7 +89,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
         String shareRemovedToast;
 
 
-        public ShareViewHolder(View itemView) {
+        ShareViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             BaseApplication.getInstance().getBaseComponent().inject(this);
@@ -98,6 +101,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
             tvDoneExerciseTitle.setText(share.getDoneExercise().getTitle());
             tvElapsedTime.setText(share.getDoneExercise().getTimeElapsed());
             tvComment.setText(share.getComment());
+            tvShareDate.setText(share.getDateTime());
 
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,6 +109,7 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
                     Toast.makeText(view.getContext(), shareRemovedToast,
                             Toast.LENGTH_LONG).show();
                     firebaseServer.deleteEntity(share, sharesReference);
+
                 }
             });
         }

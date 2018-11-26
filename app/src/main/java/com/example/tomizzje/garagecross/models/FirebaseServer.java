@@ -1,10 +1,15 @@
 package com.example.tomizzje.garagecross.models;
 
+import android.support.annotation.NonNull;
+import android.widget.Toast;
+
 import com.example.tomizzje.garagecross.entities.BaseEntity;
 import com.example.tomizzje.garagecross.entities.Exercise;
 import com.example.tomizzje.garagecross.entities.Food;
 import com.example.tomizzje.garagecross.entities.Record;
 import com.example.tomizzje.garagecross.entities.Share;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
@@ -55,31 +60,6 @@ public class FirebaseServer {
         databaseReference.child(ref).child(id).child("favoritedUsers").child(value).removeValue();
     }
 
-
-
-    /*public void deleteRecord(Record record, String ref) {
-        databaseReference.child(ref).child(record.getPushId()).removeValue();
-    }*/
-
-    /*public void updateRecord(Record saveRecord, String ref) {
-        databaseReference.child(ref).child(saveRecord.getPushId()).setValue(saveRecord);
-    }*/
-
-
-
-    /*public void modifyFood(Food food, String ref) {
-        databaseReference.child(ref).child(food.getPushId()).setValue(food);
-    }*/
-
-    /*public void deleteFood(Food food, String ref) {
-        databaseReference.child(ref).child(food.getPushId()).removeValue();
-    }*/
-
-
-
-    /*public void deleteShare(Share share, String ref){
-        databaseReference.child(ref).child(share.getPushId()).removeValue();
-    }*/
 
     public void insertEntity(BaseEntity entity, String ref){
         String key = databaseReference.child(ref).push().getKey();

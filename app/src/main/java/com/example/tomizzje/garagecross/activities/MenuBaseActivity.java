@@ -49,7 +49,7 @@ public abstract class MenuBaseActivity extends BaseActivity {
                 startActivity(intentToWelcome);
                 return true;
             case R.id.logout_menu:
-                if(isConnectingToInternet()){
+                if(isOnline()){
                     AuthUI.getInstance()
                             .signOut(this)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {

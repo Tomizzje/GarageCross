@@ -18,10 +18,10 @@ import com.example.tomizzje.garagecross.enums.Difficulty;
 import com.example.tomizzje.garagecross.models.FirebaseLogin;
 import com.example.tomizzje.garagecross.models.FirebaseServer;
 import com.example.tomizzje.garagecross.R;
-import com.example.tomizzje.garagecross.utils.ExerciseUtils;
+import com.example.tomizzje.garagecross.utils.Utils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,11 +31,11 @@ import butterknife.ButterKnife;
 
 public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.ExerciseViewHolder>{
 
-    private final ArrayList<Exercise> exercises;
+    private final List<Exercise> exercises;
 
-    public ExerciseAdapter(final ArrayList<Exercise> exercises) {
+    public ExerciseAdapter(final List<Exercise> exercises) {
 
-        this.exercises = (ArrayList) exercises;
+        this.exercises = exercises;
 
     }
 
@@ -65,7 +65,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         TextView tvTitle;
 
         @BindView(R.id.imgBtnStar)
-        ImageButton imageButton;
+        ImageButton imgBtnStar;
 
         @BindView(R.id.tvRate)
         TextView tvRate;
@@ -94,7 +94,7 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
         @BindString(R.string.exercise_rated_no_data_text)
         String notRatedText;
 
-        public ExerciseViewHolder(View itemView) {
+        ExerciseViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             BaseApplication.getInstance().getBaseComponent().inject(this);
@@ -108,15 +108,15 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             if(exercise.getRatedUsers() == null) {
                 tvRate.setText(notRatedText);
             } else {
-                String rate = String.valueOf(ExerciseUtils.getRate(exercise))+ "/5";
+                String rate = String.valueOf(Utils.getRate(exercise))+ "/5";
                 tvRate.setText(rate);
             }
 
             if(exercise.getFavoritedUsers() == null || !exercise.getFavoritedUsers().containsKey(firebaseLogin.getCurrentUser())){
-                imageButton.setImageResource(android.R.drawable.btn_star_big_off);
+                imgBtnStar.setImageResource(android.R.drawable.btn_star_big_off);
                 exercise.setFavoritedUsers(new HashMap<String, String>());
             }else {
-                imageButton.setImageResource(android.R.drawable.btn_star_big_on);
+                imgBtnStar.setImageResource(android.R.drawable.btn_star_big_on);
             }
 
             tvTitle.setOnClickListener(new View.OnClickListener() {
@@ -130,19 +130,18 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
                 }
             });
 
-            imageButton.setOnClickListener(new View.OnClickListener() {
+            imgBtnStar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //TODO
                     if (!(exercise.getFavoritedUsers().containsKey(firebaseLogin.getCurrentUser()))) {
-
-                        imageButton.setImageResource(android.R.drawable.btn_star_big_on);
+                        imgBtnStar.setImageResource(android.R.drawable.btn_star_big_on);
 
                         firebaseServer.updateFavoritesOfExercise(exercisesReference, exercise.getPushId(), firebaseLogin.getCurrentUser());
                         Toast.makeText(view.getContext(), addedFavoritesToast,
                                 Toast.LENGTH_LONG).show();
                     } else {
-                        imageButton.setImageResource(android.R.drawable.btn_star_big_off);
+                        imgBtnStar.setImageResource(android.R.drawable.btn_star_big_off);
                         firebaseServer.deleteFavoriteFromExercise(exercisesReference, exercise.getPushId(), firebaseLogin.getCurrentUser());
                         Toast.makeText(view.getContext(), removedFavoritesToast,
                                 Toast.LENGTH_LONG).show();

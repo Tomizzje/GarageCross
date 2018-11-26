@@ -13,19 +13,19 @@
         android:layout_marginTop="@dimen/margin_extra_large"
         android:textSize="@dimen/text_size_title"
         android:gravity="center"
-        android:text="Megosztás"
+        android:text="@string/insert_share_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvDialog"
+    <Button
+        android:id="@+id/btnDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_extra_large"
         android:text="@string/insert_share_select_user_text"
         android:gravity="center"
-        android:textSize="@dimen/text_size_normal"
+        android:textSize="@dimen/text_size_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
@@ -40,7 +40,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="@dimen/margin_extra_large"
-        app:layout_constraintTop_toBottomOf="@+id/tvDialog" />
+        app:layout_constraintTop_toBottomOf="@+id/btnDialog" />
 
 
     <TextView
@@ -48,7 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        tools:text="Proba"
+        tools:text="Test"
         android:textSize="@dimen/text_size_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +66,7 @@
         android:lines="3"
         android:background="@drawable/edit_text_border"
         android:inputType="textMultiLine"
-        tools:text="this is a comment"
+        tools:text="Komment helye"
         android:gravity="center"
         android:hint="@string/insert_share_comment_hint"
         app:layout_constraintEnd_toEndOf="parent"

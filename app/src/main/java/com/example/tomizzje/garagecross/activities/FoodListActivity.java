@@ -1,4 +1,4 @@
-package com.example.tomizzje.garagecross.activities;
+/*package com.example.tomizzje.garagecross.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class FoodListActivity extends MenuBaseActivity {
-    //TODO
+
     @BindView(R.id.tvTitle)
     TextView tvTitle;
 
@@ -146,3 +146,4 @@ public class FoodListActivity extends MenuBaseActivity {
         rvFood.setLayoutManager(doneExercisesLayoutManager);
     }
 }
+*/

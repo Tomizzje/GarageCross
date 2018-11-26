@@ -32,7 +32,9 @@
         android:textSize="@dimen/text_size_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+        android:padding="@dimen/margin_extra_small"
+        android:background="@drawable/edit_text_border"/>
 
     <EditText
         android:id="@+id/etDescription"

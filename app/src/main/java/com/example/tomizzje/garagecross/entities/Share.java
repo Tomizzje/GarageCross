@@ -23,6 +23,10 @@ public class Share extends BaseEntity implements IBaseEntity {
     @Setter
     private String comment;
 
+    @Getter
+    @Setter
+    private String dateTime;
+
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
