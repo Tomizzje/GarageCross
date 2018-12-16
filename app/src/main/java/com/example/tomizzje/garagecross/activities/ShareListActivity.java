@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.ShareAdapter;
@@ -21,6 +22,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ShareListActivity extends MenuBaseActivity {
+
+    /**
+     * Fields connected by the view and strings.xml
+     */
+
     @BindView(R.id.tvListTitle)
     TextView tvListTitle;
 
@@ -39,6 +45,9 @@ public class ShareListActivity extends MenuBaseActivity {
     @BindString(R.string.database_reference_shares)
     String sharesReference;
 
+    @BindString(R.string.unknown_error_text)
+    String errorToast;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,11 +65,15 @@ public class ShareListActivity extends MenuBaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        initDoneExerciseList();
+        initShareList();
 
     }
 
-    private void initDoneExerciseList() {
+
+    /**
+     * Query the user's shares from the database
+     */
+    private void initShareList() {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -72,22 +85,36 @@ public class ShareListActivity extends MenuBaseActivity {
                             shares.add(snapshot.getValue(Share.class));
                         }
                     }
-                    tvInfo.setVisibility(View.GONE);
-                    if(shares.isEmpty()){
-                        tvInfo.setVisibility(View.VISIBLE);
-                    }
+                    checkListForTextView(shares);
                     initAdapter(shares);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), errorToast,Toast.LENGTH_LONG).show();
             }
         };
         firebaseServer.findItemsOfNode(valueEventListener, sharesReference);
 
     }
+
+    /**
+     * Set visibility for Textview depends on list size
+     * @param shares list
+     */
+
+    private void checkListForTextView(ArrayList<Share> shares) {
+        tvInfo.setVisibility(View.GONE);
+        if(shares.isEmpty()){
+            tvInfo.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
+     * Initialize the adapter with the list of share
+     * @param shares list
+     */
 
     private void initAdapter(ArrayList<Share> shares) {
 

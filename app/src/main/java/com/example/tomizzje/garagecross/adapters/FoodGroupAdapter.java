@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -23,7 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import javax.inject.Inject;
 
@@ -33,13 +31,13 @@ import butterknife.ButterKnife;
 
 public class FoodGroupAdapter extends RecyclerView.Adapter<FoodGroupAdapter.FoodGroupViewHolder> {
 
-    private final List<FoodGroup> list;
+    private final List<FoodGroup> foodGroupList;
 
     private final boolean[] clicks;
 
-    public FoodGroupAdapter(final List<FoodGroup> list) {
-        this.list =  list;
-        this.clicks = new boolean[list.size()];
+    public FoodGroupAdapter(final List<FoodGroup> foodGroupList) {
+        this.foodGroupList = foodGroupList;
+        this.clicks = new boolean[foodGroupList.size()];
     }
 
     @NonNull
@@ -52,16 +50,20 @@ public class FoodGroupAdapter extends RecyclerView.Adapter<FoodGroupAdapter.Food
 
     @Override
     public void onBindViewHolder(@NonNull FoodGroupViewHolder foodViewHolder, int i) {
-        FoodGroup temp = list.get(i);
+        FoodGroup temp = foodGroupList.get(i);
         foodViewHolder.bind(temp);
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return foodGroupList.size();
     }
 
-    public class FoodGroupViewHolder extends RecyclerView.ViewHolder {
+    public class FoodGroupViewHolder extends RecyclerView.ViewHolder{
+
+        /**
+         * Fields connected by the view and strings.xml
+         */
 
         @Inject
         FirebaseServer firebaseServer;
@@ -84,46 +86,55 @@ public class FoodGroupAdapter extends RecyclerView.Adapter<FoodGroupAdapter.Food
         @BindString(R.string.database_reference_administrators)
         String administratorsReference;
 
+        @BindString(R.string.database_reference_food)
+        String foodReference;
+
         private boolean isAdmin = false;
 
         FoodGroupViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
             BaseApplication.getInstance().getBaseComponent().inject(this);
         }
 
-        public void bind(final FoodGroup temp) {
+        /**
+         * this method set the onClickListener and view for each row of the list
+         * @param foodGroup list element
+         */
+
+        public void bind(final FoodGroup foodGroup) {
             final int position = getAdapterPosition();
             initAdministrator();
             clicks[position] = false;
             rvFood.setVisibility(View.GONE);
-            if(temp !=null) {
-                tvFood.setText(temp.toString());
+            if(foodGroup !=null) {
+                tvFood.setText(foodGroup.toString());
             }
 
             btnExpand.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showFoodList(getAdapterPosition(), temp);
+                    showFoodList(getAdapterPosition(), foodGroup);
                 }
             });
 
             tvFood.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showFoodList(getAdapterPosition(), temp);
+                    showFoodList(getAdapterPosition(), foodGroup);
                 }
             });
         }
 
-        private void initFoodList(final FoodGroup temp) {
+        private void initFoodList(final FoodGroup foodGroup) {
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()){
                         ArrayList<Food> food = new ArrayList<>();
                         for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            if(temp != null && temp.name().equals(snapshot.getValue(Food.class).getFoodGroups())){
+                            if(foodGroup != null && foodGroup.name().equals(snapshot.getValue(Food.class).getFoodGroups())){
                                 food.add(snapshot.getValue(Food.class));
                             }
                         }
@@ -136,7 +147,7 @@ public class FoodGroupAdapter extends RecyclerView.Adapter<FoodGroupAdapter.Food
 
                 }
             };
-            firebaseServer.findItemsOfNode(valueEventListener, "food");
+            firebaseServer.findItemsOfNode(valueEventListener, foodReference);
         }
 
         private void initAdapter(ArrayList<Food> food, boolean isAdmin) {
@@ -172,9 +183,11 @@ public class FoodGroupAdapter extends RecyclerView.Adapter<FoodGroupAdapter.Food
 
         private void showFoodList(int position, FoodGroup temp){
             if(!clicks[position]){
+                btnExpand.setImageResource(R.drawable.ic_baseline_arrow_drop_up_24px);
                 initFoodList(temp);
                 clicks[position] = true;
             }else{
+                btnExpand.setImageResource(R.drawable.ic_baseline_arrow_drop_down_24px);
                 rvFood.setVisibility(View.GONE);
                 clicks[position] = false;
             }

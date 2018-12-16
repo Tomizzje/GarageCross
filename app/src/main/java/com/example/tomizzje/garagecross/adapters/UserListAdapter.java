@@ -50,6 +50,10 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
 
     public class UserListViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
+        /**
+         * Fields connected by the view and strings.xml
+         */
+
         @BindView(R.id.tvName) TextView tvName;
         @BindView(R.id.tvEmail) TextView tvEmail;
 
@@ -59,11 +63,19 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.UserLi
             itemView.setOnClickListener(this);
         }
 
+        /**
+         * this method set the  view for each row of the list
+         * @param user list element
+         */
         public void bind(User user) {
            tvEmail.setText(user.getEmail());
            tvName.setText(user.getName());
         }
 
+        /**
+         * this method set the onClickListener  for each row of the list
+         * @param view activity view
+         */
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();

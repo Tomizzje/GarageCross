@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tomizzje.garagecross">
 
-    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -13,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
 
 
         <activity android:name=".activities.WelcomeActivity">
@@ -44,10 +44,7 @@
         <activity android:name=".activities.ExerciseListActivity">
 
         </activity>
-        <activity android:name=".activities.UserListActivity">
-
-        </activity>
-        <activity android:name=".activities.PersonalExerciseListActivty">
+        <activity android:name=".activities.PersonalExerciseListActivity">
 
         </activity>
 
@@ -63,16 +60,12 @@
 
         </activity>
 
-        <activity android:name=".activities.FoodListActivity">
-
-        </activity>
-
-        <activity android:name=".activities.InsertFoodActivity">
-
-        </activity>
-
-        <activity android:name=".activities.InsertShareActivity"
+        <activity android:name=".activities.InsertFoodActivity"
             android:windowSoftInputMode="adjustNothing">
+        </activity>
+
+        <activity android:name=".activities.InsertShareActivity">
+
         </activity>
 
         <activity android:name=".activities.ShareListActivity">

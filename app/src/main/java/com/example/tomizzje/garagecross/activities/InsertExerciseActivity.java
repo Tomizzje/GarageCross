@@ -3,10 +3,10 @@ package com.example.tomizzje.garagecross.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,8 +18,9 @@ import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.ImageAdapter;
-import com.example.tomizzje.garagecross.enums.Difficulty;
 import com.example.tomizzje.garagecross.entities.Exercise;
+import com.example.tomizzje.garagecross.enums.Difficulty;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -33,13 +34,20 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class InsertExerciseActivity extends MenuBaseActivity {
+public class InsertExerciseActivity extends BaseActivity {
 
 
     private static final int PICTURE_RESULT = 42;
 
+    /**
+     * Fields connected by the view and strings.xml
+     */
+
     @BindView(R.id.txtTitle)
     EditText txtTitle;
+
+    @BindView(R.id.tvTitle)
+    TextView tvTitle;
 
     @BindView(R.id.txtDesc)
     EditText txtDesc;
@@ -86,13 +94,31 @@ public class InsertExerciseActivity extends MenuBaseActivity {
     @BindString(R.string.insert_exercise_select_picture)
     String selectPictureText;
 
-    private Exercise exercise;
+    @BindString(R.string.insert_exercise_title)
+    String tvInfoInsert;
 
+    @BindString(R.string.modify_exercise_title)
+    String tvInfoModify;
+
+    @BindString(R.string.insert_exercise_too_long_text)
+    String txtTitleSizeToast;
+
+    @BindString(R.string.insert_exercise_too_long_description)
+    String txtDescSizeToast;
+
+    @BindString(R.string.insert_exercise_deleted_images)
+    String deletedImagesToast;
+
+    @BindString(R.string.unknown_error_text)
+    String errorToast;
+
+    @BindString(R.string.insert_exercise_no_images_to_delete)
+    String noImagesToDeleteToast;
+
+    private Exercise exercise;
     private ArrayList<String> imagesUrlList;
     private ArrayList<String> imagesIdList;
-
     private boolean toModify;
-
     private  String title = null;
     private  String description = null;
 
@@ -102,12 +128,23 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         setContentView(R.layout.activity_insert_exercise);
         ButterKnife.bind(this);
 
-        //TODO
         setSpinner();
         initExercise();
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String btnCaption = toModify ? btnDeleteExerciseText : btnResetText;
+        btnDeleteExercise.setText(btnCaption);
+        initOnClickListeners();
+    }
+
+    /**
+     * Set spinner to choose difficulty
+     */
     private void setSpinner() {
         final String[] difficulties = Difficulty.getDifficultyValuesString();
         AdapterView.OnItemSelectedListener itemClickListener = new AdapterView.OnItemSelectedListener() {
@@ -127,25 +164,9 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         spnDifficulty.setAdapter(aa);
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        String btnCaption = toModify ? btnDeleteExerciseText : btnResetText;
-        btnDeleteExercise.setText(btnCaption);
-        initOnClickListeners();
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        if(!imagesUrlList.isEmpty()){
-            deleteImages(imagesUrlList);
-        }
-        super.onBackPressed();
-    }
-
+    /**
+     * Initialize exercise and the page whether the users would like to modify or create a new one
+     */
     private void initExercise() {
         imagesUrlList = new ArrayList<>();
         imagesIdList = new ArrayList<>();
@@ -155,10 +176,13 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         if (exercise == null) {
             exercise = new Exercise();
             toModify = false;
+            tvTitle.setText(tvInfoInsert);
             btnDeleteExercise.setText(btnResetText);
             tvPictureInfo.setVisibility(View.VISIBLE);
 
+
         } else {
+            tvPictureInfo.setVisibility(View.VISIBLE);
             if(exercise.getPicturesUrl() != null) {
 
                 for(Map.Entry<String,String> entry : exercise.getPicturesUrl().entrySet()) {
@@ -173,6 +197,8 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             spnDifficulty.setSelection(position);
 
             toModify = true;
+            tvTitle.setText(tvInfoModify);
+
         }
         this.exercise = exercise;
 
@@ -183,17 +209,13 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             txtTitle.setText(exercise.getTitle());
             txtDesc.setText(exercise.getDescription());
         }
+        txtTitle.setSelection(txtTitle.getText().length());
     }
 
-    private int getSpinTextPosition(String text) {
-        for(int i=0;i<spnDifficulty.getAdapter().getCount();++i){
-            if(spnDifficulty.getAdapter().getItem(i).toString().equals(text)){
-                return i;
-            }
-        }
-        return 0;
-    }
 
+    /**
+     * Initialize button OnClickListeners
+     */
 
     private void initOnClickListeners() {
         btnUpload.setOnClickListener(new View.OnClickListener() {
@@ -205,17 +227,23 @@ public class InsertExerciseActivity extends MenuBaseActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true);
-                startActivityForResult(intent.createChooser(intent, selectPictureText), PICTURE_RESULT);
+                startActivityForResult(Intent.createChooser(intent, selectPictureText), PICTURE_RESULT);
             }
         });
 
         btnDeletePicture.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                deleteImages(imagesUrlList);
-                imagesUrlList = new ArrayList<>();
-                imagesIdList = new ArrayList<>();
-                initAdapter(imagesUrlList);
+                if(!imagesUrlList.isEmpty()){
+                    deleteImages(imagesUrlList);
+                    Toast.makeText(view.getContext(), deletedImagesToast,Toast.LENGTH_LONG).show();
+                    imagesUrlList = new ArrayList<>();
+                    imagesIdList = new ArrayList<>();
+                    initAdapter(imagesUrlList);
+                }else {
+                    Toast.makeText(view.getContext(), noImagesToDeleteToast,Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -223,30 +251,34 @@ public class InsertExerciseActivity extends MenuBaseActivity {
             @Override
             public void onClick(View view) {
                 saveExercise();
-                Toast.makeText(getBaseContext(), exerciseSavedToast, Toast.LENGTH_LONG).show();
-                clean();
-                backToList();
             }
         });
 
         btnDeleteExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO
                 if(toModify) {
                     firebaseServer.deleteEntity(exercise, exercisesReference);
-                    Toast.makeText(view.getContext(), exerciseDeletedToast,
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), exerciseDeletedToast,Toast.LENGTH_LONG).show();
                     backToList();
+                    finish();
                 }
                 deleteImages(imagesUrlList);
+                imagesUrlList = new ArrayList<>();
+                imagesIdList = new ArrayList<>();
+                initAdapter(imagesUrlList);
                 clean();
             }
         });
     }
 
-    //TODO
 
+    /**
+     *  This method is called after the user returns from choosing a picture. If resultCode is the pictureCode, then upload the image to the storage
+     * @param requestCode the requestcode we sent to get a picture
+     * @param resultCode the result code after the return
+     * @param data the data chosen by the user
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -258,34 +290,51 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         }
     }
 
-    private void clean() {
-        txtTitle.setText("");
-        txtDesc.setText("");
-        txtTitle.requestFocus();
-    }
-
+    /**
+     * Check if the user modifies or creates an exercise and check if the inputs are valid
+     */
     private void saveExercise() {
         exercise.setTitle(txtTitle.getText().toString());
         exercise.setDescription(txtDesc.getText().toString());
-
-
         String difficulty= Difficulty.getDifficultyByString(spnDifficulty.getSelectedItem().toString()).name();
-        // TODO
         HashMap<String,String> imagesUrl = getMapFromList(imagesUrlList, imagesIdList);
 
-        Exercise saveExercise = new Exercise(exercise.getTitle(), exercise.getDescription(), firebaseLogin.getCurrentUser(), difficulty, imagesUrl);
-        if(toModify){
-            saveExercise.setPushId(exercise.getPushId());
-            saveExercise.setPopularity(exercise.getPopularity());
-            saveExercise.setFavoritedUsers(exercise.getFavoritedUsers());
-            firebaseServer.updateExercise(exercisesReference, exercise.getPushId(), saveExercise);
-        }else {
-            firebaseServer.insertEntity(saveExercise, exercisesReference);
+        if(checkTitleTextSize() && checkDescriptionTextSize()){
+            Exercise saveExercise = new Exercise(exercise.getTitle(), exercise.getDescription(), firebaseLogin.getCurrentUser(), difficulty, imagesUrl);
+            if(toModify){
+                saveExercise.setPushId(exercise.getPushId());
+                saveExercise.setPopularity(exercise.getPopularity());
+                saveExercise.setRatedUsers(exercise.getRatedUsers());
+                saveExercise.setFavoritedUsers(exercise.getFavoritedUsers());
+                firebaseServer.updateExercise(exercisesReference, exercise.getPushId(), saveExercise);
+            }else {
+                firebaseServer.insertEntity(saveExercise, exercisesReference);
+            }
+            Toast.makeText(this, exerciseSavedToast, Toast.LENGTH_LONG).show();
+            backToList();
+            finish();
+
+        }else if(!checkTitleTextSize()) {
+            Toast.makeText(this, txtTitleSizeToast,Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this, txtDescSizeToast,Toast.LENGTH_LONG).show();
         }
-
-
     }
 
+    private boolean checkDescriptionTextSize() {
+        return txtDesc.getText().length() > 19 && txtDesc.getText().length() < 201 && txtDesc.getLineCount() < 10;
+    }
+
+    private boolean checkTitleTextSize() {
+        return txtTitle.getText().length() > 2 && txtTitle.getText().length() < 16;
+    }
+
+    /**
+     * Creates a hashmap from 2 lists
+     * @param imagesUrlList the url list
+     * @param imagesIdList the id list
+     * @return a Hashmap
+     */
     private HashMap<String,String> getMapFromList(ArrayList<String> imagesUrlList, ArrayList<String> imagesIdList ) {
         HashMap<String,String> imagesUrl = new HashMap<>();
 
@@ -295,14 +344,21 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         return imagesUrl;
     }
 
+    /**
+     * Navigates back to the list
+     */
     private void backToList() {
-        Intent intent = new Intent(this, PersonalExerciseListActivty.class);
+        Intent intent = new Intent(this, PersonalExerciseListActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * This method uploads the image to the storage,saves the url and the id, and initialize the list of images
+     * @param imageUri contains the data of the picture
+     */
     private void uploadImage(Uri imageUri) {
         final String uniqueID = UUID.randomUUID().toString();
-        final StorageReference filePath = firebaseDepot.getFilePath(imageUri, uniqueID);
+        final StorageReference filePath = firebaseDepot.getFilePath(uniqueID);
         filePath.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -319,19 +375,33 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         });
     }
 
+    /**
+     * Delete the images from the storage
+     * @param list the url list of images
+     */
     private void deleteImages(ArrayList<String> list) {
+
         for(final String imageUrl : list) {
             StorageReference photoRef = firebaseDepot.getStorageReferenceFromUrl(imageUrl);
             photoRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                   //TODO
 
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), errorToast,Toast.LENGTH_LONG).show();
                 }
             });
         }
+
     }
 
+    /**
+     * Initialize the adapter with the list of images
+     * @param list url list of images
+     */
     private void initAdapter(ArrayList<String> list) {
         initInfo(list);
         final ImageAdapter adapter = new ImageAdapter(list);
@@ -340,10 +410,36 @@ public class InsertExerciseActivity extends MenuBaseActivity {
         rvImages.setLayoutManager(exercisesLayoutManager);
     }
 
+    /**
+     * Set visibility for Textview depends on list size
+     * @param list url list of images
+     */
     private void initInfo(ArrayList<String> list) {
         tvPictureInfo.setVisibility(View.GONE);
         if(list.isEmpty()){
             tvPictureInfo.setVisibility(View.VISIBLE);
         }
+    }
+
+    /**
+     * This method returns the position of the selected item
+     * @param text spinner item
+     * @return the position of the spinner
+     */
+    private int getSpinTextPosition(String text) {
+        for(int i=0;i<spnDifficulty.getAdapter().getCount();++i){
+            if(spnDifficulty.getAdapter().getItem(i).toString().equals(text)){
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * It cleans the EditTexts
+     */
+    private void clean(){
+        txtTitle.setText("");
+        txtDesc.setText("");
     }
 }

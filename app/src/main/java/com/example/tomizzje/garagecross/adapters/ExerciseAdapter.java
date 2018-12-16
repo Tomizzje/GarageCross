@@ -20,8 +20,10 @@ import com.example.tomizzje.garagecross.models.FirebaseServer;
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.utils.Utils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -60,6 +62,10 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
     }
 
     public class ExerciseViewHolder extends RecyclerView.ViewHolder {
+
+        /**
+         * Fields connected by the view and strings.xml
+         */
 
         @BindView(R.id.tvTitle)
         TextView tvTitle;
@@ -100,17 +106,21 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             BaseApplication.getInstance().getBaseComponent().inject(this);
         }
 
+        /**
+         * this method set the onClickListener and view for each row of the list
+         * @param exercise list element
+         */
         public void bind(final Exercise exercise) {
             tvTitle.setText(exercise.getTitle());
             tvDifficulty.setText(Difficulty.getDifficultyByName(exercise.getDifficulty()).toString());
 
+           if(exercise.getPopularity() != 0){
+               String rate = String.format(Locale.getDefault(),"%.1f", exercise.getPopularity()) + "/5" ;
 
-            if(exercise.getRatedUsers() == null) {
-                tvRate.setText(notRatedText);
-            } else {
-                String rate = String.valueOf(Utils.getRate(exercise))+ "/5";
-                tvRate.setText(rate);
-            }
+               tvRate.setText(rate);
+           }else{
+               tvRate.setText(notRatedText);
+           }
 
             if(exercise.getFavoritedUsers() == null || !exercise.getFavoritedUsers().containsKey(firebaseLogin.getCurrentUser())){
                 imgBtnStar.setImageResource(android.R.drawable.btn_star_big_off);
@@ -133,8 +143,8 @@ public class ExerciseAdapter extends RecyclerView.Adapter<ExerciseAdapter.Exerci
             imgBtnStar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //TODO
-                    if (!(exercise.getFavoritedUsers().containsKey(firebaseLogin.getCurrentUser()))) {
+                    String currentUser = firebaseLogin.getCurrentUser();
+                    if (!(exercise.getFavoritedUsers().containsKey(currentUser)) && currentUser != null) {
                         imgBtnStar.setImageResource(android.R.drawable.btn_star_big_on);
 
                         firebaseServer.updateFavoritesOfExercise(exercisesReference, exercise.getPushId(), firebaseLogin.getCurrentUser());

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.ceylonlabs.imageviewpopup.ImagePopup;
 import com.example.tomizzje.garagecross.R;
 import com.squareup.picasso.Picasso;
@@ -48,6 +49,10 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImagesViewHo
 
     public class ImagesViewHolder extends RecyclerView.ViewHolder {
 
+        /**
+         * Fields connected by the view and strings.xml
+         */
+
         @BindView(R.id.imgExercise) ImageView imgExercise;
 
          ImagesViewHolder(View itemView) {
@@ -55,9 +60,14 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImagesViewHo
             ButterKnife.bind(this, itemView);
         }
 
+        /**
+         * this method set the onClickListener and view for each row of the list
+         * @param temp list element
+         */
         public void bind(final String temp) {
             if(temp != null && !temp.isEmpty()){
                 Picasso.get().load(temp).resize(300,300).centerCrop().into(imgExercise);
+
             }
 
             imgExercise.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +79,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImagesViewHo
 
         }
 
+        /**
+         * this method opens the picture in a window
+         * @param view of the activity
+         * @param temp the url of the picture
+         */
         private void showPopup(View view, final String temp) {
             final ImagePopup imagePopup = new ImagePopup(view.getContext());
             imagePopup.setImageOnClickClose(true);

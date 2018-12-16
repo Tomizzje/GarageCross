@@ -9,7 +9,6 @@ import com.example.tomizzje.garagecross.modules.ApplicationModule;
 import com.example.tomizzje.garagecross.modules.FirebaseDepotModule;
 import com.example.tomizzje.garagecross.modules.FirebaseLoginModule;
 import com.example.tomizzje.garagecross.modules.FirebaseServerModule;
-import com.example.tomizzje.garagecross.modules.VibrationUtilModule;
 
 
 import javax.inject.Singleton;
@@ -17,8 +16,12 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {ApplicationModule.class, VibrationUtilModule.class, FirebaseServerModule.class, FirebaseLoginModule.class, FirebaseDepotModule.class})
+@Component(modules = {ApplicationModule.class, FirebaseServerModule.class, FirebaseLoginModule.class, FirebaseDepotModule.class})
 public interface BaseComponent {
+
+    /**
+     * List of classes where models were injected
+     */
 
     void inject(BaseActivity baseActivity);
     void inject(ExerciseAdapter.ExerciseViewHolder exerciseViewHolder);

@@ -18,17 +18,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
+    <TextView
+        android:id="@+id/tvUserInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/insert_share_user_label"
+        android:textSize="@dimen/text_size_normal"
+        android:layout_marginTop="@dimen/margin_extra_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
     <Button
         android:id="@+id/btnDialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_extra_large"
+        android:layout_marginTop="@dimen/margin_small"
         android:text="@string/insert_share_select_user_text"
         android:gravity="center"
         android:textSize="@dimen/text_size_small"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvUserInfo" />
 
     <TextView
         android:id="@+id/tvDoneExerciseInfo"

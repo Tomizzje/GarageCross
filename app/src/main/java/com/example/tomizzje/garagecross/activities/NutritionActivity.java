@@ -27,6 +27,9 @@ import butterknife.ButterKnife;
 
 public class NutritionActivity extends MenuBaseActivity {
 
+    /**
+     * Fields connected by the view and strings.xml
+     */
     @BindView(R.id.tvTitle)
     TextView tvTitle;
 
@@ -45,8 +48,6 @@ public class NutritionActivity extends MenuBaseActivity {
     @BindString(R.string.intent_bundle_key_select_foodGroup)
     String intentFoodGroupString;
 
-
-    private boolean isAdmin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,10 @@ public class NutritionActivity extends MenuBaseActivity {
         initAdministrator();
     }
 
+    /**
+     * Initialize the adapter with the list of FoodGroup
+     * @param food list of FoodGroup
+     */
     private void initAdapter(List<FoodGroup> food) {
         final FoodGroupAdapter adapter = new FoodGroupAdapter(food);
         rvFood.setAdapter(adapter);
@@ -76,15 +81,17 @@ public class NutritionActivity extends MenuBaseActivity {
         rvFood.setLayoutManager(foodLayoutManager);
     }
 
+    /**
+     * Query the administrators from database to check if the user is an administrator
+     */
     private void initAdministrator() {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        if(snapshot.getKey().equals(firebaseLogin.getCurrentUser())){
+                        if(snapshot.getKey() != null && snapshot.getKey().equals(firebaseLogin.getCurrentUser())){
                             btnAdd.setVisibility(View.VISIBLE);
-                            isAdmin = true;
                             initAddButton();
                         }
                     }
@@ -99,6 +106,9 @@ public class NutritionActivity extends MenuBaseActivity {
         firebaseServer.findItemsOfNode(valueEventListener,administratorsReference);
     }
 
+    /**
+     * Initialize add button for administrators
+     */
     private void initAddButton() {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.adapters.ExerciseAdapter;
 import com.example.tomizzje.garagecross.entities.Exercise;
@@ -22,9 +23,11 @@ import butterknife.ButterKnife;
 
 public class FavoriteExerciseListActivity extends MenuBaseActivity {
 
-    @BindView(R.id.rvItems) RecyclerView rvExercises;
+    @BindView(R.id.rvItems)
+    RecyclerView rvExercises;
 
-    @BindView(R.id.tvListTitle) TextView tvExerciseListTitle;
+    @BindView(R.id.tvListTitle)
+    TextView tvExerciseListTitle;
 
     @BindView(R.id.tvInfo)
     TextView tvInfo;
@@ -37,6 +40,9 @@ public class FavoriteExerciseListActivity extends MenuBaseActivity {
 
     @BindString(R.string.favorite_exercise_no_data)
     String tvInfoLabel;
+
+    @BindString(R.string.unknown_error_text)
+    String errorToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,39 +64,56 @@ public class FavoriteExerciseListActivity extends MenuBaseActivity {
         initFavoriteExercises();
     }
 
+    /**
+     *  Query the the user's favorite exercises from the Database, and collect them into a list.
+     */
     private void initFavoriteExercises() {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     ArrayList<Exercise> exercises = new ArrayList<>();
+                    String currentUser = firebaseLogin.getCurrentUser();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        if(snapshot.getValue(Exercise.class).getFavoritedUsers() != null && snapshot.getValue(Exercise.class).getFavoritedUsers().containsKey(firebaseLogin.getCurrentUser())){
+                        if(snapshot.getValue(Exercise.class).getFavoritedUsers() != null && snapshot.getValue(Exercise.class).getFavoritedUsers().containsKey(currentUser)){
                             exercises.add(snapshot.getValue(Exercise.class));
                         }
                     }
-                    tvInfo.setVisibility(View.GONE);
-                    if(exercises.isEmpty()){
-                        tvInfo.setVisibility(View.VISIBLE);
-                    }
+                    checkListForTextView(exercises);
                     initAdapter(exercises);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), errorToast,Toast.LENGTH_LONG).show();
             }
         };
         firebaseServer.findExercisesOrderBy(valueEventListener, exercisesReference);
     }
 
-    private void initAdapter(ArrayList<Exercise> exercises) {
 
+
+    /**
+     * Initialize the adapter with the list of exercises
+     * @param exercises list
+     */
+    private void initAdapter(ArrayList<Exercise> exercises) {
         final ExerciseAdapter adapter = new ExerciseAdapter(exercises);
         rvExercises.setAdapter(adapter);
         LinearLayoutManager exercisesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvExercises.setLayoutManager(exercisesLayoutManager);
+    }
+
+    /**
+     * Set visibility for Textview depends on list size
+     * @param exercises list
+     */
+    private void checkListForTextView(ArrayList<Exercise> exercises) {
+        tvInfo.setVisibility(View.GONE);
+        if(exercises.isEmpty()){
+            tvInfo.setVisibility(View.VISIBLE);
+        }
     }
 }
 

@@ -38,6 +38,9 @@ import butterknife.ButterKnife;
 
 public class InsertShareActivity extends BaseActivity {
 
+    /**
+     * Fields connected by the view and strings.xml
+     */
     @BindView(R.id.tvTitle)
     TextView tvTitle;
 
@@ -56,6 +59,9 @@ public class InsertShareActivity extends BaseActivity {
     @BindString(R.string.insert_share_dialog_title)
     String dialogTitle;
 
+    @BindString(R.string.insert_share_invalid_comment)
+    String commentToast;
+
     @BindString(R.string.intent_bundle_key_select_doneExercise)
     String intentDoneExerciseString;
 
@@ -67,6 +73,9 @@ public class InsertShareActivity extends BaseActivity {
 
     @BindString(R.string.insert_share_share_toast)
     String sharedToast;
+
+    @BindString(R.string.unknown_error_text)
+    String errorToast;
 
 
     private User user;
@@ -84,6 +93,9 @@ public class InsertShareActivity extends BaseActivity {
         initCreateDialog();
     }
 
+    /**
+     * Initializes the dialog to choose from Users
+     */
     private void initCreateDialog() {
         dialog = new Dialog(InsertShareActivity.this);
         dialog.setContentView(R.layout.dialog_user);
@@ -107,19 +119,23 @@ public class InsertShareActivity extends BaseActivity {
         initShareButton();
     }
 
+    /**
+     * Initialize share button, check the inputs
+     */
     private void initShareButton() {
         btnShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(user == null){
                     Toast.makeText(view.getContext(), dialogTitle,
                             Toast.LENGTH_LONG).show();
-                }else {
-                    String comment = etComment.getText().toString();
-                    String date = Utils.getCurrentTime();
-                    Share share = new Share(doneExercise, user.getUser_id(), comment, date);
-                    firebaseServer.insertEntity(share, sharesReference);
+                }else if(etComment.getLineCount() > 3 || etComment.getText().length() > 200){
+                    Toast.makeText(view.getContext(), commentToast,
+                            Toast.LENGTH_LONG).show();
 
+                }else {
+                    saveShare();
                     Toast.makeText(view.getContext(), sharedToast,
                             Toast.LENGTH_LONG).show();
                     backToList();
@@ -128,6 +144,19 @@ public class InsertShareActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Save the share to the database
+     */
+    private void saveShare() {
+        String comment = etComment.getText().toString();
+        String date = Utils.getCurrentTime();
+        Share share = new Share(doneExercise, user.getUser_id(), comment, date);
+        firebaseServer.insertEntity(share, sharesReference);
+    }
+
+    /**
+     * Navigate back to the list
+     */
     private void backToList() {
         Intent intent = new Intent(this, DoneExerciseListActivity.class);
         startActivity(intent);
@@ -143,12 +172,17 @@ public class InsertShareActivity extends BaseActivity {
         });
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
     }
 
+    /**
+     * This method is used by the Eventbus, get the event and set the user
+     * @param event from the Eventbus
+     */
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         user = event.user;
@@ -156,12 +190,16 @@ public class InsertShareActivity extends BaseActivity {
         dialog.dismiss();
     }
 
+
     @Override
     protected void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
 
+    /**
+     * this is needed to dismiss the dialog always
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -170,6 +208,9 @@ public class InsertShareActivity extends BaseActivity {
         }
     }
 
+    /**
+     *  Query the Users from the Database, and collect them into a list.
+     */
     private void initUsers(){
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -187,12 +228,17 @@ public class InsertShareActivity extends BaseActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), errorToast,Toast.LENGTH_LONG).show();
             }
         };
         firebaseServer.findItemsOfNode(valueEventListener, usersReference);
     }
 
+
+    /**
+     * Initialize the adapter with the list of users
+     * @param list userlist
+     */
     private void initAdapter(List<User> list) {
 
         RecyclerView rvUsers = dialog.findViewById(R.id.rvUsers);

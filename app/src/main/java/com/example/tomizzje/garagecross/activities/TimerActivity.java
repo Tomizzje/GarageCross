@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -34,6 +35,9 @@ import butterknife.ButterKnife;
 
 public class TimerActivity extends BaseActivity {
 
+    /**
+     * Fields connected by the view and strings.xml
+     */
     @BindView(R.id.txtTitle)
     TextView txtTitle;
 
@@ -76,11 +80,14 @@ public class TimerActivity extends BaseActivity {
     @BindString(R.string.timer_rate_exercise_toast)
     String rateExerciseToast;
 
-    @BindString(R.string.timer_finished_with_rating)
+    @BindString(R.string.timer_finished_with_rating_toast)
     String RatedFinishedExerciseToast;
 
-    @BindString(R.string.timer_finished_without_rating)
+    @BindString(R.string.timer_finished_without_rating_toast)
     String FinishedExerciseToast;
+
+    @BindString(R.string.unknown_error_text)
+    String errorToast;
 
     private boolean isPaused = true;
 
@@ -93,7 +100,7 @@ public class TimerActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
         ButterKnife.bind(this);
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON); // this keeps the device awake
     }
 
     @Override
@@ -120,15 +127,9 @@ public class TimerActivity extends BaseActivity {
         initButtonClickListeners();
     }
 
-
-
-    private void initadapter(ArrayList<String> imagesList) {
-        final ImageAdapter adapter = new ImageAdapter(imagesList);
-        rvImages.setAdapter(adapter);
-        LinearLayoutManager exercisesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        rvImages.setLayoutManager(exercisesLayoutManager);
-    }
-
+    /**
+     * Initialize the user from the database
+     */
     private void initUser(){
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -144,12 +145,15 @@ public class TimerActivity extends BaseActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), errorToast,Toast.LENGTH_LONG).show();
             }
         };
         firebaseServer.findItemsOfNode(valueEventListener,usersReference);
     }
 
+    /**
+     * Initialize the button onClickListeners
+     */
     private void initButtonClickListeners() {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,7 +161,6 @@ public class TimerActivity extends BaseActivity {
                 isPaused = !isPaused;
 
                 if(!isPaused) {
-                    //pause
                     btnPlay.setImageResource(R.drawable.ic_baseline_pause_48px);
                     simpleChronometer.setBase(SystemClock.elapsedRealtime() + lastPause);
                     simpleChronometer.start();
@@ -174,7 +177,6 @@ public class TimerActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 resetTimer();
-                //vibrationUtil.vibrate(3000);
 
             }
         });
@@ -189,13 +191,18 @@ public class TimerActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Navigate back to the list
+     */
     private void backToList() {
         Intent intent = new Intent(this, DoneExerciseListActivity.class);
         startActivity(intent);
     }
 
 
-
+    /**
+     * Save the doneExercise to the database, and  check ratingbar and update user experience
+     */
     private void saveDoneExercise() {
         String currentTime = Utils.getCurrentTime();
         String elapsedTime = String.valueOf(simpleChronometer.getText());
@@ -210,21 +217,45 @@ public class TimerActivity extends BaseActivity {
         updateUserExperience();
     }
 
+    /**
+     * Update user's experience in the database
+     */
     private void updateUserExperience() {
         int point = Difficulty.getDifficultyPoints(Difficulty.getDifficultyByName(exercise.getDifficulty()));
         int value =user.getExperience() +  point;
         firebaseServer.updateExperience(usersReference, user.getPushId(),value);
     }
 
+    /**
+     * Save  doneExercise to the database
+     * @param title exercise title
+     * @param elapsedTime workout time
+     * @param currentTime current time
+     */
     private void saveToDoneExercises(String title, String elapsedTime, String currentTime) {
         DoneExercise doneExercise = new DoneExercise(title, elapsedTime, currentTime, user);
         firebaseServer.insertEntity(doneExercise, doneExercisesReference);
     }
 
+    /**
+     * Check ratingbar, and check if the user have already rated exercise
+     * @param currentUser the user
+     * @param id of the exercise
+     */
     private void checkRatingBar(String currentUser, String id) {
-        if((exercise.getRatedUsers() == null || !exercise.getRatedUsers().containsKey(currentUser)) && ratingBar.getRating() !=0){
+
+        if(exercise.getRatedUsers() == null  && ratingBar.getRating() !=0){
             firebaseServer.rateExercise(exercisesReference, id, currentUser, ratingBar.getRating());
             firebaseServer.updatePopularity(exercisesReference, id, ratingBar.getRating());
+            Toast.makeText(this, RatedFinishedExerciseToast,
+                    Toast.LENGTH_LONG).show();
+        }else if(exercise.getRatedUsers()  != null && !exercise.getRatedUsers().containsKey(currentUser) && ratingBar.getRating() !=0){
+
+            firebaseServer.rateExercise(exercisesReference, id, currentUser, ratingBar.getRating());
+            List<Float> rates = new ArrayList<>(exercise.getRatedUsers().values());
+            rates.add(ratingBar.getRating());
+            float value = Utils.getRate(rates);
+            firebaseServer.updatePopularity(exercisesReference, id, value);
             Toast.makeText(this, RatedFinishedExerciseToast,
                     Toast.LENGTH_LONG).show();
         }else if(ratingBar.getRating() == 0){
@@ -236,11 +267,25 @@ public class TimerActivity extends BaseActivity {
         }
     }
 
+    /**
+     * Reset the chronometer
+     */
     private void resetTimer(){
         simpleChronometer.setBase(SystemClock.elapsedRealtime());
         lastPause = 0;
         isPaused = true;
         btnPlay.setImageResource(R.drawable.ic_baseline_play_arrow_48px);
         simpleChronometer.stop();
+    }
+
+    /**
+     * Initialize the list of images
+     * @param imagesList url of the images
+     */
+    private void initadapter(ArrayList<String> imagesList) {
+        final ImageAdapter adapter = new ImageAdapter(imagesList);
+        rvImages.setAdapter(adapter);
+        LinearLayoutManager exercisesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        rvImages.setLayoutManager(exercisesLayoutManager);
     }
 }

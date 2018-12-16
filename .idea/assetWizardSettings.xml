@@ -5,92 +5,12 @@
       <map>
         <entry key="imageWizard">
           <value>
-            <PersistentState>
-              <option name="children">
-                <map>
-                  <entry key="imageAssetPanel">
-                    <value>
-                      <PersistentState>
-                        <option name="children">
-                          <map>
-                            <entry key="actionbar">
-                              <value>
-                                <PersistentState>
-                                  <option name="children">
-                                    <map>
-                                      <entry key="clipartAsset">
-                                        <value>
-                                          <PersistentState>
-                                            <option name="values">
-                                              <map>
-                                                <entry key="url" value="jar:file:/E:/AndroidStudio/plugins/android/lib/android.jar!/images/material_design_icons/social/ic_person_black_24dp.xml" />
-                                              </map>
-                                            </option>
-                                          </PersistentState>
-                                        </value>
-                                      </entry>
-                                      <entry key="image">
-                                        <value>
-                                          <PersistentState>
-                                            <option name="values">
-                                              <map>
-                                                <entry key="paddingPercent" value="-10" />
-                                              </map>
-                                            </option>
-                                          </PersistentState>
-                                        </value>
-                                      </entry>
-                                    </map>
-                                  </option>
-                                  <option name="values">
-                                    <map>
-                                      <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Tomizzje\Desktop\workout_1.png" />
-                                      <entry key="outputName" value="workout_icon" />
-                                    </map>
-                                  </option>
-                                </PersistentState>
-                              </value>
-                            </entry>
-                          </map>
-                        </option>
-                        <option name="values">
-                          <map>
-                            <entry key="outputIconType" value="ACTIONBAR" />
-                          </map>
-                        </option>
-                      </PersistentState>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </PersistentState>
+            <PersistentState />
           </value>
         </entry>
         <entry key="vectorWizard">
           <value>
-            <PersistentState>
-              <option name="children">
-                <map>
-                  <entry key="vectorAssetStep">
-                    <value>
-                      <PersistentState>
-                        <option name="values">
-                          <map>
-                            <entry key="assetSourceType" value="FILE" />
-                            <entry key="height" value="48" />
-                            <entry key="outputName" value="ic_baseline_pause_48px" />
-                            <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Tomizzje\Desktop\Material.io\baseline-pause-24px.svg" />
-                            <entry key="width" value="48" />
-                          </map>
-                        </option>
-                      </PersistentState>
-                    </value>
-                  </entry>
-                </map>
-              </option>
-            </PersistentState>
+            <PersistentState />
           </value>
         </entry>
       </map>

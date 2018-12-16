@@ -1,22 +1,11 @@
 package com.example.tomizzje.garagecross.models;
 
-import android.support.annotation.NonNull;
-import android.widget.Toast;
-
 import com.example.tomizzje.garagecross.entities.BaseEntity;
 import com.example.tomizzje.garagecross.entities.Exercise;
-import com.example.tomizzje.garagecross.entities.Food;
-import com.example.tomizzje.garagecross.entities.Record;
-import com.example.tomizzje.garagecross.entities.Share;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import lombok.Getter;
-import lombok.Setter;
 
 public class FirebaseServer {
 
@@ -27,9 +16,34 @@ public class FirebaseServer {
     }
 
 
+    /**
+     *
+     insert , delete , modify, select  general methods for database
+     */
+
+    public void insertEntity(BaseEntity entity, String ref){
+        String key = databaseReference.child(ref).push().getKey();
+        if(key != null) {
+            entity.setPushId(key);
+            databaseReference.child(ref).child(key).setValue(entity);
+        }
+    }
+
+    public void deleteEntity(BaseEntity entity, String ref){
+        databaseReference.child(ref).child(entity.getPushId()).removeValue();
+    }
+
+    public void modifyEntity(BaseEntity entity, String ref){
+        databaseReference.child(ref).child(entity.getPushId()).setValue(entity);
+    }
+
     public void findItemsOfNode(ValueEventListener valueEventListener, String reference) {
         databaseReference.child(reference).addValueEventListener(valueEventListener);
    }
+
+   /**
+        specific object database methods
+    */
 
     public void findExercisesOrderBy(ValueEventListener valueEventListener, String reference) {
         Query query = databaseReference.child(reference).orderByChild("popularity");
@@ -61,19 +75,4 @@ public class FirebaseServer {
     }
 
 
-    public void insertEntity(BaseEntity entity, String ref){
-        String key = databaseReference.child(ref).push().getKey();
-        if(key != null) {
-            entity.setPushId(key);
-            databaseReference.child(ref).child(key).setValue(entity);
-        }
-    }
-
-    public void deleteEntity(BaseEntity entity, String ref){
-        databaseReference.child(ref).child(entity.getPushId()).removeValue();
-    }
-
-    public void modifyEntity(BaseEntity entity, String ref){
-        databaseReference.child(ref).child(entity.getPushId()).setValue(entity);
-    }
 }

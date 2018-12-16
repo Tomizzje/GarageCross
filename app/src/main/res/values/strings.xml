@@ -25,18 +25,22 @@
     <string name="insert_exercise_title">Új feladat létrehozása</string>
     <string name="insert_record_title">Adatok rögzítése</string>
     <string name="insert_share_title">Megosztás</string>
+    <string name="modify_exercise_title">Feladat módosítása</string>
+
 
 
     <!-- TextView no data strings-->
     <string name="personal_exercise_no_data">Még nem hoztál létre saját feladatsort</string>
     <string name="share_list_no_data">Veled még nem osztottak meg eredményt</string>
     <string name="recommended_list_no_data">Jelenleg nincsenek ajánlott feladataid</string>
-    <string name="weightlifting_diary_no_data">Még nem hoztál létre bejegzést a naplóhoz</string>
+    <string name="weightlifting_diary_no_data">Még nem hoztál létre bejegyzést a naplóhoz</string>
     <string name="insert_exercise_no_picture">Nincs még kép feltöltve</string>
     <string name="timer_exercise_no_picture">A feladathoz nincs kép feltöltve</string>
     <string name="exercise_rated_no_data_text"> N/A</string>
     <string name="done_exercise_no_data"> Még nem teljesítettél feladatsort</string>
     <string name="favorite_exercise_no_data"> Még nincs kedvenc feladatod</string>
+    <string name="insert_exercise_no_images_to_delete"> Nem töltöttél fel képet</string>
+
 
 
     <!-- Button label strings-->
@@ -47,16 +51,24 @@
     <string name="btnReset">Visszaállít</string>
     <string name="btnAdd">Új hozzáadása</string>
     <string name="btnStronger">Ma erős vagyok</string>
-    <string name="btnUpload">Kép feltöltése</string>
-    <string name="btnDeleteExercise">Feladat törlése</string>
-    <string name="btnSaveExercise">Feladat mentése</string>
-    <string name="btnDeletePicture">Képek törlése</string>
+    <string name="btnUpload">Kép\nfeltöltése</string>
+    <string name="btnDeleteExercise">Feladat\ntörlése</string>
+    <string name="btnSaveExercise">Feladat\nmentése</string>
+    <string name="btnDeletePicture">Képek\ntörlése</string>
 
 
 
     <!-- Menu label strings-->
     <string name="welcome_menu">Kezdőlap</string>
     <string name="all_exercise_menu">Összes feladat</string>
+    <string name="done_exercise_menu">Elvégzett feladataim</string>
+    <string name="favorite_exercise_menu">Kedvenc Feladataim</string>
+    <string name="recommended_exercise_menu">Ajánlott Feladataim</string>
+    <string name="personal_exercise_menu">Saját feladataim</string>
+    <string name="share_list_menu">Megosztások</string>
+    <string name="nutrition_menu">Táplálkozás</string>
+    <string name="weightlifting_menu">Naplóm</string>
+    <string name="logout_menu">Kijelentkezés</string>
 
     <!--ImageButton description Strings-->
     <string name="imageButton_reset_description">Újrakezdés gomb</string>
@@ -69,12 +81,26 @@
     <string name="insert_exercise_save_toast"> Feladat elmentve</string>
     <string name="insert_exercise_delete_toast"> Feladat törölve</string>
     <string name="insert_share_share_toast"> Megosztva!</string>
+    <string name="insert_record_deleted_toast">Bejegyzés törölve</string>
+    <string name="insert_record_saved_toast">Bejegyzés mentve</string>
+    <string name="insert_record_modified_toast">Bejegyzés módosítva</string>
     <string name="timer_rate_exercise_toast"> Egy feladatot legfeljebb egyszer értékelhetsz</string>
     <string name="exercise_adapter_added_favorites_toast"> Hozzáadva a kedvencekhez</string>
     <string name="exercise_adapter_removed_favorites_toast">Törölve a kedvencekből </string>
     <string name="share_adapter_share_removed_toast">Megosztás törölve</string>
-    <string name="timer_finished_with_rating">Feladat teljesítve, gratulálunk az eredményedhez és az értékelésedet köszönjük</string>
-    <string name="timer_finished_without_rating">Feladat teljesítve, gratulálunk az eredményedhez</string>
+    <string name="timer_finished_with_rating_toast">Feladat teljesítve, gratulálunk az eredményedhez és az értékelésedet köszönjük</string>
+    <string name="timer_finished_without_rating_toast">Feladat teljesítve, gratulálunk az eredményedhez</string>
+    <string name="recommended_exercise_max_level_toast">Már elérted a legmagasabb szintet, nincs nehezebb feladat</string>
+    <string name="recommended_exercise_next_level_toast">A lista frissítve egy szinttel nehezebb feladatokkal</string>
+    <string name="successful_logout_toast"> Sikeres kijelentkezés</string>
+    <string name="insert_share_dialog_title"> Válassz egy felhasználót</string>
+    <string name="insert_share_invalid_comment"> A megjegyzés legfeljebb 200 karaktert tartalmazhat és 3 sort</string>
+    <string name="insert_exercise_too_long_text"> A feladat címe legalább 3, legfeljebb 15 karakter lehet</string>
+    <string name="insert_exercise_too_long_description"> A feladat leírása legalább 20, legfeljebb 200 karakter lehet és 9 sort tartalmazhat</string>
+    <string name="insert_exercise_deleted_images"> Képek törölve</string>
+
+    <string name="insert_food_no_food"> Nem adtál meg ételt</string>
+    <string name="insert_record_too_long_description"> A bejegyzés legfeljebb 8 sor lehet</string>
 
 
     <!--  Database References strings-->
@@ -102,9 +128,15 @@
 
     <!-- TextView strings-->
     <string name="insert_share_doneExercise_label">A feladat, amit megosztasz:</string>
-    <string name="insert_share_dialog_title"> Válassz egy felhasználót</string>
 
+    <string name="insert_share_user_label">Akivel megosztod:</string>
     <string name="welcome_user_level_text">A jelenlegi szinted:</string>
+    <string name="welcome_text">Üdvözöllek \n</string>
+    <string name="recommended_exercise_text">A te szinted jelenleg: </string>
+    <string name="point_text"> pont</string>
+    <string name="unknown_error_text"> Váratlan hiba</string>
+
+
 
 
 </resources>

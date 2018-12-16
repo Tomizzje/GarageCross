@@ -30,7 +30,7 @@
 
     <TextView
         android:id="@+id/tvDescription"
-        android:layout_width="265dp"
+        android:layout_width="240dp"
         android:layout_height="50dp"
         android:maxLines="3"
 

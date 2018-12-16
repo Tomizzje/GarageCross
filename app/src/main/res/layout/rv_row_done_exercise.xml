@@ -8,21 +8,25 @@
 
     <ImageView
         android:id="@+id/imageExercise"
-        android:layout_width="37dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="35dp"
+        android:layout_height="50dp"
+
+
+        android:layout_marginTop="@dimen/margin_standard"
+        android:layout_marginStart="@dimen/margin_extra_small"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/workout_icon" />
+        app:srcCompat="@drawable/ic_baseline_fitness_center_48px" />
 
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="@dimen/margin_standard"
+        android:layout_marginStart="@dimen/margin_standard"
         android:gravity="center"
-        android:text="TextView"
-        android:textSize="24sp"
+        tools:text="Title"
+        android:textSize="@dimen/text_size_normal"
         app:layout_constraintStart_toEndOf="@+id/imageExercise"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,30 +34,29 @@
         android:id="@+id/tvDateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="@dimen/margin_large"
         android:gravity="center"
-        android:text="TextView"
-        android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/tvTitle"
-        app:layout_constraintEnd_toStartOf="@id/tvElapsedTime"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="@dimen/margin_large"
-        tools:layout_editor_absoluteY="19dp" />
+        tools:text="TextView"
+        android:textSize="@dimen/text_size_extra_small"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintStart_toEndOf="@id/imageExercise"
+
+        android:layout_marginBottom="@dimen/margin_standard"
+        android:layout_marginTop="@dimen/margin_extra_small"
+        />
 
     <TextView
         android:id="@+id/tvElapsedTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginStart="@dimen/margin_large"
+        android:layout_marginTop="@dimen/margin_large"
         android:gravity="center"
-        android:text="00:01"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tvDateTime"
+        tools:text="00:01"
+        android:textSize="@dimen/text_size_small"
+        app:layout_constraintStart_toEndOf="@+id/tvTitle"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.857" />
+        />
 
     <ImageView
         android:id="@+id/imgShare"
@@ -63,6 +66,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.64"
+
         app:srcCompat="@drawable/ic_baseline_share_24px" />
 </android.support.constraint.ConstraintLayout>

@@ -1,29 +1,30 @@
 package com.example.tomizzje.garagecross.models;
 
-import android.net.Uri;
-import android.util.Log;
-
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.util.ArrayList;
 
 public class FirebaseDepot {
     private StorageReference storageReference;
 
-
     public FirebaseDepot() {
         storageReference = FirebaseStorage.getInstance().getReference();
-
     }
 
+    /**
+     * Returns the referenec of the image
+     * @param url of the image
+     * @return storagereference
+     */
     public StorageReference getStorageReferenceFromUrl(String url) {
         return FirebaseStorage.getInstance().getReferenceFromUrl(url);
     }
 
-    public StorageReference getFilePath(Uri imageUri, String uid) {
+    /**
+     *  Returns storagereference of the id
+     * @param uid of the file
+     * @return storagereference
+     */
+    public StorageReference getFilePath(String uid) {
         return storageReference.child("exercises_pictures").child(uid) ;
 
     }

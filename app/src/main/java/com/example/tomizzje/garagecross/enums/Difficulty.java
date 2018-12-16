@@ -16,6 +16,11 @@ public enum Difficulty {
         return userFriendlyText;
     }
 
+    /**
+     * This method returns enum by his friendlyText
+     * @param userFriendlyText Difficulty friendlytext
+     * @return Difficulty
+     */
     public static Difficulty getDifficultyByString(String userFriendlyText){
         for(Difficulty d : Difficulty.values()){
             if(d.userFriendlyText.equals(userFriendlyText)){
@@ -25,6 +30,11 @@ public enum Difficulty {
         return BEGINNER;
     }
 
+    /**
+     * return Difficulty by his name
+     * @param text name of difficulty
+     * @return difficulty
+     */
     public static Difficulty getDifficultyByName(String text){
         for(Difficulty d : Difficulty.values()){
             if(d.name().equals(text)){
@@ -34,6 +44,11 @@ public enum Difficulty {
         return BEGINNER;
     }
 
+    /**
+     * This method return point by difficulty
+     * @param difficulty enum
+     * @return point
+     */
     public static int getDifficultyPoints(Difficulty difficulty){
         switch(difficulty){
             case BEGINNER:
@@ -49,6 +64,10 @@ public enum Difficulty {
         }
     }
 
+    /**
+     * This method return a string array of difficulty enum
+     * @return String array
+     */
     public static String[] getDifficultyValuesString(){
         Difficulty[] temp = Difficulty.values();
         String[] result = new String[temp.length];
@@ -58,6 +77,11 @@ public enum Difficulty {
         return result;
     }
 
+    /**
+     * This method select the user experience by his points
+     * @param experience user's experience
+     * @return Difficulty
+     */
     public static Difficulty getDifficultyLevelByExperience(int experience) {
        if(experience < 50){
            return Difficulty.BEGINNER;
@@ -70,6 +94,11 @@ public enum Difficulty {
        }
     }
 
+    /**
+     * This method return a one more stronger difficulty
+     * @param d Difficulty of the user
+     * @return A stronger difficulty
+     */
     public static Difficulty getStrongerDifficultyLevel(Difficulty d) {
         for(int i=0;i<Difficulty.values().length;++i){
             if(values()[i].name().equals(d.name()) && i != Difficulty.values().length -1 ){

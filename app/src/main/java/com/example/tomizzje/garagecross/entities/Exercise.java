@@ -67,19 +67,4 @@ public class Exercise extends BaseEntity implements Serializable {
         this.ratedUsers = new HashMap<>();
         this.picturesUrl = picturesUrl;
     }
-
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(this.title);
-        sb.append(" ");
-        sb.append(this.description);
-        sb.append(" ");
-        sb.append(this.creatorUser_id);
-        sb.append(" ");
-        sb.append(this.difficulty);
-        sb.append(" ");
-        sb.append(this.popularity);
-        sb.append(" ");
-        return sb.toString();
-    }
 }

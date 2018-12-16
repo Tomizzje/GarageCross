@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.enums.Difficulty;
@@ -20,7 +21,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -28,6 +32,10 @@ import butterknife.ButterKnife;
 
 
 public class WelcomeActivity extends MenuBaseActivity{
+
+    /**
+     * Fields connected by the view and strings.xml
+     */
 
     @BindView(R.id.tvWelcome)
     TextView tvWelcome;
@@ -52,6 +60,15 @@ public class WelcomeActivity extends MenuBaseActivity{
 
     @BindString(R.string.intent_bundle_key_select_exercise)
     String intentExerciseString;
+
+    @BindString(R.string.welcome_text)
+    String welcomeText;
+
+    @BindString(R.string.point_text)
+    String pointText;
+
+    @BindString(R.string.unknown_error_text)
+    String errorToast;
 
     private User user;
 
@@ -83,6 +100,9 @@ public class WelcomeActivity extends MenuBaseActivity{
         }
     }
 
+    /**
+     * Initialize GoodDayButton
+     */
     private void initButtonDay() {
         btnGoodDay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,12 +110,15 @@ public class WelcomeActivity extends MenuBaseActivity{
                 if(exercise != null){
                     Intent intent = new Intent(WelcomeActivity.this, TimerActivity.class);
                     intent.putExtra(intentExerciseString, exercise);
-                    getApplicationContext().startActivity(intent);
+                    view.getContext().startActivity(intent);
                 }
             }
         });
     }
 
+    /**
+     * query the exercises from the database to a list for the GoodDayButton
+     */
     private void initExercise() {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -103,20 +126,25 @@ public class WelcomeActivity extends MenuBaseActivity{
                 if(dataSnapshot.exists()) {
                     List<Exercise> exercises = new ArrayList<>();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        exercises.add(snapshot.getValue(Exercise.class));
+                        if(snapshot.getValue(Exercise.class) != null){
+                            exercises.add(snapshot.getValue(Exercise.class));
+                        }
                     }
-                    exercise = Utils.getRandomExercise(exercises);
+                    exercise = getRandomExercise(exercises);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), errorToast,Toast.LENGTH_LONG).show();
             }
         };
         firebaseServer.findItemsOfNode(valueEventListener, exercisesReference);
     }
 
+    /**
+     * Query the users from the database and save it if it is the first time the user logged in
+     */
     private void initFindUser() {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -124,7 +152,10 @@ public class WelcomeActivity extends MenuBaseActivity{
                 if(dataSnapshot.exists() ) {
                     List<User> users = new ArrayList<>();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        users.add(snapshot.getValue(User.class));
+                        if(snapshot.getValue(User.class) != null){
+                            users.add(snapshot.getValue(User.class));
+                        }
+
                     }
 
                     boolean gotIt = false;
@@ -138,26 +169,28 @@ public class WelcomeActivity extends MenuBaseActivity{
                         firebaseServer.insertEntity(user, usersReference);
                     }
 
-                    String welcomeMsg = "Üdvözöllek \n " + user.getName();
+                    String name = Utils.fixDisplayName(user.getName());
+                    String welcomeMsg = welcomeText + name;
                     tvWelcome.setText(welcomeMsg);
 
-                    String levelMsg = Difficulty.getDifficultyLevelByExperience(user.getExperience()).toString() + ": " + user.getExperience() + " pont";
 
+                    String levelMsg = Difficulty.getDifficultyLevelByExperience(user.getExperience()).toString() + ": " + user.getExperience() + pointText;
                     tvLevel.setText(levelMsg);
-
-                    pgsBar.setProgress(user.getExperience());
 
                     String progressInfo = user.getExperience() + "/" + pgsBar.getMax();
                     tvProgressInfo.setText(progressInfo);
+                    pgsBar.setProgress(user.getExperience());
                 }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), errorToast,Toast.LENGTH_LONG).show();
             }
         };
         firebaseServer.findItemsOfNode(valueEventListener, usersReference);
     }
+
+
 
     @Override
     protected void onPause() {
@@ -165,8 +198,21 @@ public class WelcomeActivity extends MenuBaseActivity{
         firebaseLogin.detachListener();
     }
 
+    /**
+     * Set progressbar limits
+     */
     private void initProgressBar() {
         pgsBar.setMax(300);
         pgsBar.setProgress(0);
+    }
+
+    /**
+     * Choose a random exercise from a list
+     * @param exercises list
+     * @return a random Exercise
+     */
+    private Exercise getRandomExercise(List<Exercise> exercises ) {
+        Random random = new Random();
+        return exercises.get(random.nextInt(exercises.size()));
     }
 }

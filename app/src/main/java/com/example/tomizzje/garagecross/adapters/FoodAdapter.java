@@ -35,7 +35,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
     private boolean isAdmin;
 
 
-    public FoodAdapter(final ArrayList<Food> list, final boolean isAdmin) {
+    FoodAdapter(final ArrayList<Food> list, final boolean isAdmin) {
         this.list =  list;
         this.isAdmin = isAdmin;
     }
@@ -71,6 +71,10 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
 
     public class FoodViewHolder extends RecyclerView.ViewHolder {
 
+        /**
+         * Fields connected by the view and strings.xml
+         */
+
         @BindView(R.id.tvFood) TextView tvFood;
 
         @BindString(R.string.intent_bundle_key_modify_food)
@@ -85,13 +89,17 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.FoodViewHolder
         @Inject
         FirebaseLogin firebaseLogin;
 
-        public FoodViewHolder(View itemView) {
+        FoodViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
             BaseApplication.getInstance().getBaseComponent().inject(this);
-
         }
+
+        /**
+         * this method set the onClickListener and view for each row of the list
+         * @param temp list element
+         */
 
         public void bind(final Food temp) {
             if(temp !=null) {

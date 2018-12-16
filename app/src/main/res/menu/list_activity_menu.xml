@@ -12,37 +12,36 @@
         app:showAsAction="never" />
 
     <item android:id="@+id/doneExercise_menu"
-        android:title="Elvégzett feladataim"
+        android:title="@string/done_exercise_menu"
         app:showAsAction="never"/>
 
-
     <item android:id="@+id/favoriteExercise_menu"
-        android:title="Kedvenc Feladataim"
+        android:title="@string/favorite_exercise_menu"
         app:showAsAction="never"/>
 
     <item android:id="@+id/recommendedExercise_menu"
-        android:title="Ajánlott Feladataim"
+        android:title="@string/recommended_exercise_menu"
         app:showAsAction="never"/>
 
     <item android:id="@+id/personalExercise_menu"
-        android:title="Saját feladataim"
+        android:title="@string/personal_exercise_menu"
         app:showAsAction="never"/>
 
     <item android:id="@+id/share_list_menu"
-        android:title="Megosztások"
+        android:title="@string/share_list_menu"
         app:showAsAction="never"/>
 
     <item android:id="@+id/nutrition_menu"
-        android:title="Táplálkozás"
+        android:title="@string/nutrition_menu"
         app:showAsAction="never" />
 
     <item android:id="@+id/diary_menu"
-        android:title="Naplóm"
+        android:title="@string/weightlifting_menu"
         app:showAsAction="never"/>
 
 
     <item android:id="@+id/logout_menu"
-        android:title="Kijelentkezés"
+        android:title="@string/logout_menu"
         app:showAsAction="never"/>
 
 </menu>

@@ -1,7 +1,5 @@
 package com.example.tomizzje.garagecross.entities;
 
-import java.io.Serializable;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,15 +24,4 @@ public class Share extends BaseEntity implements IBaseEntity {
     @Getter
     @Setter
     private String dateTime;
-
-    @Override
-    public String toString(){
-        StringBuilder sb = new StringBuilder();
-        sb.append(super.getPushId());
-        sb.append(",");
-        sb.append(recipient);
-        sb.append(",");
-        sb.append(comment);
-        return sb.toString();
-    }
 }

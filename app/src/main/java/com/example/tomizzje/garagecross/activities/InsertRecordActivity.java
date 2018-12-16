@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -14,8 +13,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tomizzje.garagecross.entities.Record;
 import com.example.tomizzje.garagecross.R;
+import com.example.tomizzje.garagecross.entities.Record;
 
 import java.util.Calendar;
 
@@ -24,6 +23,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class InsertRecordActivity extends BaseActivity {
+
+    /**
+     * Fields connected by the view and strings.xml
+     */
 
     @BindView(R.id.tvDate)
     TextView tvDate;
@@ -52,6 +55,18 @@ public class InsertRecordActivity extends BaseActivity {
     @BindString(R.string.intent_bundle_key_modify_record)
     String intentRecordString;
 
+    @BindString(R.string.insert_record_too_long_description)
+    String tooLongDescriptionToastText;
+
+    @BindString(R.string.insert_record_deleted_toast)
+    String deletedRecordToast;
+
+    @BindString(R.string.insert_record_saved_toast)
+    String savedRecordToast;
+
+    @BindString(R.string.insert_record_modified_toast)
+    String modifiedRecordToast;
+
     private DatePickerDialog.OnDateSetListener dateSetListener;
 
     private boolean toModify = false;
@@ -66,14 +81,17 @@ public class InsertRecordActivity extends BaseActivity {
         initRecord();
     }
 
+    /**
+     * Initialize the Record depends on the user's intention
+     */
     private void initRecord() {
         Intent intent = getIntent();
         Record getRecord = (Record) intent.getSerializableExtra(intentRecordString);
         if(getRecord != null){
             tvDate.setText(getRecord.getDate());
             etDescription.setText(getRecord.getDescription());
-            // a fókusz hova kerüljön
-            etDescription.setSelection(getRecord.getDescription().length());
+
+            etDescription.setSelection(getRecord.getDescription().length()); //Set focus for EditText
             toModify = true;
         }else {
             getRecord = new Record();
@@ -90,12 +108,17 @@ public class InsertRecordActivity extends BaseActivity {
         initDelete();
     }
 
+    /**
+     * Initialize delete button, and delete the record from database
+     */
     private void initDelete() {
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                if(toModify){
                    firebaseServer.deleteEntity(record, recordsReference);
+                   Toast.makeText(view.getContext(), deletedRecordToast,
+                           Toast.LENGTH_LONG).show();
                    backToList();
                }else {
                    etDescription.setText("");
@@ -104,11 +127,14 @@ public class InsertRecordActivity extends BaseActivity {
         });
     }
 
+    /**
+     * Initalize save button, check the inputs, and save to database
+     */
     private void initSave() {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!(tvDate.getText().equals(dateText)) && etDescription.getText().length() > 0) {
+                if(!(tvDate.getText().equals(dateText)) && etDescription.getText().length() > 0 && etDescription.getLineCount() < 9) {
                     String currentUser = firebaseLogin.getCurrentUser();
                     String date = tvDate.getText().toString();
                     String description = etDescription.getText().toString();
@@ -116,8 +142,12 @@ public class InsertRecordActivity extends BaseActivity {
                     if(toModify){
                         saveRecord.setPushId(record.getPushId());
                         firebaseServer.modifyEntity(saveRecord, recordsReference);
+                        Toast.makeText(view.getContext(), modifiedRecordToast,
+                                Toast.LENGTH_LONG).show();
                     }else {
                         firebaseServer.insertEntity(saveRecord, recordsReference);
+                        Toast.makeText(view.getContext(), savedRecordToast,
+                                Toast.LENGTH_LONG).show();
                     }
                     backToList();
                 }else if(tvDate.getText().equals(dateText)){
@@ -126,11 +156,17 @@ public class InsertRecordActivity extends BaseActivity {
                 }else if(etDescription.getText().length() < 1 ){
                     Toast.makeText(view.getContext(), noDescriptionToastText,
                             Toast.LENGTH_LONG).show();
+                }else if(etDescription.getLineCount() >=0){
+                    Toast.makeText(view.getContext(), tooLongDescriptionToastText,
+                            Toast.LENGTH_LONG).show();
                 }
             }
         });
     }
 
+    /**
+     * Initialize datepicker dialogue
+     */
     private void initDatePicker() {
         tvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,6 +198,9 @@ public class InsertRecordActivity extends BaseActivity {
         };
     }
 
+    /**
+     * Navigate back to the list
+     */
     private void backToList() {
         Intent intent = new Intent(this, WeightLiftingDiaryActivity.class);
         startActivity(intent);

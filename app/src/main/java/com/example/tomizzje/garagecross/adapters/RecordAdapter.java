@@ -50,6 +50,10 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
 
     public class RecordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
+        /**
+         * Fields connected by the view and strings.xml
+         */
+
         @BindView(R.id.tvDate)
         TextView tvDate;
 
@@ -65,11 +69,19 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.RecordView
             itemView.setOnClickListener(this);
         }
 
+        /**
+         * this method set the  view for each row of the list
+         * @param record list element
+         */
         public void bind(Record record) {
             tvDate.setText(record.getDate());
             tvDescription.setText(record.getDescription());
         }
 
+        /**
+         * this method set the onClickListener for each row
+         * @param view activity view
+         */
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();

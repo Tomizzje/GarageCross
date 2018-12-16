@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.adapters.RecordAdapter;
 
@@ -27,6 +28,9 @@ import butterknife.ButterKnife;
 
 public class WeightLiftingDiaryActivity extends MenuBaseActivity{
 
+    /**
+     * Fields connected by the view and strings.xml
+     */
 
     @BindView(R.id.rvRecords)
     RecyclerView rvRecords;
@@ -39,6 +43,9 @@ public class WeightLiftingDiaryActivity extends MenuBaseActivity{
 
     @BindString(R.string.database_reference_records)
     String recordsReference;
+
+    @BindString(R.string.unknown_error_text)
+    String errorToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,9 @@ public class WeightLiftingDiaryActivity extends MenuBaseActivity{
         initFloatingActionButton();
     }
 
+    /**
+     * Initialize the new Record button
+     */
     private void initFloatingActionButton() {
         fab_add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,16 +78,19 @@ public class WeightLiftingDiaryActivity extends MenuBaseActivity{
         });
     }
 
+    /**
+     * Query the user's records from the database and collect them to a list
+     */
     private void initRecords() {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String currentUser = firebaseLogin.getCurrentUser();
 
                 if(dataSnapshot.exists()) {
                     List<Record> records = new ArrayList<>();
+                    String currentUser = firebaseLogin.getCurrentUser();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        if(currentUser.equals(snapshot.getValue(Record.class).getUser_id())) {
+                        if(snapshot.getValue(Record.class).getUser_id() != null && snapshot.getValue(Record.class).getUser_id().equals(currentUser)) {
                             records.add(snapshot.getValue(Record.class));
                         }
                     }
@@ -91,17 +104,24 @@ public class WeightLiftingDiaryActivity extends MenuBaseActivity{
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), errorToast,Toast.LENGTH_LONG).show();
             }
         };
         firebaseServer.findItemsOfNode(valueEventListener,recordsReference);
     }
 
+    /**
+     * Navigate to insert a Record
+     */
     private void IntentToInsert() {
         Intent intent = new Intent(this, InsertRecordActivity.class);
         startActivity(intent);
     }
 
+    /**
+     * Initialize the adapter with a list of record
+     * @param records list
+     */
     private void initAdapter(List<Record> records) {
         final RecordAdapter adapter = new RecordAdapter(records);
         rvRecords.setAdapter(adapter);

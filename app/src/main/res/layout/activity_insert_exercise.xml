@@ -45,7 +45,7 @@
         android:layout_marginStart="@dimen/margin_standard"
         android:padding="@dimen/margin_extra_small"
         android:inputType="textMultiLine"
-        android:gravity="left"
+        android:gravity="start"
         android:maxLines="6"
         android:hint="@string/insert_exercise_description_hint"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvImages"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="135dp"
         android:maxHeight="150dp"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_small"
@@ -95,52 +95,52 @@
 
     <Button
         android:id="@+id/btnUpload"
-        android:layout_width="90dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_extra_large"
         android:layout_marginBottom="@dimen/margin_small"
         android:gravity="center"
         android:text="@string/btnUpload"
-        android:textSize="@dimen/text_size_comment"
+        android:textSize="@dimen/text_size_extra_small"
         app:layout_constraintBottom_toTopOf="@+id/btnSaveExercise"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnDeleteExercise"
-        android:layout_width="90dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_extra_large"
         android:layout_marginBottom="@dimen/margin_standard"
         android:gravity="center"
         android:text="@string/btnDeleteExercise"
-       android:textSize="@dimen/text_size_comment"
+       android:textSize="@dimen/text_size_extra_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         />
 
     <Button
         android:id="@+id/btnSaveExercise"
-        android:layout_width="90dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_extra_large"
         android:layout_marginBottom="@dimen/margin_standard"
         android:gravity="center"
         android:text="@string/btnSaveExercise"
-        android:textSize="@dimen/text_size_comment"
+        android:textSize="@dimen/text_size_extra_small"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btnDeletePicture"
-        android:layout_width="90dp"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_small"
         android:layout_marginEnd="@dimen/margin_extra_large"
         android:layout_marginBottom="@dimen/margin_small"
         android:gravity="center"
         android:text="@string/btnDeletePicture"
-        android:textSize="@dimen/text_size_comment"
+        android:textSize="@dimen/text_size_extra_small"
         app:layout_constraintBottom_toTopOf="@+id/btnDeleteExercise"
         app:layout_constraintEnd_toEndOf="parent"
        />

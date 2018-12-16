@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import com.example.tomizzje.garagecross.R;
 import com.example.tomizzje.garagecross.adapters.ExerciseAdapter;
@@ -21,11 +22,18 @@ import butterknife.ButterKnife;
 
 public class ExerciseListActivity extends MenuBaseActivity {
 
+    /**
+     * Fields connected by the view and strings.xml
+     */
+
     @BindView(R.id.rvItems)
     RecyclerView rvExercises;
 
     @BindString(R.string.database_reference_exercises)
     String exercisesReference;
+
+    @BindString(R.string.unknown_error_text)
+    String errorToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,9 @@ public class ExerciseListActivity extends MenuBaseActivity {
         initExerciseList();
     }
 
+    /**
+     *  Query the Exercises from the Database, and collect them into a list.
+     */
     private void initExerciseList() {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
@@ -53,8 +64,9 @@ public class ExerciseListActivity extends MenuBaseActivity {
 
                     ArrayList<Exercise> exercises = new ArrayList<>();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        exercises.add(snapshot.getValue(Exercise.class));
-
+                        if(snapshot.getValue(Exercise.class) != null){
+                            exercises.add(snapshot.getValue(Exercise.class));
+                        }
                     }
                     Collections.reverse(exercises);
                     initAdapter(exercises);
@@ -63,12 +75,18 @@ public class ExerciseListActivity extends MenuBaseActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Toast.makeText(getApplicationContext(), errorToast,Toast.LENGTH_LONG).show();
             }
         };
         firebaseServer.findExercisesOrderBy(valueEventListener, exercisesReference);
     }
 
+
+
+    /**
+     * Initialize the adapter with the list of exercises
+     * @param exercises list
+     */
     private void initAdapter(ArrayList<Exercise> exercises) {
         final ExerciseAdapter adapter = new ExerciseAdapter(exercises);
         rvExercises.setAdapter(adapter);

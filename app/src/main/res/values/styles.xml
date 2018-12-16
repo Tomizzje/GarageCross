@@ -1,19 +1,22 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorPrimary</item>
-        <item name="android:colorBackground">@color/background_material_light</item>
+        <item name="android:colorBackground">@color/background_color</item>
         <item name="android:navigationBarColor">@color/colorPrimary</item>
-        <item name="android:statusBarColor">@color/fui_bgEmail</item>
+
         <item name="android:textColor">@color/browser_actions_text_color</item>
         <item name="android:textColorPrimary">@color/browser_actions_text_color</item>
         <item name="android:textColorSecondary">@color/browser_actions_text_color</item>
         <item name="android:textColorSecondaryInverse">@color/browser_actions_text_color</item>
         <item name="android:textColorPrimaryInverse">@color/browser_actions_text_color</item>
+
     </style>
+
+
 
 </resources>

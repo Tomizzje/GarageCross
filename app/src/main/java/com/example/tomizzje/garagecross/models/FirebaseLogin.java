@@ -1,10 +1,12 @@
 package com.example.tomizzje.garagecross.models;
 
 import android.app.Activity;
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Arrays;
@@ -22,6 +24,10 @@ public class FirebaseLogin {
     }
 
 
+    /**
+     * check if the user is logged in. If not, start intent to login
+     * @param caller activity calling the method
+     */
     public void checkLogin(final Activity caller) {
         authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -33,6 +39,10 @@ public class FirebaseLogin {
         };
     }
 
+    /**
+     * sign in builder
+     * @param caller activity
+     */
     private void signIn(Activity caller) {
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.EmailBuilder().build());
@@ -57,7 +67,10 @@ public class FirebaseLogin {
     }
 
     public String getCurrentUser() {
-        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+        if(isSignedIn()){
+            return FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
+        return null;
     }
 
     public String getName() {
@@ -69,8 +82,7 @@ public class FirebaseLogin {
     }
 
     public boolean isSignedIn() {
-        return firebaseAuth.getCurrentUser() != null  ? true : false;
+        return firebaseAuth.getCurrentUser() != null;
     }
-
 
 }

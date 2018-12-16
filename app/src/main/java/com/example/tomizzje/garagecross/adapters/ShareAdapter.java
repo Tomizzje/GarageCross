@@ -58,6 +58,10 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
 
     public class ShareViewHolder extends RecyclerView.ViewHolder {
 
+        /**
+         * Fields connected by the view and strings.xml
+         */
+
         @Inject
         FirebaseServer firebaseServer;
 
@@ -95,9 +99,13 @@ public class ShareAdapter extends RecyclerView.Adapter<ShareAdapter.ShareViewHol
             BaseApplication.getInstance().getBaseComponent().inject(this);
         }
 
+        /**
+         * this method set the onClickListener and view for each row of the list
+         * @param share list element
+         */
         public void bind(final Share share) {
-            String nameText = share.getDoneExercise().getUser().getName() + " -";
-            tvUser.setText(nameText);
+
+            tvUser.setText(share.getDoneExercise().getUser().getName());
             tvDoneExerciseTitle.setText(share.getDoneExercise().getTitle());
             tvElapsedTime.setText(share.getDoneExercise().getTimeElapsed());
             tvComment.setText(share.getComment());

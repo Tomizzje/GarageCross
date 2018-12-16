@@ -51,6 +51,10 @@ public class DoneExerciseAdapter extends RecyclerView.Adapter<DoneExerciseAdapte
 
     public class DoneExerciseViewHolder extends RecyclerView.ViewHolder {
 
+        /**
+         * Fields connected by the view and strings.xml
+         */
+
         @BindView(R.id.tvTitle)
         TextView tvTitle;
 
@@ -66,11 +70,15 @@ public class DoneExerciseAdapter extends RecyclerView.Adapter<DoneExerciseAdapte
         @BindString(R.string.intent_bundle_key_select_doneExercise)
         String intentDoneExerciseText;
 
-        public DoneExerciseViewHolder(View itemView) {
+        DoneExerciseViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
+        /**
+         * this method set the onClickListener and view for each row of the list
+         * @param doneExercise list element
+         */
         public void bind(DoneExercise doneExercise) {
             tvTitle.setText(doneExercise.getTitle());
             tvDateTime.setText(doneExercise.getDateTime());

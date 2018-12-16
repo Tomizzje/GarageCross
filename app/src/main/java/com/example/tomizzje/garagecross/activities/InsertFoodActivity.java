@@ -22,7 +22,13 @@ import butterknife.ButterKnife;
 
 public class InsertFoodActivity extends BaseActivity {
 
-    @BindView(R.id.tvTitle) TextView tvTitle;
+
+    /**
+     * Fields connected by the view and strings.xml
+     */
+
+    @BindView(R.id.tvTitle)
+    TextView tvTitle;
 
     @BindView(R.id.spnFoodGroup)
     Spinner spnFoodGroup;
@@ -51,6 +57,9 @@ public class InsertFoodActivity extends BaseActivity {
     @BindString(R.string.database_reference_food)
     String foodReference;
 
+    @BindString(R.string.insert_food_no_food)
+    String noFoodToast;
+
     private boolean toModify;
 
     private Food food;
@@ -71,6 +80,9 @@ public class InsertFoodActivity extends BaseActivity {
         initDelete();
     }
 
+    /**
+     * Initialize food whether the administrator create a new one or modify
+     */
     private void initFood() {
         Intent intent = getIntent();
         Food food = (Food) intent.getSerializableExtra(intentModifyFood);
@@ -87,7 +99,7 @@ public class InsertFoodActivity extends BaseActivity {
 
         } else {
             txtFood.setText(food.getName());
-            txtFood.setSelection(food.getName().length());
+            txtFood.setSelection(food.getName().length()); // set focus for Edittext
 
             btnDelete.setText(btnDeleteText);
 
@@ -100,6 +112,9 @@ public class InsertFoodActivity extends BaseActivity {
         this.food = food;
     }
 
+    /**
+     * This method checks the input and saves/modifies to the database
+     */
     private void initSave() {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,6 +124,9 @@ public class InsertFoodActivity extends BaseActivity {
                     String foodGroup= FoodGroup.getFoodGroupByString(spnFoodGroup.getSelectedItem().toString()).name();
                     if(foodGroup != null){
                         food.setFoodGroups(foodGroup);
+                    }else {
+                        Toast.makeText(view.getContext(), noFoodToast,
+                                Toast.LENGTH_LONG).show();
                     }
 
                     if(toModify){
@@ -122,28 +140,34 @@ public class InsertFoodActivity extends BaseActivity {
         });
     }
 
-
+    /**
+     * Initialize the spinner
+     */
     private void initSpinner() {
         final String[] foodGroups = FoodGroup.getFoodGroupValuesString();
         AdapterView.OnItemSelectedListener itemClickListener = new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-               // Toast.makeText(getApplicationContext(), foodGroups[i], Toast.LENGTH_LONG).show();
+
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                //Toast.makeText(getApplicationContext(), difficulties[0], Toast.LENGTH_LONG).show();
+
             }
         };
         spnFoodGroup.setOnItemSelectedListener(itemClickListener);
-
 
         ArrayAdapter aa = new ArrayAdapter(getApplicationContext(),R.layout.spinner_item, foodGroups);
         aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnFoodGroup.setAdapter(aa);
     }
 
+    /**
+     * Returns the position of the selected spinner item
+     * @param text spinner item
+     * @return position
+     */
     private int getSpinTextPosition(String text) {
         for(int i=0;i<spnFoodGroup.getAdapter().getCount();++i){
             if(spnFoodGroup.getAdapter().getItem(i).toString().equals(text)){
@@ -153,26 +177,29 @@ public class InsertFoodActivity extends BaseActivity {
         return 0;
     }
 
-
+    /**
+     * Delete the food from the database
+     */
     private void initDelete(){
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(toModify){
                     firebaseServer.deleteEntity(food, foodReference);
+                    backToList();
                 }else{
                     txtFood.setText("");
                 }
-                backToList();
+
             }
         });
     }
 
+    /**
+     * Navigate back to the list site
+     */
     private void backToList() {
         Intent intent = new Intent(this, NutritionActivity.class);
         startActivity(intent);
     }
-
-
-
 }

@@ -9,8 +9,6 @@ import com.example.tomizzje.garagecross.modules.FirebaseDepotModule;
 import com.example.tomizzje.garagecross.modules.FirebaseLoginModule;
 import com.example.tomizzje.garagecross.modules.FirebaseServerModule;
 
-import com.example.tomizzje.garagecross.modules.VibrationUtilModule;
-
 
 import lombok.Getter;
 
@@ -33,9 +31,11 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        /**
+         * add modules to the baseApplicaton
+         */
         baseComponent = DaggerBaseComponent.builder()
                 .applicationModule(new ApplicationModule(this))
-                .vibrationUtilModule(new VibrationUtilModule())
                 .firebaseServerModule(new FirebaseServerModule())
                 .firebaseDepotModule(new FirebaseDepotModule())
                 .firebaseLoginModule(new FirebaseLoginModule())
